@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>속담 웹툰 스토리보드 기획서</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
+    <style>
+        :root {
+            --black: #1a1a1a;
+            --white: #ffffff;
+            --yellow: #FFD60A;
+            --red: #FF453A;
+            --blue: #0A84FF;
+            --green: #30D158;
+            --cyan: #64D2FF;
+            
+            --border-thick: 4px solid var(--black);
+            --border-thin: 2px solid var(--black);
+            --shadow-solid: 6px 6px 0px var(--black); /* 버튼용 큰 그림자 */
+            --shadow-small: 3px 3px 0px var(--black);
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background: linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%);
+            margin: 0;
+            padding: 2vh 2vw;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+            color: var(--black);
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            padding: 2vh 2vw;
+            border: var(--border-thick);
+            border-radius: 16px;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5vh;
+            position: relative;
+        }
+
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 5px solid var(--black);
+            padding-bottom: 1.5vh;
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2vh;
+        }
+
+        h2 {
+            margin: 0;
+            color: var(--white);
+            font-size: clamp(24px, 2.5vw, 30px);
+            font-weight: 900;
+            letter-spacing: -1px;
+            -webkit-text-stroke: 2px var(--black);
+            text-shadow: 3px 3px 0px var(--black);
+            background: var(--yellow);
+            padding: 4px 12px;
+            border: var(--border-thick);
+            border-radius: 12px;
+            transform: rotate(-1deg);
+            display: inline-block;
+        }
+
+        .student-info-box {
+            background: var(--cyan);
+            border: var(--border-thick);
+            box-shadow: var(--shadow-small);
+            border-radius: 10px;
+            padding: 8px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 900;
+        }
+
+        .field-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .student-info-box input {
+            border: var(--border-thin);
+            border-radius: 6px;
+            background: var(--white);
+            padding: 4px 6px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 900;
+            outline: none;
+            text-align: center;
+            color: var(--black);
+            box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+        }
+        .student-info-box input:focus { background: #fff9db; }
+
+        /* 🔥 수정된 우측 버튼 그룹 스타일 */
+        .header-btn-container {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .action-btn {
+            color: var(--black);
+            border: var(--border-thick); /* 4px 굵은 테두리 */
+            box-shadow: var(--shadow-solid); /* 그림자 확대 */
+            padding: 14px 24px; /* 버튼 여백 대폭 확대 */
+            font-size: 19px; /* 글씨 크기 확대 */
+            font-weight: 900;
+            font-family: inherit;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.1s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .action-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px var(--black);
+        }
+        
+        .copy-btn { 
+            background-color: var(--yellow); 
+            color: var(--black);
+        }
+        
+        .padlet-btn { 
+            background-color: var(--green); 
+            color: var(--white); 
+            /* 테두리와 텍스트 그림자를 동시에 주어 가독성 극대화 */
+            -webkit-text-stroke: 1.5px var(--black); 
+            text-shadow: 2px 2px 0px var(--black);
+        }
+        
+        .tooning-btn { 
+            background-color: var(--red); 
+            color: var(--white); 
+            -webkit-text-stroke: 1.5px var(--black); 
+            text-shadow: 2px 2px 0px var(--black);
+        }
+
+        .meta-container {
+            display: flex;
+            flex-direction: row;
+            gap: 2vw;
+            flex-shrink: 0;
+        }
+
+        .meta-field {
+            flex: 1;
+            background: var(--white);
+            padding: 12px 16px 12px 30px;
+            border-radius: 12px;
+            border: var(--border-thick);
+            box-shadow: 5px 5px 0px var(--black);
+            font-size: 15px;
+            font-weight: 900;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .meta-field::before {
+            content: '📌';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 22px;
+            background: var(--white);
+            border: 3px solid var(--black);
+            border-radius: 50%;
+            width: 34px; height: 34px;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .meta-field.lesson::before { content: '💡'; }
+
+        .meta-field input {
+            flex: 1;
+            border: var(--border-thin);
+            border-radius: 8px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 800;
+            outline: none;
+            color: var(--black);
+            transition: 0.2s;
+        }
+
+        .meta-field input:focus {
+            background: #fff;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.2);
+        }
+
+        .grid-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5vw;
+            min-height: 0; 
+        }
+
+        .cut-box {
+            background: var(--white);
+            border: var(--border-thick);
+            box-shadow: 5px 5px 0px var(--black);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .cut-title {
+            flex-shrink: 0;
+            font-weight: 900;
+            color: var(--black);
+            font-size: 15px;
+            background: var(--yellow);
+            padding: 6px 12px;
+            border-bottom: var(--border-thick);
+            text-align: center;
+        }
+
+        .drawing-tools {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            background: #f1f3f5;
+            border-bottom: var(--border-thin);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .drawing-tools button {
+            background: var(--red);
+            color: white;
+            border: 2px solid var(--black);
+            padding: 3px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 900;
+            box-shadow: 2px 2px 0px var(--black);
+        }
+        .drawing-tools button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px var(--black);
+        }
+
+        .drawing-area {
+            flex: 1;
+            position: relative;
+            background: #ffffff;
+            cursor: crosshair;
+            min-height: 0; 
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+
+        .script-area {
+            flex-shrink: 0;
+            border-top: var(--border-thick);
+            background: #f8f9fa;
+        }
+
+        .script-area textarea {
+            resize: none;
+            height: 7vh; 
+            min-height: 50px;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            line-height: 1.4;
+        }
+        .script-area textarea::placeholder { color: #adb5bd; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center; align-items: center;
+        }
+
+        .modal-box {
+            background: var(--white); 
+            padding: 40px; 
+            border-radius: 20px;
+            text-align: center; 
+            max-width: 500px; 
+            width: 90%;
+            border: 6px solid var(--black);
+            box-shadow: 15px 15px 0px var(--black);
+            position: relative;
+        }
+
+        .modal-box h3 { 
+            margin-top: 0; 
+            color: var(--black); 
+            font-size: 32px; 
+            font-weight: 900; 
+            background: var(--yellow);
+            display: inline-block;
+            padding: 5px 20px;
+            border: var(--border-thick);
+            transform: rotate(-2deg);
+        }
+
+        .modal-box p { font-size: 18px; font-weight: 800; color: var(--black); line-height: 1.6; margin: 25px 0; }
+        .modal-box .highlight { color: var(--blue); font-size: 20px; text-decoration: underline; text-underline-offset: 4px; }
+        
+        .modal-btn-group { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
+        
+        .modal-btn { 
+            padding: 14px 24px; font-size: 18px; font-weight: 900; 
+            border-radius: 12px; cursor: pointer; border: var(--border-thick); 
+            box-shadow: 5px 5px 0px var(--black); text-decoration: none; color: var(--black);
+        }
+        .modal-btn:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0px var(--black); }
+        .modal-btn.primary { background-color: var(--green); }
+        .modal-btn.secondary { background-color: #e9ecef; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="captureArea">
+    <div class="header-box">
+        <div class="header-left">
+            <h2>💥 투닝(Tooning) 4컷 속담툰</h2>
+            <div class="student-info-box">
+                <div class="field-group">
+                    <input type="text" style="width: 35px;" placeholder="6">학년
+                </div>
+                <div class="field-group">
+                    <input type="text" style="width: 35px;" placeholder="3">반
+                </div>
+                <div class="field-group">
+                    <input type="text" style="width: 35px;" placeholder="12">번
+                </div>
+                <div class="field-group" style="margin-left: 5px;">
+                    이름: <input type="text" style="width: 80px;" placeholder="홍길동">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 🔥 변경된 대형 버튼 영역 -->
+        <div class="header-btn-container">
+            <button class="action-btn copy-btn" onclick="copyToClipboard()">📸 기획서 복사</button>
+            <a href="https://padlet.com/dlrka0131/6-bwwl5nvlo6ohxm4h" target="_blank" class="action-btn padlet-btn">📌 패들렛 가기</a>
+            <a href="https://tooning.io" target="_blank" class="action-btn tooning-btn">🚀 투닝 가기</a>
+        </div>
+    </div>
+
+    <div class="meta-container">
+        <div class="meta-field">
+            내가 선택한 속담은?
+            <input type="text" placeholder="예: 개구리 올챙이 적 생각 못 한다">
+        </div>
+        <div class="meta-field lesson" style="background-color: var(--yellow);">
+            이 속담이 주는 교훈!
+            <input type="text" placeholder="예: 남이 실수할 때 나의 지난날을 떠올리자!">
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <!-- 1컷 -->
+        <div class="cut-box">
+            <div class="cut-title">🎬 1컷 (기 - 시작)</div>
+            <div class="drawing-tools">
+                <span>마우스로 쓱쓱~✏️</span>
+                <button onclick="clearCanvas('canvas1')">지우기</button>
+            </div>
+            <div class="drawing-area"><canvas id="canvas1"></canvas></div>
+            <div class="script-area"><textarea placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
+        </div>
+        <!-- 2컷 -->
+        <div class="cut-box">
+            <div class="cut-title">🔥 2컷 (승 - 전개)</div>
+            <div class="drawing-tools">
+                <span>마우스로 쓱쓱~✏️</span>
+                <button onclick="clearCanvas('canvas2')">지우기</button>
+            </div>
+            <div class="drawing-area"><canvas id="canvas2"></canvas></div>
+            <div class="script-area"><textarea placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
+        </div>
+        <!-- 3컷 -->
+        <div class="cut-box">
+            <div class="cut-title">⚡ 3컷 (전 - 위기/반전)</div>
+            <div class="drawing-tools">
+                <span>마우스로 쓱쓱~✏️</span>
+                <button onclick="clearCanvas('canvas3')">지우기</button>
+            </div>
+            <div class="drawing-area"><canvas id="canvas3"></canvas></div>
+            <div class="script-area"><textarea placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
+        </div>
+        <!-- 4컷 -->
+        <div class="cut-box">
+            <div class="cut-title">✨ 4컷 (결 - 결말/교훈)</div>
+            <div class="drawing-tools">
+                <span>마우스로 쓱쓱~✏️</span>
+                <button onclick="clearCanvas('canvas4')">지우기</button>
+            </div>
+            <div class="drawing-area"><canvas id="canvas4"></canvas></div>
+            <div class="script-area"><textarea placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="successModal">
+    <div class="modal-box">
+        <h3>🎉 캡쳐 완료! BAM!</h3>
+        <p>기획서가 이미지로 복사되었습니다!<br><br>👉 <span class="highlight">패들렛(Padlet)</span> 창으로 이동해서<br>글쓰기 칸에 <b>Ctrl + V</b>를 눌러 붙여넣으세요!</p>
+        <div class="modal-btn-group">
+            <a href="https://padlet.com/dlrka0131/6-bwwl5nvlo6ohxm4h" target="_blank" class="modal-btn primary" onclick="closeModal()">패들렛 출동!</a>
+            <button class="modal-btn secondary" onclick="closeModal()">닫기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initCanvas(id) {
+        const canvas = document.getElementById(id);
+        const container = canvas.parentElement;
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        resize();
+        window.addEventListener('resize', resize);
+
+        let painting = false;
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!painting) return;
+            const rect = canvas.getBoundingClientRect();
+            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            let x = clientX - rect.left;
+            let y = clientY - rect.top;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mousemove', draw);
+
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); }, { passive: false });
+        canvas.addEventListener('touchend', endPosition);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
+    }
+
+    function clearCanvas(id) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function copyToClipboard() {
+        document.querySelectorAll('textarea').forEach(ta => {
+            ta.innerHTML = ta.value;
+        });
+        
+        const target = document.getElementById('captureArea');
+        html2canvas(target, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
+            canvas.toBlob(blob => {
+                try {
+                    const item = new ClipboardItem({ "image/png": blob });
+                    navigator.clipboard.write([item]).then(() => {
+                        document.getElementById('successModal').style.display = 'flex';
+                    }).catch(err => {
+                        alert("복사에 실패했습니다. 브라우저 권한을 확인해주세요.");
+                    });
+                } catch (e) {
+                    alert("이 브라우저는 클립보드 직접 복사를 지원하지 않습니다.");
+                }
+            });
+        });
+    }
+
+    function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+    }
+
+    window.addEventListener('load', function() {
+        initCanvas('canvas1');
+        initCanvas('canvas2');
+        initCanvas('canvas3');
+        initCanvas('canvas4');
+    });
+</script>
+
+</body>
+</html>

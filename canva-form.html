@@ -7,6 +7,9 @@
     <!-- 폰트 두께를 다양하게 사용하기 위해 Pretendard 전체 로드 -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     
+    <!-- 화면 캡처를 위한 html2canvas 라이브러리 추가 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         :root {
             /* 메인 컬러 팔레트 */
@@ -28,6 +31,7 @@
             /* 버튼 그라데이션 */
             --btn-copy: linear-gradient(135deg, #10b981, #059669);
             --btn-canva: linear-gradient(135deg, #3b82f6, #2563eb);
+            --btn-capture: linear-gradient(135deg, #f43f5e, #e11d48); /* 캡처 버튼 핑크/레드 */
         }
 
         * {
@@ -86,6 +90,38 @@
             flex-direction: column;
             gap: 20px;
             flex: 1;
+            position: relative; /* 캡처 버튼 절대 배치를 위해 추가 */
+        }
+
+        /* 📸 스크린샷 캡처 버튼 */
+        .capture-btn {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            background: var(--btn-capture);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+            transition: all 0.2s;
+            z-index: 5;
+        }
+        
+        .capture-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(225, 29, 72, 0.4);
+            filter: brightness(1.1);
+        }
+        
+        .capture-btn:active {
+            transform: translateY(1px);
         }
 
         /* 상단 타이틀 영역 (매우 크고 두껍게, 테두리 효과) */
@@ -348,7 +384,7 @@
             margin-top: 5px;
         }
 
-        /* 💡 수정된 중앙 배치 토스트 팝업 스타일 */
+        /* 중앙 배치 토스트 팝업 스타일 */
         #toastPopup {
             visibility: hidden;
             min-width: 480px;
@@ -360,24 +396,21 @@
             z-index: 9999;
             left: 50%;
             top: 50%;
-            /* 가운데 정렬 및 초기 크기를 0.8로 줄여서 팝업 효과 준비 */
             transform: translate(-50%, -50%) scale(0.8);
             box-shadow: 0 30px 60px rgba(0,0,0,0.25);
-            border: 5px solid #10b981; /* 눈에 띄는 초록색 테두리 */
+            border: 5px solid #10b981; 
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             gap: 20px;
             opacity: 0;
-            /* 부드럽고 통통 튀는 애니메이션 효과 */
             transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
         #toastPopup.show {
             visibility: visible;
             opacity: 1;
-            /* 원래 크기로 튕기듯 커짐 */
             transform: translate(-50%, -50%) scale(1);
         }
         
@@ -414,10 +447,9 @@
             font-weight: 700;
             line-height: 1.6;
             color: #334155;
-            word-break: keep-all; /* 단어 단위로 줄바꿈하여 가독성 상승 */
+            word-break: keep-all;
         }
         
-        /* 붙여넣기 단축키 강조 */
         #toastMessage b {
             color: #2563eb;
             background: #eff6ff;
@@ -431,18 +463,23 @@
 
     <!-- 화면 중앙 팝업 -->
     <div id="toastPopup">
-        <div class="toast-icon">✔</div>
+        <div class="toast-icon" id="toastIcon">✔</div>
         <div class="toast-content">
-            <div class="toast-title">복사 완료!</div>
+            <div class="toast-title" id="toastTitle">복사 완료!</div>
             <div id="toastMessage">프롬프트를 성공적으로 복사했습니다.<br>캔바(Canva) AI 창에 <b>Ctrl + V</b> 로 붙여넣으세요!</div>
         </div>
     </div>
 
     <!-- 클립보드 디자인 래퍼 -->
-    <div class="clipboard-frame">
-        <div class="clipboard-clip"></div>
+    <div class="clipboard-frame" id="captureTarget">
+        <div class="clipboard-clip" data-html2canvas-ignore="true"></div>
         
         <div class="planner-board">
+            
+            <!-- 📸 스크린샷 캡처 버튼 (캡처 시에는 숨김 처리됨) -->
+            <button class="capture-btn" onclick="copyScreenshot()" data-html2canvas-ignore="true">
+                📸 기획서 스크린샷 복사
+            </button>
             
             <!-- 상단 타이틀 -->
             <div class="header-area">
@@ -542,7 +579,7 @@
 2. 사용자가 정답을 입력하고 확인 버튼을 누르면 정답 여부를 알려준다.
 3. 맞힌 개수에 따라 점수가 올라가고 최종 점수가 뜨도록 디자인해줘."></textarea>
                             
-                            <div class="button-group">
+                            <div class="button-group" data-html2canvas-ignore="true">
                                 <button type="button" class="action-btn copy-btn" onclick="copyPrompt()">
                                     📋 프롬프트 복사하기
                                 </button>
@@ -557,7 +594,7 @@
             </div>
 
             <!-- 하단 안내 문구 -->
-            <div class="footer-tip">
+            <div class="footer-tip" data-html2canvas-ignore="true">
                 이 설계도를 완성했다면 이제 프롬프트를 복사하고 캔바로 출동할 시간! 🚀
             </div>
 
@@ -571,16 +608,29 @@
             inputs.forEach(input => input.value = '');
         });
 
-        function showToast(message) {
+        // 팝업 표시 공통 함수 (성공/실패 테마 적용 가능)
+        function showToast(message, isError = false, customTitle = "복사 완료!", customIcon = "✔") {
             const toast = document.getElementById('toastPopup');
             const msgDiv = document.getElementById('toastMessage');
+            const iconDiv = document.getElementById('toastIcon');
+            const titleDiv = document.getElementById('toastTitle');
             
-            // 전달받은 메시지가 있으면 업데이트 (실패 메시지 등)
-            if (message) {
-                msgDiv.innerHTML = message;
+            msgDiv.innerHTML = message;
+            titleDiv.innerText = customTitle;
+            iconDiv.innerText = customIcon;
+            
+            // 에러(경고) 상태일 때 붉은색 테마 적용
+            if (isError) {
+                toast.style.borderColor = "#ef4444";
+                iconDiv.style.background = "#ef4444";
+                iconDiv.style.boxShadow = "0 8px 20px rgba(239, 68, 68, 0.4)";
+                titleDiv.style.color = "#ef4444";
             } else {
-                // 기본 성공 메시지로 복구
-                msgDiv.innerHTML = "프롬프트를 성공적으로 복사했습니다.<br>캔바(Canva) AI 창에 <b>Ctrl + V</b> 로 붙여넣으세요!";
+                // 정상(성공) 상태일 때 초록색 테마 적용
+                toast.style.borderColor = "#10b981";
+                iconDiv.style.background = "#10b981";
+                iconDiv.style.boxShadow = "0 8px 20px rgba(16, 185, 129, 0.4)";
+                titleDiv.style.color = "#10b981";
             }
             
             toast.className = "show";
@@ -591,34 +641,58 @@
             }, 3000);
         }
 
+        // 프롬프트 텍스트 복사 기능
         function copyPrompt() {
             const promptInput = document.getElementById('promptText');
             if (promptInput.value.trim() === "") {
-                showToast("프롬프트 내용이 비어있어요!<br>내용을 먼저 입력해 주세요.");
-                
-                // 실패했을 땐 테두리와 아이콘 색을 붉은색 계열로 변경(옵션)
-                document.getElementById('toastPopup').style.borderColor = "#ef4444";
-                document.querySelector('.toast-icon').style.background = "#ef4444";
-                document.querySelector('.toast-icon').innerText = "!";
-                document.querySelector('.toast-title').innerText = "알림";
-                document.querySelector('.toast-title').style.color = "#ef4444";
+                showToast("프롬프트 내용이 비어있어요!<br>내용을 먼저 입력해 주세요.", true, "알림", "!");
                 return;
             }
             
-            // 성공 시 정상 색상으로 리셋
-            document.getElementById('toastPopup').style.borderColor = "#10b981";
-            document.querySelector('.toast-icon').style.background = "#10b981";
-            document.querySelector('.toast-icon').innerText = "✔";
-            document.querySelector('.toast-title').innerText = "복사 완료!";
-            document.querySelector('.toast-title').style.color = "#10b981";
-
             navigator.clipboard.writeText(promptInput.value).then(() => {
-                showToast(); // 기본 성공 메시지 출력
+                showToast("프롬프트를 성공적으로 복사했습니다.<br>캔바(Canva) AI 창에 <b>Ctrl + V</b> 로 붙여넣으세요!");
             }).catch(err => {
-                showToast("복사에 실패했어요.<br>직접 텍스트를 드래그해서 복사해 주세요.");
+                showToast("복사에 실패했어요.<br>직접 텍스트를 드래그해서 복사해 주세요.", true, "오류", "X");
             });
         }
-    </script>
 
+        // 전체 화면 캡처 및 클립보드 복사 기능
+        async function copyScreenshot() {
+            const targetElement = document.getElementById('captureTarget');
+            const originalBg = targetElement.style.backgroundColor;
+            
+            try {
+                // 캡처 시 배경색을 약간 수정하여 투명도 문제를 방지할 수 있습니다.
+                targetElement.style.backgroundColor = '#2b3a67'; 
+
+                // html2canvas 실행
+                const canvas = await html2canvas(targetElement, {
+                    scale: 2, // 고해상도 캡처
+                    useCORS: true, 
+                    backgroundColor: null
+                });
+
+                // 캡처 후 배경색 원복
+                targetElement.style.backgroundColor = originalBg;
+
+                // 캔버스를 이미지 Blob으로 변환하여 클립보드에 쓰기
+                canvas.toBlob(async function(blob) {
+                    try {
+                        const item = new ClipboardItem({ "image/png": blob });
+                        await navigator.clipboard.write([item]);
+                        showToast("기획서 전체가 이미지로 복사되었습니다.<br>원하는 곳에 <b>Ctrl + V</b> 로 붙여넣으세요!", false, "캡처 완료!", "📸");
+                    } catch (err) {
+                        console.error(err);
+                        showToast("클립보드 이미지 복사를 지원하지 않는 브라우저입니다.<br>다른 브라우저를 이용해 주세요.", true, "오류", "!");
+                    }
+                }, "image/png");
+
+            } catch (err) {
+                console.error(err);
+                targetElement.style.backgroundColor = originalBg;
+                showToast("화면 캡처 중 오류가 발생했습니다.", true, "오류", "X");
+            }
+        }
+    </script>
 </body>
 </html>

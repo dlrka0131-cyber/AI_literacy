@@ -250,29 +250,62 @@
         .drawing-tools {
             flex-shrink: 0;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 10px;
+            gap: 4px;
+            padding: 6px 8px;
             background: #f1f3f5;
             border-bottom: var(--border-thin);
             font-size: 11px;
             font-weight: 800;
         }
 
+        .tool-group {
+            display: flex;
+            gap: 4px;
+        }
+
         .drawing-tools button {
-            background: var(--red);
-            color: white;
             border: 2px solid var(--black);
-            padding: 3px 8px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
             font-weight: 900;
             box-shadow: 2px 2px 0px var(--black);
+            font-family: inherit;
         }
         .drawing-tools button:active {
             transform: translate(2px, 2px);
             box-shadow: 0px 0px 0px var(--black);
+        }
+
+        .tool-btn {
+            width: 26px;
+            height: 26px;
+            padding: 0;
+            font-size: 13px;
+            background: var(--white);
+            line-height: 1;
+        }
+        .tool-btn.active {
+            background: var(--blue);
+        }
+
+        .save-btn {
+            background: var(--green);
+            padding: 3px 7px;
+            font-size: 11px;
+        }
+        .save-btn:disabled {
+            cursor: default;
+            opacity: 0.85;
+        }
+
+        .clear-btn {
+            background: var(--red);
+            color: white;
+            padding: 3px 7px;
+            font-size: 11px;
         }
 
         .drawing-area {
@@ -371,16 +404,16 @@
             <h2>💥 투닝(Tooning) 4컷 속담툰</h2>
             <div class="student-info-box">
                 <div class="field-group">
-                    <input type="text" style="width: 35px;" placeholder="6">학년
+                    <input type="text" id="gradeInput" style="width: 35px;" placeholder="6">학년
                 </div>
                 <div class="field-group">
-                    <input type="text" style="width: 35px;" placeholder="3">반
+                    <input type="text" id="classInput" style="width: 35px;" placeholder="3">반
                 </div>
                 <div class="field-group">
-                    <input type="text" style="width: 35px;" placeholder="12">번
+                    <input type="text" id="numberInput" style="width: 35px;" placeholder="12">번
                 </div>
                 <div class="field-group" style="margin-left: 5px;">
-                    이름: <input type="text" style="width: 80px;" placeholder="홍길동">
+                    이름: <input type="text" id="nameInput" style="width: 80px;" placeholder="홍길동">
                 </div>
             </div>
         </div>
@@ -396,11 +429,11 @@
     <div class="meta-container">
         <div class="meta-field" style="background-color: var(--green);">
             속담
-            <input type="text" placeholder="예: 개구리 올챙이 적 생각 못 한다">
+            <input type="text" id="proverbInput" placeholder="예: 개구리 올챙이 적 생각 못 한다">
         </div>
         <div class="meta-field lesson" style="background-color: var(--yellow);">
             교훈!
-            <input type="text" placeholder="예: 남이 실수할 때 나의 지난날을 떠올리자!">
+            <input type="text" id="lessonInput" placeholder="예: 남이 실수할 때 나의 지난날을 떠올리자!">
         </div>
     </div>
 
@@ -409,41 +442,65 @@
         <div class="cut-box">
             <div class="cut-title">🎬 1컷 (기 - 시작)</div>
             <div class="drawing-tools">
-                <span>마우스로 쓱쓱~✏️</span>
-                <button onclick="clearCanvas('canvas1')">지우기</button>
+                <div class="tool-group">
+                    <button class="tool-btn active" title="연필" onclick="setTool('canvas1','pen',this)">✏️</button>
+                    <button class="tool-btn" title="지우개" onclick="setTool('canvas1','eraser',this)">🧽</button>
+                </div>
+                <div class="tool-group">
+                    <button class="save-btn" onclick="saveScene(this)">💾저장</button>
+                    <button class="clear-btn" onclick="clearCanvas('canvas1')">🗑️전체</button>
+                </div>
             </div>
             <div class="drawing-area"><canvas id="canvas1"></canvas></div>
-            <div class="script-area"><textarea placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
+            <div class="script-area"><textarea id="script1" placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
         </div>
         <!-- 2컷 -->
         <div class="cut-box">
             <div class="cut-title">🔥 2컷 (승 - 전개)</div>
             <div class="drawing-tools">
-                <span>마우스로 쓱쓱~✏️</span>
-                <button onclick="clearCanvas('canvas2')">지우기</button>
+                <div class="tool-group">
+                    <button class="tool-btn active" title="연필" onclick="setTool('canvas2','pen',this)">✏️</button>
+                    <button class="tool-btn" title="지우개" onclick="setTool('canvas2','eraser',this)">🧽</button>
+                </div>
+                <div class="tool-group">
+                    <button class="save-btn" onclick="saveScene(this)">💾저장</button>
+                    <button class="clear-btn" onclick="clearCanvas('canvas2')">🗑️전체</button>
+                </div>
             </div>
             <div class="drawing-area"><canvas id="canvas2"></canvas></div>
-            <div class="script-area"><textarea placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
+            <div class="script-area"><textarea id="script2" placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
         </div>
         <!-- 3컷 -->
         <div class="cut-box">
             <div class="cut-title">⚡ 3컷 (전 - 위기/반전)</div>
             <div class="drawing-tools">
-                <span>마우스로 쓱쓱~✏️</span>
-                <button onclick="clearCanvas('canvas3')">지우기</button>
+                <div class="tool-group">
+                    <button class="tool-btn active" title="연필" onclick="setTool('canvas3','pen',this)">✏️</button>
+                    <button class="tool-btn" title="지우개" onclick="setTool('canvas3','eraser',this)">🧽</button>
+                </div>
+                <div class="tool-group">
+                    <button class="save-btn" onclick="saveScene(this)">💾저장</button>
+                    <button class="clear-btn" onclick="clearCanvas('canvas3')">🗑️전체</button>
+                </div>
             </div>
             <div class="drawing-area"><canvas id="canvas3"></canvas></div>
-            <div class="script-area"><textarea placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
+            <div class="script-area"><textarea id="script3" placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
         </div>
         <!-- 4컷 -->
         <div class="cut-box">
             <div class="cut-title">✨ 4컷 (결 - 결말/교훈)</div>
             <div class="drawing-tools">
-                <span>마우스로 쓱쓱~✏️</span>
-                <button onclick="clearCanvas('canvas4')">지우기</button>
+                <div class="tool-group">
+                    <button class="tool-btn active" title="연필" onclick="setTool('canvas4','pen',this)">✏️</button>
+                    <button class="tool-btn" title="지우개" onclick="setTool('canvas4','eraser',this)">🧽</button>
+                </div>
+                <div class="tool-group">
+                    <button class="save-btn" onclick="saveScene(this)">💾저장</button>
+                    <button class="clear-btn" onclick="clearCanvas('canvas4')">🗑️전체</button>
+                </div>
             </div>
             <div class="drawing-area"><canvas id="canvas4"></canvas></div>
-            <div class="script-area"><textarea placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
+            <div class="script-area"><textarea id="script4" placeholder="어떤 장면인가요? 대사나 지문을 적어주세요!"></textarea></div>
         </div>
     </div>
 </div>
@@ -460,18 +517,27 @@
 </div>
 
 <script>
+    const STORAGE_KEY = 'tooningStoryboardData';
+    const toolState = { canvas1: 'pen', canvas2: 'pen', canvas3: 'pen', canvas4: 'pen' };
+    const canvasImages = { canvas1: null, canvas2: null, canvas3: null, canvas4: null };
+    let autoSaveTimer = null;
+
     function initCanvas(id) {
         const canvas = document.getElementById(id);
         const container = canvas.parentElement;
         const ctx = canvas.getContext('2d');
 
         function resize() {
+            const prevImage = canvasImages[id];
             canvas.width = container.clientWidth;
             canvas.height = container.clientHeight;
-            ctx.strokeStyle = '#1a1a1a';
-            ctx.lineWidth = 4;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
+            if (prevImage) {
+                const img = new Image();
+                img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                img.src = prevImage;
+            }
         }
 
         resize();
@@ -485,8 +551,11 @@
         }
 
         function endPosition() {
+            if (!painting) return;
             painting = false;
             ctx.beginPath();
+            canvasImages[id] = canvas.toDataURL();
+            scheduleAutoSave();
         }
 
         function draw(e) {
@@ -497,6 +566,15 @@
             let x = clientX - rect.left;
             let y = clientY - rect.top;
 
+            if (toolState[id] === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineWidth = 24;
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = 4;
+            }
+
             ctx.lineTo(x, y);
             ctx.stroke();
             ctx.beginPath();
@@ -505,6 +583,7 @@
 
         canvas.addEventListener('mousedown', startPosition);
         canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mouseleave', endPosition);
         canvas.addEventListener('mousemove', draw);
 
         canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); }, { passive: false });
@@ -512,10 +591,85 @@
         canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
     }
 
+    function setTool(canvasId, tool, btnEl) {
+        toolState[canvasId] = tool;
+        const group = btnEl.parentElement;
+        group.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+    }
+
     function clearCanvas(id) {
         const canvas = document.getElementById(id);
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvasImages[id] = null;
+        scheduleAutoSave();
+    }
+
+    function collectData() {
+        return {
+            grade: document.getElementById('gradeInput').value,
+            classNum: document.getElementById('classInput').value,
+            number: document.getElementById('numberInput').value,
+            name: document.getElementById('nameInput').value,
+            proverb: document.getElementById('proverbInput').value,
+            lesson: document.getElementById('lessonInput').value,
+            cuts: [1, 2, 3, 4].map(i => ({
+                text: document.getElementById('script' + i).value,
+                image: canvasImages['canvas' + i] || null
+            }))
+        };
+    }
+
+    function autoSave() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(collectData()));
+        } catch (e) { /* 저장 공간 초과 등은 무시하고 계속 진행 */ }
+    }
+
+    function scheduleAutoSave() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(autoSave, 400);
+    }
+
+    function saveScene(btnEl) {
+        autoSave();
+        const original = btnEl.textContent;
+        btnEl.textContent = '✅저장됨';
+        btnEl.disabled = true;
+        setTimeout(() => {
+            btnEl.textContent = original;
+            btnEl.disabled = false;
+        }, 1200);
+    }
+
+    function restoreData() {
+        let raw;
+        try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+        if (!raw) return;
+        let data;
+        try { data = JSON.parse(raw); } catch (e) { return; }
+
+        document.getElementById('gradeInput').value = data.grade || '';
+        document.getElementById('classInput').value = data.classNum || '';
+        document.getElementById('numberInput').value = data.number || '';
+        document.getElementById('nameInput').value = data.name || '';
+        document.getElementById('proverbInput').value = data.proverb || '';
+        document.getElementById('lessonInput').value = data.lesson || '';
+
+        (data.cuts || []).forEach((cut, idx) => {
+            const i = idx + 1;
+            const textarea = document.getElementById('script' + i);
+            if (textarea && cut.text) textarea.value = cut.text;
+            if (cut.image) {
+                canvasImages['canvas' + i] = cut.image;
+                const canvas = document.getElementById('canvas' + i);
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                img.src = cut.image;
+            }
+        });
     }
 
     function copyToClipboard() {
@@ -549,6 +703,11 @@
         initCanvas('canvas2');
         initCanvas('canvas3');
         initCanvas('canvas4');
+        restoreData();
+
+        document.querySelectorAll('#captureArea input, #captureArea textarea').forEach(el => {
+            el.addEventListener('input', scheduleAutoSave);
+        });
     });
 </script>
 

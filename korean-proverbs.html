@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리말 속담 사전</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Song+Myung&family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --bg: #fdf8f0;
+    --surface: #ffffff;
+    --surface-2: #f7efe0;
+    --text: #2b2b2b;
+    --text-muted: #6b6b6b;
+    --accent: #d97706;
+    --accent-strong: #92400e;
+    --accent-soft: #fef3c7;
+    --divider: #ece3d3;
+    --shadow: 0 2px 6px rgba(43,33,10,0.06), 0 10px 26px rgba(43,33,10,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Noto Sans KR", -apple-system, sans-serif;
+    padding: 28px 16px 48px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 760px;
+  }
+
+  header.hero {
+    margin-bottom: 22px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--accent-strong);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  h1 {
+    font-family: "Song Myung", serif;
+    font-weight: 400;
+    font-size: clamp(30px, 6vw, 42px);
+    line-height: 1.25;
+    margin: 12px 0 8px;
+    text-wrap: balance;
+  }
+
+  .sub {
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 56ch;
+  }
+
+  .controls {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--bg);
+    padding: 14px 0 10px;
+    margin-bottom: 4px;
+  }
+
+  .search-wrap {
+    position: relative;
+    margin-bottom: 12px;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 19px;
+    height: 19px;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    font-family: inherit;
+    font-size: 17px;
+    padding: 14px 16px 14px 42px;
+    border-radius: 14px;
+    border: 1.5px solid var(--divider);
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+  }
+
+  #search:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .jump button {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: filter 0.15s, transform 0.1s;
+  }
+
+  .jump button .emoji { font-size: 18px; }
+
+  .jump button:hover { filter: brightness(0.95); }
+
+  .jump button:active { transform: scale(0.96); }
+
+  .jump button.dim { opacity: 0.3; pointer-events: none; }
+
+  .count {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 10px;
+  }
+
+  .count strong { color: var(--text); font-variant-numeric: tabular-nums; }
+
+  section.group {
+    margin-top: 32px;
+  }
+
+  .group-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .group-head .glyph {
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+  }
+
+  .group-head .name {
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+  }
+
+  .group-head .tally {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-left: auto;
+  }
+
+  ul.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  li.item {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 14px;
+    align-items: start;
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-left: 5px solid var(--divider);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .no {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+    font-size: 14px;
+    font-weight: 800;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .body-text .proverb {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .body-text .meaning {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-top: 5px;
+  }
+
+  mark {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    border-radius: 3px;
+    padding: 0 1px;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 15px;
+    padding: 40px 0;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 40px;
+  }
+
+  @media print {
+    .controls { position: static; }
+    #search, .jump { display: none; }
+    li.item { box-shadow: none; break-inside: avoid; }
+  }
+
+  .to-top {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1.5px solid var(--divider);
+    background: var(--surface);
+    color: var(--accent-strong);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .to-top.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .to-top svg { width: 20px; height: 20px; }
+
+  @media print {
+    .to-top { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="hero">
+    <span class="eyebrow">주제별 정리</span>
+    <h1>우리말 속담 사전</h1>
+    <p class="sub">속담 99개를 뜻에 따라 9가지 주제로 정리했습니다. 검색창에 낱말을 입력하거나 아래 주제를 눌러 원하는 항목으로 바로 이동해 보세요.</p>
+  </header>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="search" type="text" placeholder="속담이나 뜻으로 검색 (예: 노력, 시간)" autocomplete="off">
+    </div>
+    <div class="jump" id="jump"></div>
+    <div class="count" id="count"></div>
+  </div>
+
+  <main id="main"></main>
+
+  <footer>총 99개 속담 · 라라AI코딩</footer>
+</div>
+
+<button class="to-top" id="toTop" aria-label="맨 위로">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script>
+  const DATA = [
+    ["가는 말이 고와야 오는 말이 곱다", "남에게 좋게 해야 남도 잘함"],
+    ["가랑비에 옷 젖는 줄 모른다", "작은 것이 쌓여 큰 결과가 됨"],
+    ["가랑잎이 솔잎더러 바스락거린다고 한다", "남의 작은 허물을 탓함"],
+    ["가재는 게 편이다", "비슷한 처지끼리 서로 편을 듦"],
+    ["가지 많은 나무에 바람 잘 날 없다", "자식 많으면 걱정이 많음"],
+    ["간에 가서 붙고 쓸개에 가서 붙는다", "이익을 위해 아첨함"],
+    ["간에 기별도 안 간다", "음식이 조금밖에 안 됨"],
+    ["간이 콩알만 해지다", "몹시 두려움"],
+    ["갈수록 태산", "어려움이 계속됨"],
+    ["같은 값이면 다홍치마", "조건이 같으면 더 좋은 것을 택함"],
+    ["개구리 올챙이 적 생각 못한다", "과거를 잊고 잘난 체함"],
+    ["개밥에 도토리", "어울리지 못하는 사람"],
+    ["개천에서 용 난다", "변변치 않은 집안에서 훌륭한 인물"],
+    ["고기는 씹어야 맛이요, 말은 해야 맛이라", "할 말은 해야 함"],
+    ["고래 싸움에 새우 등 터진다", "강자 싸움에 약자가 피해"],
+    ["고양이 목에 방울 달기", "실행하기 어려운 일"],
+    ["공든 탑이 무너지랴", "정성 들인 일은 헛되지 않음"],
+    ["구더기 무서워 장 못 담글까", "방해가 있어도 해야 함"],
+    ["구슬이 서 말이라도 꿰어야 보배", "완성해야 가치 있음"],
+    ["귀에 걸면 귀걸이, 코에 걸면 코걸이", "해석이 자유로움"],
+    ["그림의 떡", "실제로 쓸모 없음"],
+    ["금강산도 식후경", "배가 부른 뒤에야 즐거움"],
+    ["까마귀 날자 배 떨어진다", "우연한 일로 오해받음"],
+    ["꿩 대신 닭", "비슷한 것으로 대신함"],
+    ["꿩 먹고 알 먹기", "한 가지로 두 가지 이익"],
+    ["남의 잔치에 감 놓아라 배 놓아라", "쓸데없는 간섭"],
+    ["낫 놓고 기역자도 모른다", "무식함"],
+    ["낮말은 새가 듣고 밤말은 쥐가 듣는다", "말조심"],
+    ["내 코가 석 자", "자기 사정이 급함"],
+    ["누워서 침 뱉기", "남을 해치려다 자신이 피해"],
+    ["늦게 배운 도둑이 날 새는 줄 모른다", "나이 들어 시작한 일에 몰두"],
+    ["다 된 죽에 코 풀기", "이미 된 일을 망침"],
+    ["달면 삼키고 쓰면 뱉는다", "이익만 따라 행동"],
+    ["닭 잡아 먹고 오리발 내민다", "나쁜 일을 숨김"],
+    ["도둑이 제 발 저린다", "죄 지은 자가 스스로 드러냄"],
+    ["돌다리도 두들겨 보고 건너라", "조심함"],
+    ["되로 주고 말로 받는다", "조금 주고 많이 받음"],
+    ["등잔 밑이 어둡다", "가까운 것을 모름"],
+    ["땅 짚고 헤엄치기", "아주 쉬움"],
+    ["똥 묻은 개가 겨 묻은 개 나무란다", "자기 흉은 모르고 남 탓"],
+    ["뛰는 놈 위에 나는 놈 있다", "항상 더 나은 사람이 있음"],
+    ["마른 하늘에 날벼락", "뜻밖의 재난"],
+    ["말 한마디에 천 냥 빚도 갚는다", "말의 중요성"],
+    ["목구멍이 포도청이다", "먹고 살기 위해 어쩔 수 없음"],
+    ["못된 송아지 엉덩이에 뿔 난다", "되지 못한 사람이 건방짐"],
+    ["믿는 도끼에 발등 찍힌다", "믿던 일에 배신당함"],
+    ["밑 빠진 독에 물 붓기", "노력해도 헛됨"],
+    ["바늘 도둑이 소 도둑 된다", "작은 잘못이 커짐"],
+    ["배보다 배꼽이 더 크다", "부수적인 것이 더 큼"],
+    ["백지장도 맞들면 낫다", "협력하면 쉬움"],
+    ["벼룩의 간 빼먹기", "극히 적은 이익을 착취"],
+    ["병 주고 약 준다", "해를 끼치고 도와주는 척"],
+    ["보기 좋은 떡이 먹기도 좋다", "겉모양이 좋으면 내용도 좋음"],
+    ["빛 좋은 개살구", "겉만 번지르르함"],
+    ["사공이 많으면 배가 산으로 올라간다", "간섭이 많으면 일이 안 됨"],
+    ["새발의 피", "지극히 적은 분량"],
+    ["서당 개 삼 년에 풍월을 읊는다", "오래 있으면 견문 생김"],
+    ["세 살 버릇 여든까지 간다", "어린 습관은 평생 감"],
+    ["소 잃고 외양간 고친다", "이미 일이 잘못된 뒤 수습"],
+    ["소문난 잔치에 먹을 것 없다", "기대가 크면 실망도 큼"],
+    ["쇠뿔도 단김에 빼랬다", "마음먹으면 바로 실행"],
+    ["수박 겉 핥기", "내용은 모르고 겉만 건드림"],
+    ["식은 죽 먹기", "아주 쉬움"],
+    ["십 년이면 강산도 변한다", "세월이 흐르면 모든 것이 변함"],
+    ["싼 게 비지떡", "값싼 것은 품질도 나쁨"],
+    ["아는 길도 물어 가라", "익숙해도 확인 필요"],
+    ["아니 땐 굴뚝에 연기 나랴", "원인이 있어야 결과 있음"],
+    ["아닌 밤중에 홍두깨", "뜻밖의 일"],
+    ["약방에 감초", "빠지지 않고 참여하는 사람"],
+    ["어물전 망신은 꼴뚜기가 시킨다", "못난 자 때문에 전체가 욕을 먹음"],
+    ["열 길 물 속은 알아도 한 길 사람 속은 모른다", "사람 마음은 알기 어려움"],
+    ["열 번 찍어 아니 넘어가는 나무 없다", "꾸준히 하면 이루어짐"],
+    ["오뉴월 감기는 개도 안 걸린다", "여름철 감기 걸리기 어려움"],
+    ["오르지 못할 나무는 쳐다보지도 말아라", "불가능한 일은 바라지 말라"],
+    ["옥의 티", "아무리 좋아도 결점 있음"],
+    ["우물에 가서 숭늉 찾는다", "일의 순서를 모름"],
+    ["울며 겨자 먹기", "억지로 해야 함"],
+    ["원수는 외나무 다리에서 만난다", "악한 일은 반드시 돌아옴"],
+    ["원숭이도 나무에서 떨어진다", "능숙한 사람도 실수"],
+    ["윗물이 맑아야 아랫물도 맑다", "윗사람이 모범 보여야 함"],
+    ["자라 보고 놀란 가슴 솥뚜껑 보고 놀란다", "한번 혼난 사람은 비슷한 일에 놀람"],
+    ["자랄 나무는 떡잎부터 알아본다", "장래성은 어릴 때부터 보임"],
+    ["작은 고추가 더 맵다", "겉보기보다 강함"],
+    ["종로에서 뺨 맞고 한강 가서 눈 흘긴다", "화풀이를 엉뚱한 곳에서 함"],
+    ["좋은 약은 입에 쓰다", "듣기 싫어도 이로움"],
+    ["쥐구멍에도 볕 들 날이 있다", "고생 끝에 좋은 날이 옴"],
+    ["지렁이도 밟으면 꿈틀한다", "약자도 괴롭히면 반항"],
+    ["천 리 길도 한 걸음부터", "큰 일도 작은 것부터 시작"],
+    ["칼로 물 베기", "다투다가도 시간이 지나면 풀림"],
+    ["콩 심은 데 콩 나고 팥 심은 데 팥 난다", "원인에 따라 결과가 생김"],
+    ["티끌 모아 태산", "작은 것도 모이면 큰 것이 됨"],
+    ["핑계 없는 무덤 없다", "잘못에 변명 있음"],
+    ["하늘의 별 따기", "매우 어려움"],
+    ["하늘이 무너져도 솟아날 구멍이 있다", "큰 재난에도 길 있음"],
+    ["하룻강아지 범 무서운 줄 모른다", "철이 없어 두려움 모름"],
+    ["한 귀로 듣고 한 귀로 흘린다", "남의 말을 건성으로 듣음"],
+    ["한 술 밥에 배 부르랴", "처음에는 큰 성과 기대 어려움"],
+    ["함흥차사", "심부름 간 사람이 돌아오지 않음"],
+    ["호랑이도 제 말 하면 온다", "이야기하던 사람이 나타남"]
+  ].map((d, i) => ({ no: i + 1, proverb: d[0], meaning: d[1] }));
+
+  // 각 속담의 뜻에 따른 주제 분류 (DATA와 같은 순서, 1~99번)
+  const CATEGORY_BY_INDEX = [
+    3,1,4,2,8,7,9,9,8,9,4,2,8,3,8,9,1,5,1,9,9,9,9,9,9,2,9,3,9,6,9,5,7,6,6,5,6,9,9,4,
+    4,8,3,8,4,8,1,6,9,2,7,9,9,9,2,9,1,5,5,9,1,9,9,9,9,5,6,9,9,6,9,1,9,5,9,5,8,6,4,6,
+    9,9,9,6,5,8,9,1,2,6,1,9,8,8,4,3,1,9,9
+  ];
+
+  const CATEGORIES = [
+    { id: 1, name: '노력과 성실', emoji: '💪', color: '#d97706', bg: '#fef3c7' },
+    { id: 2, name: '협동과 배려', emoji: '🤝', color: '#16a34a', bg: '#dcfce7' },
+    { id: 3, name: '말과 소통', emoji: '💬', color: '#2563eb', bg: '#dbeafe' },
+    { id: 4, name: '겸손과 자만 경계', emoji: '🙏', color: '#9333ea', bg: '#f3e8ff' },
+    { id: 5, name: '신중함과 지혜', emoji: '🦉', color: '#4338ca', bg: '#e0e7ff' },
+    { id: 6, name: '원인과 결과', emoji: '🔄', color: '#db2777', bg: '#fce7f3' },
+    { id: 7, name: '욕심 경계', emoji: '💰', color: '#0d9488', bg: '#ccfbf1' },
+    { id: 8, name: '역경과 극복', emoji: '⛰️', color: '#dc2626', bg: '#fee2e2' },
+    { id: 9, name: '기타', emoji: '📌', color: '#64748b', bg: '#f1f5f9' }
+  ];
+
+  DATA.forEach((d, i) => { d.category = CATEGORY_BY_INDEX[i]; });
+
+  const groupsOrder = CATEGORIES.map(c => c.id);
+  const catById = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
+
+  const main = document.getElementById('main');
+  const jump = document.getElementById('jump');
+  const countEl = document.getElementById('count');
+  const search = document.getElementById('search');
+
+  function esc(s) {
+    return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  }
+
+  function highlight(text, q) {
+    if (!q) return esc(text);
+    const idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return esc(text);
+    return esc(text.slice(0, idx)) + '<mark>' + esc(text.slice(idx, idx + q.length)) + '</mark>' + esc(text.slice(idx + q.length));
+  }
+
+  function render(query) {
+    const q = (query || '').trim();
+    main.innerHTML = '';
+    let shown = 0;
+
+    groupsOrder.forEach(g => {
+      const items = DATA.filter(d => d.category === g && (
+        !q || d.proverb.toLowerCase().includes(q.toLowerCase()) || d.meaning.toLowerCase().includes(q.toLowerCase())
+      ));
+      if (items.length === 0) return;
+      shown += items.length;
+
+      const cat = catById[g];
+      const section = document.createElement('section');
+      section.className = 'group';
+      section.id = 'g-' + g;
+
+      const head = document.createElement('div');
+      head.className = 'group-head';
+      head.innerHTML =
+        '<span class="glyph" style="background:' + cat.bg + '">' + cat.emoji + '</span>' +
+        '<span class="name" style="color:' + cat.color + '">' + cat.name + '</span>' +
+        '<span class="tally">' + items.length + '개</span>';
+      section.appendChild(head);
+
+      const ul = document.createElement('ul');
+      ul.className = 'list';
+      items.forEach((d, idx) => {
+        const li = document.createElement('li');
+        li.className = 'item';
+        li.style.borderLeftColor = cat.color;
+        li.innerHTML =
+          '<span class="no" style="background:' + cat.bg + ';color:' + cat.color + '">' + (idx + 1) + '</span>' +
+          '<span class="body-text"><span class="proverb">' + highlight(d.proverb, q) + '</span>' +
+          '<div class="meaning">' + highlight(d.meaning, q) + '</div></span>';
+        ul.appendChild(li);
+      });
+      section.appendChild(ul);
+      main.appendChild(section);
+    });
+
+    if (shown === 0) {
+      main.innerHTML = '<p class="empty">일치하는 속담이 없습니다.</p>';
+    }
+
+    countEl.innerHTML = '<strong>' + shown + '</strong> / 99개 표시 중';
+
+    Array.from(jump.children).forEach(btn => {
+      const g = Number(btn.dataset.g);
+      const has = DATA.some(d => d.category === g && (!q || d.proverb.toLowerCase().includes(q.toLowerCase()) || d.meaning.toLowerCase().includes(q.toLowerCase())));
+      btn.classList.toggle('dim', !has);
+    });
+  }
+
+  CATEGORIES.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.innerHTML = '<span class="emoji">' + cat.emoji + '</span><span>' + cat.name + '</span>';
+    btn.dataset.g = cat.id;
+    btn.style.background = cat.bg;
+    btn.style.color = cat.color;
+    btn.addEventListener('click', () => {
+      search.value = '';
+      render('');
+      const target = document.getElementById('g-' + cat.id);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    jump.appendChild(btn);
+  });
+
+  search.addEventListener('input', () => render(search.value));
+
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', () => {
+    toTop.classList.toggle('show', window.scrollY > 400);
+  });
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  render('');
+</script>
+</body>
+</html>

@@ -113,6 +113,32 @@
         }
         .student-info-box input:focus { background: #fff9db; }
 
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dict-btn {
+            background: var(--yellow);
+            color: var(--black);
+            border: var(--border-thick);
+            box-shadow: var(--shadow-small);
+            border-radius: 10px;
+            padding: 11px 20px;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: 900;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.1s ease;
+        }
+        .dict-btn:hover { background: #fff9db; }
+        .dict-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 var(--black);
+        }
+
         /* 🔥 수정된 우측 버튼 그룹 스타일 */
         .header-btn-container {
             display: flex;
@@ -402,19 +428,22 @@
     <div class="header-box">
         <div class="header-left">
             <h2>💥 투닝(Tooning) 4컷 속담툰</h2>
-            <div class="student-info-box">
-                <div class="field-group">
-                    <input type="text" id="gradeInput" style="width: 35px;" placeholder="6">학년
+            <div class="info-row">
+                <div class="student-info-box">
+                    <div class="field-group">
+                        <input type="text" id="gradeInput" style="width: 35px;" placeholder="6">학년
+                    </div>
+                    <div class="field-group">
+                        <input type="text" id="classInput" style="width: 35px;" placeholder="3">반
+                    </div>
+                    <div class="field-group">
+                        <input type="text" id="numberInput" style="width: 35px;" placeholder="12">번
+                    </div>
+                    <div class="field-group" style="margin-left: 5px;">
+                        이름: <input type="text" id="nameInput" style="width: 80px;" placeholder="홍길동">
+                    </div>
                 </div>
-                <div class="field-group">
-                    <input type="text" id="classInput" style="width: 35px;" placeholder="3">반
-                </div>
-                <div class="field-group">
-                    <input type="text" id="numberInput" style="width: 35px;" placeholder="12">번
-                </div>
-                <div class="field-group" style="margin-left: 5px;">
-                    이름: <input type="text" id="nameInput" style="width: 80px;" placeholder="홍길동">
-                </div>
+                <a href="korean-proverbs.html" target="_blank" class="dict-btn" data-html2canvas-ignore="true">📖 속담사전</a>
             </div>
         </div>
         

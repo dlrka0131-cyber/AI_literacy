@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바이브코딩 개발 사례</title>
+    <style>
+        @font-face { font-family: Pretendard; src: url(images/fonts/Pretendard-Bold.otf); font-weight: 700; }
+        @font-face { font-family: Pretendard; src: url(images/fonts/Pretendard-ExtraBold.otf); font-weight: 800; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Pretendard, 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 16px;
+            gap: 16px;
+        }
+        .top {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .home {
+            background: rgba(255, 255, 255, 0.9);
+            color: #334155;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .tabs { display: flex; gap: 10px; }
+        .tab {
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 10px 24px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            color: #334155;
+        }
+        .tab.on[data-app="geuneullo"] { background: #0f7a5c; color: #fff; }
+        .tab.on[data-app="lovebug"] { background: #b4233c; color: #fff; }
+        .stage {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            aspect-ratio: 16 / 9;
+            max-height: calc(100vh - 150px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+            background: #fff;
+        }
+        .stage img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: rgba(30, 41, 59, 0.55);
+            color: #fff;
+            font-size: 1.6rem;
+        }
+        .nav:hover { background: rgba(30, 41, 59, 0.8); }
+        .prev { left: 14px; }
+        .next { right: 14px; }
+        .dots { display: flex; gap: 10px; align-items: center; font-weight: 700; color: #334155; }
+        .dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(255, 255, 255, 0.7); border: none; cursor: pointer; }
+        .dot.on { background: #334155; }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <a class="home" href="index.html">← 수업 허브</a>
+        <div class="tabs">
+            <button class="tab" data-app="geuneullo">☀️ 그늘로</button>
+            <button class="tab" data-app="lovebug">🐞 러브버그 지도</button>
+        </div>
+    </div>
+
+    <div class="stage">
+        <img id="slide" alt="">
+        <button class="nav prev" aria-label="이전">‹</button>
+        <button class="nav next" aria-label="다음">›</button>
+    </div>
+
+    <div class="dots" id="dots"></div>
+
+    <script>
+        const slides = [
+            { app: 'geuneullo', src: 'images/elementary/geuneullo_1.png', alt: '그늘로 앱 표지' },
+            { app: 'geuneullo', src: 'images/elementary/geuneullo_2.png', alt: '그늘로는 이렇게 태어났어요' },
+            { app: 'geuneullo', src: 'images/elementary/geuneullo_3.png', alt: '그늘로 후기' },
+            { app: 'lovebug', src: 'images/elementary/lovebug_1.png', alt: '러브버그 지도 표지' },
+            { app: 'lovebug', src: 'images/elementary/lovebug_2.png', alt: '러브버그 지도는 이렇게 태어났어요' },
+            { app: 'lovebug', src: 'images/elementary/lovebug_3.png', alt: '러브버그 지도 후기' }
+        ];
+        let i = 0;
+        const img = document.getElementById('slide');
+        const dots = document.getElementById('dots');
+
+        slides.forEach((s, n) => {
+            const d = document.createElement('button');
+            d.className = 'dot';
+            d.setAttribute('aria-label', s.alt);
+            d.onclick = () => show(n);
+            dots.appendChild(d);
+        });
+
+        function show(n) {
+            i = (n + slides.length) % slides.length;
+            img.src = slides[i].src;
+            img.alt = slides[i].alt;
+            document.querySelectorAll('.dot').forEach((d, k) => d.classList.toggle('on', k === i));
+            document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.app === slides[i].app));
+        }
+
+        document.querySelector('.prev').onclick = () => show(i - 1);
+        document.querySelector('.next').onclick = () => show(i + 1);
+        document.querySelectorAll('.tab').forEach(t => {
+            t.onclick = () => show(slides.findIndex(s => s.app === t.dataset.app));
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') show(i + 1);
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') show(i - 1);
+        });
+        show(0);
+    </script>
+</body>
+</html>

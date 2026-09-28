@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:900px;font-family:"WenQuanYi Zen Hei",sans-serif;background:linear-gradient(160deg,#fde8ec 0%,#f7eef6 45%,#e6eefb 100%);color:#1f2a2e;overflow:hidden;position:relative}
+.sun{position:absolute;top:-120px;left:-120px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,#ffd23f 0 45%,rgba(255,196,0,.35) 46% 60%,rgba(255,196,0,0) 61%)}
+.wrap{position:absolute;inset:0;padding:34px 60px 46px;display:grid;grid-template-columns:560px 1fr;gap:56px}
+.kicker{display:inline-block;background:#1f2a2e;color:#ffd23f;font-size:22px;padding:8px 18px;border-radius:999px;letter-spacing:1px}
+h1{font-size:62px;line-height:1.1;margin:14px 0 8px;letter-spacing:-2px}
+h1 em{font-style:normal;color:#b4233c}
+.sub{font-size:25px;line-height:1.45;color:#3b4a4f}
+.sub b{color:#c2410c}
+.left{position:relative;padding-top:210px}
+.phone{position:absolute;left:70px;top:20px;width:400px;height:800px;background:#1f2a2e;border-radius:52px;padding:18px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.screen{width:100%;height:100%;border-radius:38px;overflow:hidden;background:#f3efe6;position:relative}
+.appbar{position:absolute;top:0;left:0;right:0;height:92px;background:#b4233c;color:#fff;padding:34px 22px 0;font-size:28px;font-weight:bold}
+.appbar small{font-size:17px;font-weight:normal;opacity:.85;margin-left:8px}
+.legend{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:16px 22px 22px;font-size:19px;line-height:1.7;border-top:1px solid #e3ddd0}
+.legend .row{display:flex;align-items:center;gap:10px}
+.sw{width:34px;height:7px;border-radius:4px;display:inline-block}
+.right{display:flex;flex-direction:column;gap:18px}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+.card{background:rgba(255,255,255,.88);border-radius:22px;padding:16px 22px;box-shadow:0 6px 18px rgba(0,0,0,.07);position:relative}
+.card .n{position:absolute;top:-14px;left:20px;background:#b4233c;color:#fff;font-size:20px;font-weight:bold;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.card h3{font-size:25px;margin:8px 0 6px}
+.card p{font-size:19px;line-height:1.5;color:#44545a}
+.card.hot .n{background:#c2410c}
+.stats{display:flex;gap:18px}
+.stat{flex:1;background:#1f2a2e;color:#fff;border-radius:22px;padding:12px 22px}
+.stat .v{font-size:38px;font-weight:bold;color:#ffd23f;line-height:1.1}
+.stat .l{font-size:19px;opacity:.85;margin-top:4px}
+.msg{background:#b4233c;color:#fff;border-radius:22px;padding:16px 26px;font-size:25px;line-height:1.4}
+.msg b{color:#ffd23f}
+.src{position:absolute;right:60px;bottom:14px;font-size:14px;color:#6b7a7f}
+</style></head><body>
+
+<div class="wrap">
+  <div class="left">
+    <div class="phone"><div class="screen">
+      <div class="appbar">러브버그 지도 <small>수도권 · 실시간</small></div>
+      <svg viewBox="0 0 364 600" width="364" height="600" style="position:absolute;top:92px;left:0">
+<defs><radialGradient id="hg"><stop offset="0" stop-color="#f43f5e" stop-opacity=".55"/><stop offset="1" stop-color="#f43f5e" stop-opacity="0"/></radialGradient></defs>
+<rect width="364" height="600" fill="#eef0ea"/>
+<path d="M0,330 C80,300 140,360 210,330 S320,280 364,310 L364,345 C320,318 250,370 210,365 S90,335 0,365Z" fill="#b9d6ee"/>
+<text x="250" y="352" font-size="15" fill="#5b7fa0">한강</text>
+<path d="M-10,40 C60,20 90,80 60,120 S20,190 70,230" fill="none" stroke="#a9c99a" stroke-width="30" opacity=".6"/>
+<g stroke="#fff" stroke-width="5" fill="none"><path d="M0,120 L364,90"/><path d="M0,470 L364,440"/><path d="M160,0 L190,600"/><path d="M300,0 L280,600"/></g>
+<circle cx="120" cy="170" r="75.0" fill="url(#hg)"/><circle cx="230" cy="300" r="90.0" fill="url(#hg)"/><circle cx="90" cy="420" r="67.5" fill="url(#hg)"/><circle cx="270" cy="140" r="60.0" fill="url(#hg)"/><circle cx="180" cy="500" r="60.0" fill="url(#hg)"/><circle cx="113" cy="184" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="169" cy="185" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="114" cy="177" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="123" cy="181" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="131" cy="175" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="153" cy="183" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="95" cy="143" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="96" cy="157" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="172" cy="186" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="194" cy="320" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="208" cy="357" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="264" cy="326" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="201" cy="330" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="188" cy="282" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="215" cy="268" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="157" cy="316" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="212" cy="356" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="233" cy="287" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="40" cy="412" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="58" cy="431" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="109" cy="437" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="107" cy="443" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="100" cy="418" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="45" cy="398" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="78" cy="439" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="66" cy="407" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="116" cy="410" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="303" cy="154" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="228" cy="85" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="265" cy="161" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="240" cy="183" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="275" cy="150" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="274" cy="158" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="270" cy="162" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="291" cy="152" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="268" cy="152" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="192" cy="487" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="213" cy="497" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="192" cy="497" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="199" cy="526" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="151" cy="503" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="178" cy="512" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="161" cy="521" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="170" cy="475" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="160" cy="470" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/>
+<g transform="translate(196,300)"><rect x="-6" y="-78" width="150" height="56" rx="12" fill="#fff" stroke="#e11d48" stroke-width="2"/><text x="6" y="-56" font-size="15" fill="#1f2a2e" font-weight="bold">방금 제보</text><text x="6" y="-34" font-size="14" fill="#b4233c">“창문에 떼로 붙음”</text></g>
+<g transform="translate(300,540)"><circle r="30" fill="#b4233c"/><text x="-1" y="9" font-size="30" fill="#fff" text-anchor="middle">+</text></g>
+<text x="222" y="590" font-size="13" fill="#1f2a2e" font-weight="bold">제보하기</text>
+</svg>
+      <div class="legend">
+        <div class="row"><span class="sw" style="background:#e11d48;width:14px;height:14px;border-radius:50%"></span> 시민 제보 1건 = 점 하나</div>
+        <div class="row"><span class="sw" style="background:radial-gradient(#f43f5e,transparent 70%);width:22px;height:22px;border-radius:50%"></span> 붉을수록 많이 출몰</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="right">
+    <div>
+      <span class="kicker">바이브 코딩 실제 사례 · 2026 초여름</span>
+      <h1>“여기선 피하세요”<br><em>러브버그</em> 지도</h1>
+      <p class="sub">개인 개발자가 <b>AI(Claude·코덱스)로 하루도 안 걸려</b> 만든<br>시민 제보로 채워지는 러브버그 출몰 지도</p>
+    </div>
+    <div class="steps">
+      <div class="card hot"><div class="n">1</div><h3>흩어진 정보가 불편</h3><p>목격담은 SNS 여기저기 흩어지고<br>시간이 지나면 흘러가 버린다</p></div>
+      <div class="card"><div class="n">2</div><h3>“지도가 가장 적합하다”</h3><p>한눈에 보이게 하려면 지도 형태로!<br>Claude·코덱스로 바로 구현</p></div>
+      <div class="card"><div class="n">3</div><h3>데이터는 시민이 채운다</h3><p>“방금 여기 나왔어요” 제보가<br>지도 위 점으로 실시간 표시</p></div>
+      <div class="card"><div class="n">4</div><h3>모두가 키우는 지도</h3><p>제보가 쌓일수록 정확해지는<br>‘참여형 지도’</p></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v">하루 미만</div><div class="l">개발 기간</div></div>
+      <div class="stat"><div class="v">1.3만 건+</div><div class="l">시민 제보</div></div>
+      <div class="stat"><div class="v">70만 회+</div><div class="l">누적 조회수</div></div>
+    </div>
+    <div class="msg">앱은 혼자 하루 만에 만들고, 데이터는 모두가 채운다<br><b>“아이디어 + AI + 참여”</b>가 만드는 새로운 서비스</div>
+  </div>
+</div>
+<div class="src">출처: 한국경제(2026.6.26), 한국일보(2026.6.20), 데일리안 · 앱 화면은 이해를 돕기 위한 재구성 그림이며 실제 제보 위치가 아닙니다</div>
+</body></html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Regular.otf);font-weight:400}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Medium.otf);font-weight:500}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-SemiBold.otf);font-weight:600}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Bold.otf);font-weight:700}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-ExtraBold.otf);font-weight:800}body{font-weight:500;letter-spacing:-0.3px}h1,.big,.h2,.q,.card h3,.stat .v,.appbar,b{font-weight:800}.big{letter-spacing:-5px}.num,.av,.n{font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:900px;font-family:Pretendard,sans-serif;background:linear-gradient(160deg,#fff4d6 0%,#ffe2b0 38%,#dff1ea 100%);color:#1f2a2e;overflow:hidden;position:relative}
+.sun{position:absolute;top:-120px;left:-120px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,#ffd23f 0 45%,rgba(255,196,0,.35) 46% 60%,rgba(255,196,0,0) 61%)}
+.wrap{position:absolute;inset:0;padding:34px 60px 46px;display:grid;grid-template-columns:560px 1fr;gap:56px}
+.kicker{display:inline-block;background:#1f2a2e;color:#ffd23f;font-size:22px;padding:8px 18px;border-radius:999px;letter-spacing:1px}
+h1{font-size:62px;line-height:1.1;margin:14px 0 8px;letter-spacing:-2px}
+h1 em{font-style:normal;color:#0f7a5c}
+.sub{font-size:25px;line-height:1.45;color:#3b4a4f}
+.sub b{color:#c2410c}
+.left{position:relative;padding-top:210px}
+.phone{position:absolute;left:70px;top:20px;width:400px;height:800px;background:#1f2a2e;border-radius:52px;padding:18px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.screen{width:100%;height:100%;border-radius:38px;overflow:hidden;background:#f3efe6;position:relative}
+.appbar{position:absolute;top:0;left:0;right:0;height:92px;background:#0f7a5c;color:#fff;padding:34px 22px 0;font-size:28px;font-weight:bold}
+.appbar small{font-size:17px;font-weight:normal;opacity:.85;margin-left:8px}
+.legend{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:16px 22px 22px;font-size:19px;line-height:1.7;border-top:1px solid #e3ddd0}
+.legend .row{display:flex;align-items:center;gap:10px}
+.sw{width:34px;height:7px;border-radius:4px;display:inline-block}
+.right{display:flex;flex-direction:column;gap:18px}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+.card{background:rgba(255,255,255,.88);border-radius:22px;padding:16px 22px;box-shadow:0 6px 18px rgba(0,0,0,.07);position:relative}
+.card .n{position:absolute;top:-14px;left:20px;background:#0f7a5c;color:#fff;font-size:20px;font-weight:bold;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.card h3{font-size:25px;margin:8px 0 6px}
+.card p{font-size:19px;line-height:1.5;color:#44545a}
+.card.hot .n{background:#c2410c}
+.stats{display:flex;gap:18px}
+.stat{flex:1;background:#1f2a2e;color:#fff;border-radius:22px;padding:12px 22px}
+.stat .v{font-size:40px;font-weight:bold;color:#ffd23f;line-height:1.1}
+.stat .l{font-size:19px;opacity:.85;margin-top:4px}
+.msg{background:#0f7a5c;color:#fff;border-radius:22px;padding:16px 26px;font-size:25px;line-height:1.4}
+.msg b{color:#ffd23f}
+.src{position:absolute;right:60px;bottom:14px;font-size:14px;color:#6b7a7f}
+</style></head><body>
+<div class="sun"></div>
+<div class="wrap">
+  <div class="left">
+    <div class="phone"><div class="screen">
+      <div class="appbar">그늘로 <small>오후 2시 · 그늘 경로</small></div>
+      <svg viewBox="0 0 364 600" width="364" height="600" style="position:absolute;top:92px;left:0">
+        <rect width="364" height="600" fill="#ece6d8"/>
+        <!-- roads -->
+        <g fill="#fbf8f1">
+          <rect x="0" y="150" width="364" height="34"/>
+          <rect x="0" y="340" width="364" height="34"/>
+          <rect x="120" y="0" width="34" height="600"/>
+          <rect x="250" y="0" width="34" height="600"/>
+          <rect x="0" y="548" width="364" height="30"/>
+        </g>
+        <!-- shadows (cast to lower-right, sun upper-left) -->
+        <g fill="#7f8f98" opacity=".42">
+          <polygon points="20,30 100,30 130,62 130,190 50,190 20,150"/>
+          <polygon points="170,20 236,20 262,50 262,176 196,176 170,140"/>
+          <polygon points="20,210 100,210 130,240 130,378 50,378 20,330"/>
+          <polygon points="170,200 236,200 262,232 262,378 196,378 170,320"/>
+          <polygon points="20,400 100,400 130,430 130,530 50,530 20,500"/>
+          <polygon points="300,200 350,200 364,220 364,378 314,378 300,350"/>
+        </g>
+        <!-- buildings -->
+        <g fill="#b9a98c" stroke="#9c8c70" stroke-width="2">
+          <rect x="20" y="30" width="80" height="110" rx="6"/>
+          <rect x="170" y="20" width="66" height="116" rx="6"/>
+          <rect x="20" y="210" width="80" height="112" rx="6"/>
+          <rect x="170" y="200" width="66" height="110" rx="6"/>
+          <rect x="20" y="400" width="80" height="96" rx="6"/>
+          <rect x="300" y="200" width="50" height="140" rx="6"/>
+        </g>
+        <!-- trees -->
+        <g>
+          <g fill="#7f8f98" opacity=".42"><circle cx="304" cy="60" r="20"/><circle cx="304" cy="110" r="20"/><circle cx="198" cy="440" r="20"/><circle cx="198" cy="500" r="20"/></g>
+          <g fill="#3f9b5f"><circle cx="294" cy="50" r="17"/><circle cx="294" cy="100" r="17"/><circle cx="188" cy="430" r="17"/><circle cx="188" cy="490" r="17"/></g>
+        </g>
+        <!-- sunny shortest route -->
+        <polyline points="137,590 137,563 274,563 274,20" fill="none" stroke="#e8590c" stroke-width="7" stroke-dasharray="14 10" stroke-linecap="round" opacity=".8"/>
+        <!-- shade route -->
+        <polyline points="137,590 137,167 260,167 260,20" fill="none" stroke="#0b6bcb" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="137" cy="590" r="11" fill="#0b6bcb" stroke="#fff" stroke-width="4"/>
+        <g transform="translate(267,22)"><circle r="13" fill="#0f7a5c" stroke="#fff" stroke-width="4"/></g>
+        <text x="150" y="585" font-size="17" fill="#1f2a2e" font-weight="bold">출발</text>
+        <text x="200" y="26" font-size="17" fill="#1f2a2e" font-weight="bold">강의실</text>
+      </svg>
+      <div class="legend">
+        <div class="row"><span class="sw" style="background:#0b6bcb"></span> 그늘 경로 · 그늘 비율 <b>78%</b></div>
+        <div class="row"><span class="sw" style="background:repeating-linear-gradient(90deg,#e8590c 0 10px,transparent 10px 16px)"></span> 최단 경로 · 땡볕 구간 많음</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="right">
+    <div>
+      <span class="kicker">바이브 코딩 실제 사례 · 2026 여름</span>
+      <h1>“태양을 피하는 방법”<br><em>그늘로</em> 앱</h1>
+      <p class="sub">서울대 수학교육과 대학생이 <b>AI와 대화하며 약 2주 만에</b> 만든<br>그늘 따라 걷는 길 안내 서비스</p>
+    </div>
+    <div class="steps">
+      <div class="card hot"><div class="n">1</div><h3>내 불편함에서 출발</h3><p>성남 → 관악 통학길, 땡볕 아래 걷다가<br>“그늘로만 걸을 수 없을까?”</p></div>
+      <div class="card"><div class="n">2</div><h3>AI와 질문·답변</h3><p>AI와 대화하며 아이디어와 계획을 구체화<br>(ChatGPT 코덱스·Claude 활용)</p></div>
+      <div class="card"><div class="n">3</div><h3>데이터 + 계산</h3><p>건물·가로수 공개 데이터와<br>태양 고도로 시간대별 그림자 계산</p></div>
+      <div class="card"><div class="n">4</div><h3>누구나 쓰는 서비스로</h3><p>무료 공개 → 어르신·유모차 부모님들이<br>“고맙다”는 반응</p></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v">약 2주</div><div class="l">개발 기간</div></div>
+      <div class="stat"><div class="v">약 9만 명</div><div class="l">이용자</div></div>
+      <div class="stat"><div class="v">무료</div><div class="l">“내가 쓰려고 만들었다”</div></div>
+    </div>
+    <div class="msg">바이브 코딩의 출발점은 코딩 실력이 아니라<br><b>“내 생활 속 불편함을 발견하는 눈”</b>입니다.</div>
+  </div>
+</div>
+<div class="src">출처: 파이낸셜뉴스(2026.8.10), SBS 8뉴스, 톱스타뉴스(유 퀴즈, 2026.9) · 앱 화면은 이해를 돕기 위한 재구성 그림입니다</div>
+</body></html>

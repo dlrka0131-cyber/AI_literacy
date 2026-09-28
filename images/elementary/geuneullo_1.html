@@ -1,0 +1,97 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Regular.otf);font-weight:400}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Medium.otf);font-weight:500}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-SemiBold.otf);font-weight:600}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Bold.otf);font-weight:700}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-ExtraBold.otf);font-weight:800}body{font-weight:500;letter-spacing:-0.3px}h1,.big,.h2,.q,.card h3,.stat .v,.appbar,b{font-weight:800}.big{letter-spacing:-5px}.num,.av,.n{font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:900px;font-family:Pretendard,sans-serif;background:linear-gradient(160deg,#fff4d6 0%,#ffe2b0 38%,#dff1ea 100%);color:#1f2a2e;overflow:hidden;position:relative}
+.sun{position:absolute;top:-120px;left:-120px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,#ffd23f 0 45%,rgba(255,196,0,.35) 46% 60%,rgba(255,196,0,0) 61%)}
+.wrap{position:absolute;inset:0;padding:34px 60px 46px;display:grid;grid-template-columns:560px 1fr;gap:56px}
+.kicker{display:inline-block;background:#1f2a2e;color:#ffd23f;font-size:22px;padding:8px 18px;border-radius:999px;letter-spacing:1px}
+h1{font-size:62px;line-height:1.1;margin:14px 0 8px;letter-spacing:-2px}
+h1 em{font-style:normal;color:#0f7a5c}
+.sub{font-size:25px;line-height:1.45;color:#3b4a4f}
+.sub b{color:#c2410c}
+.left{position:relative;padding-top:210px}
+.phone{position:absolute;left:70px;top:20px;width:400px;height:800px;background:#1f2a2e;border-radius:52px;padding:18px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.screen{width:100%;height:100%;border-radius:38px;overflow:hidden;background:#f3efe6;position:relative}
+.appbar{position:absolute;top:0;left:0;right:0;height:92px;background:#0f7a5c;color:#fff;padding:34px 22px 0;font-size:28px;font-weight:bold}
+.appbar small{font-size:17px;font-weight:normal;opacity:.85;margin-left:8px}
+.legend{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:16px 22px 22px;font-size:19px;line-height:1.7;border-top:1px solid #e3ddd0}
+.legend .row{display:flex;align-items:center;gap:10px}
+.sw{width:34px;height:7px;border-radius:4px;display:inline-block}
+.right{display:flex;flex-direction:column;gap:18px}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+.card{background:rgba(255,255,255,.88);border-radius:22px;padding:16px 22px;box-shadow:0 6px 18px rgba(0,0,0,.07);position:relative}
+.card .n{position:absolute;top:-14px;left:20px;background:#0f7a5c;color:#fff;font-size:20px;font-weight:bold;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.card h3{font-size:25px;margin:8px 0 6px}
+.card p{font-size:19px;line-height:1.5;color:#44545a}
+.card.hot .n{background:#c2410c}
+.stats{display:flex;gap:18px}
+.stat{flex:1;background:#1f2a2e;color:#fff;border-radius:22px;padding:12px 22px}
+.stat .v{font-size:40px;font-weight:bold;color:#ffd23f;line-height:1.1}
+.stat .l{font-size:19px;opacity:.85;margin-top:4px}
+.msg{background:#0f7a5c;color:#fff;border-radius:22px;padding:16px 26px;font-size:25px;line-height:1.4}
+.msg b{color:#ffd23f}
+.src{position:absolute;right:60px;bottom:14px;font-size:14px;color:#6b7a7f}
+
+.phone{position:absolute}
+body{word-break:keep-all}
+.big{font-size:150px;font-weight:bold;letter-spacing:-4px;line-height:1}
+.cover{position:absolute;inset:0;display:flex;align-items:center}
+.h2{font-size:60px;font-weight:bold;letter-spacing:-1px}
+.col{background:rgba(255,255,255,.9);border-radius:32px;padding:34px 38px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.q{font-size:38px;font-weight:bold;margin-bottom:22px}
+.li{display:flex;gap:18px;align-items:flex-start;font-size:33px;line-height:1.45;margin-bottom:26px}
+.num{flex:none;width:52px;height:52px;border-radius:50%;color:#fff;font-size:28px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+.bubble{position:relative;background:#fff;border-radius:30px;padding:30px 36px;font-size:37px;line-height:1.45;box-shadow:0 8px 22px rgba(0,0,0,.08)}
+.who{display:flex;align-items:center;gap:14px;font-size:24px;color:#55656a;margin-top:14px;padding-left:14px}
+.av{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:bold}
+.tag{display:inline-block;color:#fff;font-size:24px;padding:8px 20px;border-radius:999px;margin-left:16px;vertical-align:middle}
+</style></head><body style="background:linear-gradient(160deg,#fff4d6 0%,#ffe2b0 38%,#dff1ea 100%)"><div class="cover"><div style="position:relative;width:640px;height:900px"><div class="phone" style="left:140px;top:50px"><div class="screen">
+      <div class="appbar" style="background:#0f7a5c">그늘로 <small>그늘 길 찾기</small></div>
+      <svg viewBox="0 0 364 600" width="364" height="600" style="position:absolute;top:92px;left:0">
+        <rect width="364" height="600" fill="#ece6d8"/>
+        <!-- roads -->
+        <g fill="#fbf8f1">
+          <rect x="0" y="150" width="364" height="34"/>
+          <rect x="0" y="340" width="364" height="34"/>
+          <rect x="120" y="0" width="34" height="600"/>
+          <rect x="250" y="0" width="34" height="600"/>
+          <rect x="0" y="548" width="364" height="30"/>
+        </g>
+        <!-- shadows (cast to lower-right, sun upper-left) -->
+        <g fill="#7f8f98" opacity=".42">
+          <polygon points="20,30 100,30 130,62 130,190 50,190 20,150"/>
+          <polygon points="170,20 236,20 262,50 262,176 196,176 170,140"/>
+          <polygon points="20,210 100,210 130,240 130,378 50,378 20,330"/>
+          <polygon points="170,200 236,200 262,232 262,378 196,378 170,320"/>
+          <polygon points="20,400 100,400 130,430 130,530 50,530 20,500"/>
+          <polygon points="300,200 350,200 364,220 364,378 314,378 300,350"/>
+        </g>
+        <!-- buildings -->
+        <g fill="#b9a98c" stroke="#9c8c70" stroke-width="2">
+          <rect x="20" y="30" width="80" height="110" rx="6"/>
+          <rect x="170" y="20" width="66" height="116" rx="6"/>
+          <rect x="20" y="210" width="80" height="112" rx="6"/>
+          <rect x="170" y="200" width="66" height="110" rx="6"/>
+          <rect x="20" y="400" width="80" height="96" rx="6"/>
+          <rect x="300" y="200" width="50" height="140" rx="6"/>
+        </g>
+        <!-- trees -->
+        <g>
+          <g fill="#7f8f98" opacity=".42"><circle cx="304" cy="60" r="20"/><circle cx="304" cy="110" r="20"/><circle cx="198" cy="440" r="20"/><circle cx="198" cy="500" r="20"/></g>
+          <g fill="#3f9b5f"><circle cx="294" cy="50" r="17"/><circle cx="294" cy="100" r="17"/><circle cx="188" cy="430" r="17"/><circle cx="188" cy="490" r="17"/></g>
+        </g>
+        <!-- sunny shortest route -->
+        <polyline points="137,590 137,563 274,563 274,20" fill="none" stroke="#e8590c" stroke-width="7" stroke-dasharray="14 10" stroke-linecap="round" opacity=".8"/>
+        <!-- shade route -->
+        <polyline points="137,590 137,167 260,167 260,20" fill="none" stroke="#0b6bcb" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="137" cy="590" r="11" fill="#0b6bcb" stroke="#fff" stroke-width="4"/>
+        <g transform="translate(267,22)"><circle r="13" fill="#0f7a5c" stroke="#fff" stroke-width="4"/></g>
+        <text x="150" y="585" font-size="17" fill="#1f2a2e" font-weight="bold">출발</text>
+        <text x="200" y="26" font-size="17" fill="#1f2a2e" font-weight="bold">학교</text>
+      </svg>
+      <div class="legend">
+        <div class="row"><span class="sw" style="background:#0b6bcb"></span> 파란 길 = 그늘이 많은 길</div>
+        <div class="row"><span class="sw" style="background:repeating-linear-gradient(90deg,#e8590c 0 10px,transparent 10px 16px)"></span> 주황 점선 = 땡볕 길</div>
+      </div>
+    </div></div>
+  </div>
+    <div><div class="big" style="color:#0f7a5c;font-size:150px">그늘로</div></div></div></body></html>

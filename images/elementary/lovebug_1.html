@@ -1,0 +1,67 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Regular.otf);font-weight:400}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Medium.otf);font-weight:500}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-SemiBold.otf);font-weight:600}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-Bold.otf);font-weight:700}@font-face{font-family:Pretendard;src:url(fonts/Pretendard-ExtraBold.otf);font-weight:800}body{font-weight:500;letter-spacing:-0.3px}h1,.big,.h2,.q,.card h3,.stat .v,.appbar,b{font-weight:800}.big{letter-spacing:-5px}.num,.av,.n{font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:900px;font-family:Pretendard,sans-serif;background:linear-gradient(160deg,#fff4d6 0%,#ffe2b0 38%,#dff1ea 100%);color:#1f2a2e;overflow:hidden;position:relative}
+.sun{position:absolute;top:-120px;left:-120px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,#ffd23f 0 45%,rgba(255,196,0,.35) 46% 60%,rgba(255,196,0,0) 61%)}
+.wrap{position:absolute;inset:0;padding:34px 60px 46px;display:grid;grid-template-columns:560px 1fr;gap:56px}
+.kicker{display:inline-block;background:#1f2a2e;color:#ffd23f;font-size:22px;padding:8px 18px;border-radius:999px;letter-spacing:1px}
+h1{font-size:62px;line-height:1.1;margin:14px 0 8px;letter-spacing:-2px}
+h1 em{font-style:normal;color:#0f7a5c}
+.sub{font-size:25px;line-height:1.45;color:#3b4a4f}
+.sub b{color:#c2410c}
+.left{position:relative;padding-top:210px}
+.phone{position:absolute;left:70px;top:20px;width:400px;height:800px;background:#1f2a2e;border-radius:52px;padding:18px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.screen{width:100%;height:100%;border-radius:38px;overflow:hidden;background:#f3efe6;position:relative}
+.appbar{position:absolute;top:0;left:0;right:0;height:92px;background:#0f7a5c;color:#fff;padding:34px 22px 0;font-size:28px;font-weight:bold}
+.appbar small{font-size:17px;font-weight:normal;opacity:.85;margin-left:8px}
+.legend{position:absolute;bottom:0;left:0;right:0;background:#fff;padding:16px 22px 22px;font-size:19px;line-height:1.7;border-top:1px solid #e3ddd0}
+.legend .row{display:flex;align-items:center;gap:10px}
+.sw{width:34px;height:7px;border-radius:4px;display:inline-block}
+.right{display:flex;flex-direction:column;gap:18px}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+.card{background:rgba(255,255,255,.88);border-radius:22px;padding:16px 22px;box-shadow:0 6px 18px rgba(0,0,0,.07);position:relative}
+.card .n{position:absolute;top:-14px;left:20px;background:#0f7a5c;color:#fff;font-size:20px;font-weight:bold;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.card h3{font-size:25px;margin:8px 0 6px}
+.card p{font-size:19px;line-height:1.5;color:#44545a}
+.card.hot .n{background:#c2410c}
+.stats{display:flex;gap:18px}
+.stat{flex:1;background:#1f2a2e;color:#fff;border-radius:22px;padding:12px 22px}
+.stat .v{font-size:40px;font-weight:bold;color:#ffd23f;line-height:1.1}
+.stat .l{font-size:19px;opacity:.85;margin-top:4px}
+.msg{background:#0f7a5c;color:#fff;border-radius:22px;padding:16px 26px;font-size:25px;line-height:1.4}
+.msg b{color:#ffd23f}
+.src{position:absolute;right:60px;bottom:14px;font-size:14px;color:#6b7a7f}
+
+.phone{position:absolute}
+body{word-break:keep-all}
+.big{font-size:150px;font-weight:bold;letter-spacing:-4px;line-height:1}
+.cover{position:absolute;inset:0;display:flex;align-items:center}
+.h2{font-size:60px;font-weight:bold;letter-spacing:-1px}
+.col{background:rgba(255,255,255,.9);border-radius:32px;padding:34px 38px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.q{font-size:38px;font-weight:bold;margin-bottom:22px}
+.li{display:flex;gap:18px;align-items:flex-start;font-size:33px;line-height:1.45;margin-bottom:26px}
+.num{flex:none;width:52px;height:52px;border-radius:50%;color:#fff;font-size:28px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+.bubble{position:relative;background:#fff;border-radius:30px;padding:30px 36px;font-size:37px;line-height:1.45;box-shadow:0 8px 22px rgba(0,0,0,.08)}
+.who{display:flex;align-items:center;gap:14px;font-size:24px;color:#55656a;margin-top:14px;padding-left:14px}
+.av{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:bold}
+.tag{display:inline-block;color:#fff;font-size:24px;padding:8px 20px;border-radius:999px;margin-left:16px;vertical-align:middle}
+</style></head><body style="background:linear-gradient(160deg,#fde8ec 0%,#f7eef6 45%,#e6eefb 100%)"><div class="cover"><div style="position:relative;width:640px;height:900px"><div class="phone" style="left:140px;top:50px"><div class="screen">
+      <div class="appbar" style="background:#b4233c">러브버그 지도 <small>수도권 · 실시간</small></div>
+      <svg viewBox="0 0 364 600" width="364" height="600" style="position:absolute;top:92px;left:0">
+<defs><radialGradient id="hg"><stop offset="0" stop-color="#f43f5e" stop-opacity=".55"/><stop offset="1" stop-color="#f43f5e" stop-opacity="0"/></radialGradient></defs>
+<rect width="364" height="600" fill="#eef0ea"/>
+<path d="M0,330 C80,300 140,360 210,330 S320,280 364,310 L364,345 C320,318 250,370 210,365 S90,335 0,365Z" fill="#b9d6ee"/>
+<text x="250" y="352" font-size="15" fill="#5b7fa0">한강</text>
+<path d="M-10,40 C60,20 90,80 60,120 S20,190 70,230" fill="none" stroke="#a9c99a" stroke-width="30" opacity=".6"/>
+<g stroke="#fff" stroke-width="5" fill="none"><path d="M0,120 L364,90"/><path d="M0,470 L364,440"/><path d="M160,0 L190,600"/><path d="M300,0 L280,600"/></g>
+<circle cx="120" cy="170" r="75.0" fill="url(#hg)"/><circle cx="230" cy="300" r="90.0" fill="url(#hg)"/><circle cx="90" cy="420" r="67.5" fill="url(#hg)"/><circle cx="270" cy="140" r="60.0" fill="url(#hg)"/><circle cx="180" cy="500" r="60.0" fill="url(#hg)"/><circle cx="113" cy="184" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="169" cy="185" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="114" cy="177" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="123" cy="181" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="131" cy="175" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="153" cy="183" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="95" cy="143" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="96" cy="157" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="172" cy="186" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="194" cy="320" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="208" cy="357" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="264" cy="326" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="201" cy="330" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="188" cy="282" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="215" cy="268" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="157" cy="316" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="212" cy="356" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="233" cy="287" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="40" cy="412" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="58" cy="431" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="109" cy="437" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="107" cy="443" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="100" cy="418" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="45" cy="398" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="78" cy="439" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="66" cy="407" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="116" cy="410" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="303" cy="154" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="228" cy="85" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="265" cy="161" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="240" cy="183" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="275" cy="150" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="274" cy="158" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="270" cy="162" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="291" cy="152" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="268" cy="152" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="192" cy="487" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="213" cy="497" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="192" cy="497" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="199" cy="526" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="151" cy="503" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="178" cy="512" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="161" cy="521" r="5" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="170" cy="475" r="7" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/><circle cx="160" cy="470" r="6" fill="#e11d48" opacity=".85" stroke="#fff" stroke-width="1.5"/>
+<g transform="translate(196,300)"><rect x="-6" y="-78" width="150" height="56" rx="12" fill="#fff" stroke="#e11d48" stroke-width="2"/><text x="6" y="-56" font-size="15" fill="#1f2a2e" font-weight="bold">방금 제보</text><text x="6" y="-34" font-size="14" fill="#b4233c">“창문에 떼로 붙음”</text></g>
+<g transform="translate(300,540)"><circle r="30" fill="#b4233c"/><text x="-1" y="9" font-size="30" fill="#fff" text-anchor="middle">+</text></g>
+<text x="222" y="590" font-size="13" fill="#1f2a2e" font-weight="bold">제보하기</text>
+</svg>
+      <div class="legend">
+        <div class="row"><span class="sw" style="background:#e11d48;width:14px;height:14px;border-radius:50%"></span> 시민 제보 1건 = 점 하나</div>
+        <div class="row"><span class="sw" style="background:radial-gradient(#f43f5e,transparent 70%);width:22px;height:22px;border-radius:50%"></span> 붉을수록 많이 출몰</div>
+      </div>
+    </div></div>
+  </div>
+    <div><div class="big" style="color:#b4233c;font-size:128px">러브버그 지도</div></div></div></body></html>

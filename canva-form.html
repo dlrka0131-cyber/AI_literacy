@@ -459,7 +459,7 @@
         }
     </style>
 </head>
-<body>
+<body spellcheck="false">
 
     <!-- 화면 중앙 팝업 -->
     <div id="toastPopup">
@@ -560,8 +560,8 @@
                             <span>🖌️</span>
                         </div>
                         <div class="section-body" style="flex-direction: row; gap: 20px;">
-                            <input type="text" id="vibeConcept" class="input-box" placeholder="📈 바이브 컨셉 (예: 귀여운, 우주느낌)">
-                            <input type="text" id="vibeColor" class="input-box" placeholder="🌈 메인 컬러 (예: 진한 남색)" style="flex: 1;">
+                            <input type="text" id="vibeConcept" class="input-box" placeholder="📈 바이브 컨셉 (예: 귀여운, 우주느낌)" style="flex: 1; min-width: 0;">
+                            <input type="text" id="vibeColor" class="input-box" placeholder="🌈 메인 컬러 (예: 진한 남색)" style="flex: 1; min-width: 0;">
                         </div>
                     </div>
                 </div>
@@ -656,6 +656,57 @@
             });
         }
 
+        // 맞춤법 빨간 밑줄 끄기
+        document.querySelectorAll('input, textarea').forEach(el => {
+            el.spellcheck = false;
+            el.setAttribute('autocorrect', 'off');
+            el.setAttribute('autocapitalize', 'off');
+        });
+
+        // 캡처용: 입력칸(input/textarea)을 같은 모양의 div로 바꿔서 글씨가 잘리지 않게 함
+        function replaceFieldsForCapture(originalRoot, clonedRoot) {
+            const originals = originalRoot.querySelectorAll('input, textarea');
+            const clones = clonedRoot.querySelectorAll('input, textarea');
+            originals.forEach((orig, i) => {
+                const clone = clones[i];
+                if (!clone || orig.type === 'hidden') return;
+                const cs = window.getComputedStyle(orig);
+                const box = document.createElement('div');
+                for (const prop of cs) {
+                    box.style.setProperty(prop, cs.getPropertyValue(prop));
+                }
+                const isTextarea = orig.tagName === 'TEXTAREA';
+                const hasValue = orig.value.trim() !== '';
+                box.textContent = hasValue ? orig.value : (orig.placeholder || '');
+                if (!hasValue) {
+                    const ph = window.getComputedStyle(orig, '::placeholder');
+                    box.style.color = ph.color || '#94a3b8';
+                    box.style.fontWeight = ph.fontWeight || cs.fontWeight;
+                }
+                box.style.width = orig.offsetWidth + 'px';
+                box.style.height = 'auto'; // 내용이 길면 칸이 늘어나서 글씨가 잘리지 않음
+                box.style.minHeight = orig.offsetHeight + 'px';
+                box.style.boxSizing = 'border-box';
+                box.style.boxShadow = "none";
+                box.style.transition = "none";
+                if (cs.borderTopColor === "rgba(0, 0, 0, 0)") box.style.borderColor = "#cbd5e1";
+                box.style.overflow = 'visible';
+                box.style.overflowWrap = 'break-word';
+                if (isTextarea) {
+                    box.style.display = 'block';
+                    box.style.whiteSpace = 'pre-wrap';
+                } else {
+                    box.style.display = 'flex';
+                    box.style.alignItems = 'center';
+                    box.style.wordBreak = "keep-all";
+                    box.style.justifyContent = cs.textAlign === 'center' ? 'center' : (cs.textAlign === 'right' || cs.textAlign === 'end') ? 'flex-end' : 'flex-start';
+                    box.style.whiteSpace = 'pre-wrap';
+                    box.style.lineHeight = '1.4';
+                }
+                clone.parentNode.replaceChild(box, clone);
+            });
+        }
+
         // 전체 화면 캡처 및 클립보드 복사 기능
         async function copyScreenshot() {
             const targetElement = document.getElementById('captureTarget');
@@ -669,7 +720,12 @@
                 const canvas = await html2canvas(targetElement, {
                     scale: 2, // 고해상도 캡처
                     useCORS: true, 
-                    backgroundColor: null
+                    backgroundColor: null,
+                    scrollX: 0,
+                    scrollY: -window.scrollY,
+                    onclone: (clonedDoc) => {
+                        replaceFieldsForCapture(targetElement, clonedDoc.getElementById('captureTarget'));
+                    }
                 });
 
                 // 캡처 후 배경색 원복

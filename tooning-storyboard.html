@@ -422,7 +422,7 @@
         .modal-btn.secondary { background-color: #e9ecef; }
     </style>
 </head>
-<body>
+<body spellcheck="false">
 
 <div class="container" id="captureArea">
     <div class="header-box">
@@ -701,13 +701,68 @@
         });
     }
 
-    function copyToClipboard() {
-        document.querySelectorAll('textarea').forEach(ta => {
-            ta.innerHTML = ta.value;
+    // 맞춤법 빨간 밑줄 끄기
+    document.querySelectorAll('input, textarea').forEach(el => {
+        el.spellcheck = false;
+        el.setAttribute('autocorrect', 'off');
+        el.setAttribute('autocapitalize', 'off');
+    });
+
+    // 캡처용: 입력칸(input/textarea)을 같은 모양의 div로 바꿔서 글씨가 잘리지 않게 함
+    function replaceFieldsForCapture(originalRoot, clonedRoot) {
+        const originals = originalRoot.querySelectorAll('input, textarea');
+        const clones = clonedRoot.querySelectorAll('input, textarea');
+        originals.forEach((orig, i) => {
+            const clone = clones[i];
+            if (!clone || orig.type === 'hidden') return;
+            const cs = window.getComputedStyle(orig);
+            const box = document.createElement('div');
+            for (const prop of cs) {
+                box.style.setProperty(prop, cs.getPropertyValue(prop));
+            }
+            const isTextarea = orig.tagName === 'TEXTAREA';
+            const hasValue = orig.value.trim() !== '';
+            box.textContent = hasValue ? orig.value : (orig.placeholder || '');
+            if (!hasValue) {
+                const ph = window.getComputedStyle(orig, '::placeholder');
+                box.style.color = ph.color || '#94a3b8';
+                box.style.fontWeight = ph.fontWeight || cs.fontWeight;
+            }
+            box.style.width = orig.offsetWidth + 'px';
+            box.style.height = 'auto'; // 내용이 길면 칸이 늘어나서 글씨가 잘리지 않음
+            box.style.minHeight = orig.offsetHeight + 'px';
+            box.style.boxSizing = 'border-box';
+            box.style.boxShadow = "none";
+            box.style.transition = "none";
+            if (cs.borderTopColor === "rgba(0, 0, 0, 0)") box.style.borderColor = "#cbd5e1";
+            box.style.overflow = 'visible';
+            box.style.overflowWrap = 'break-word';
+            if (isTextarea) {
+                box.style.display = 'block';
+                box.style.whiteSpace = 'pre-wrap';
+            } else {
+                box.style.display = cs.display === 'block' ? 'flex' : 'inline-flex';
+                box.style.alignItems = 'center';
+                box.style.wordBreak = "keep-all";
+                box.style.justifyContent = cs.textAlign === 'center' ? 'center' : (cs.textAlign === 'right' || cs.textAlign === 'end') ? 'flex-end' : 'flex-start';
+                box.style.whiteSpace = 'pre-wrap';
+                box.style.lineHeight = '1.4';
+            }
+            clone.parentNode.replaceChild(box, clone);
         });
-        
+    }
+
+    function copyToClipboard() {
         const target = document.getElementById('captureArea');
-        html2canvas(target, { scale: 2, backgroundColor: '#ffffff' }).then(canvas => {
+        html2canvas(target, {
+            scale: 2,
+            backgroundColor: '#ffffff',
+            scrollX: 0,
+            scrollY: -window.scrollY,
+            onclone: (clonedDoc) => {
+                replaceFieldsForCapture(target, clonedDoc.getElementById('captureArea'));
+            }
+        }).then(canvas => {
             canvas.toBlob(blob => {
                 try {
                     const item = new ClipboardItem({ "image/png": blob });

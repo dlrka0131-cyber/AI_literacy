@@ -513,7 +513,7 @@
                                     <span>💡</span>
                                 </div>
                                 <div class="section-body">
-                                    <input type="text" id="projectTitle" class="input-box" placeholder="예시: 우리 반 분리수거 도우미">
+                                    <input type="text" id="projectTitle" class="input-box" placeholder="예시: 독서 기록장, 용돈 기입장, 분리수거 도우미">
                                 </div>
                             </div>
 
@@ -522,7 +522,7 @@
                                     <span>🎯 3. 타겟 사용자 및 용도</span>
                                 </div>
                                 <div class="section-body">
-                                    <input type="text" id="targetUser" class="input-box" placeholder="예시: 우리 반 친구들, 분리수거 방법 확인용">
+                                    <input type="text" id="targetUser" class="input-box" placeholder="예시: 우리 가족, 건강 습관 만들기용">
                                 </div>
                             </div>
                         </div>
@@ -560,7 +560,7 @@
                             <span>🖌️</span>
                         </div>
                         <div class="section-body" style="flex-direction: row; gap: 20px;">
-                            <input type="text" id="vibeConcept" class="input-box" placeholder="📈 바이브 컨셉 (예: 산뜻한, 숲 속 느낌)" style="flex: 1; min-width: 0;">
+                            <input type="text" id="vibeConcept" class="input-box" placeholder="📈 바이브 컨셉 (예: 따뜻한, 숲 속 느낌)" style="flex: 1; min-width: 0;">
                             <input type="text" id="vibeColor" class="input-box" placeholder="🌈 메인 컬러 (예: 연두색)" style="flex: 1; min-width: 0;">
                         </div>
                     </div>
@@ -574,10 +574,12 @@
                             <span style="background: #1e293b; color: white; padding: 3px 8px; border-radius: 6px; font-size: 13px;">>_</span>
                         </div>
                         <div class="section-body">
-                            <textarea id="promptText" class="prompt-textarea" placeholder="[예시] 제목이 '우리 반 분리수거 도우미'인 웹 앱을 만들어줘.
-1. 쓰레기 이름(예: 우유갑)을 입력하면 어떻게 버려야 하는지 알려준다.
-2. 종이, 플라스틱, 캔, 비닐 버튼을 누르면 버리는 방법이 그림으로 나온다.
-3. 산뜻한 숲 속 느낌으로, 연두색을 메인 컬러로 디자인해줘."></textarea>
+                            <textarea id="promptText" class="prompt-textarea" placeholder="[예시] 제목이 '(내 앱 이름)'인 웹 앱을 만들어줘.
+이 앱은 (누가) (무엇을 할 때) 쓰는 앱이야.
+1. (핵심 기능 1)
+2. (핵심 기능 2)
+3. (핵심 기능 3)
+(바이브) 느낌으로, (메인 컬러)를 메인 컬러로 디자인해줘."></textarea>
                             
                             <div class="button-group">
                                 <button type="button" class="action-btn copy-btn" onclick="copyPrompt()">

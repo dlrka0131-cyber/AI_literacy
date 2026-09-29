@@ -666,7 +666,7 @@
                     box.style.fontWeight = ph.fontWeight || cs.fontWeight;
                 }
                 box.style.width = orig.offsetWidth + 'px';
-                box.style.height = isTextarea ? orig.offsetHeight + 'px' : 'auto';
+                box.style.height = 'auto'; // 내용이 길면 칸이 늘어나서 글씨가 잘리지 않음
                 box.style.minHeight = orig.offsetHeight + 'px';
                 box.style.boxSizing = 'border-box';
                 box.style.boxShadow = "none";
@@ -674,13 +674,14 @@
                 if (cs.borderTopColor === "rgba(0, 0, 0, 0)") box.style.borderColor = "#cbd5e1";
                 box.style.overflow = 'visible';
                 box.style.overflowWrap = 'break-word';
-                box.style.wordBreak = 'keep-all';
                 if (isTextarea) {
                     box.style.display = 'block';
                     box.style.whiteSpace = 'pre-wrap';
                 } else {
                     box.style.display = 'flex';
                     box.style.alignItems = 'center';
+                    box.style.wordBreak = "keep-all";
+                    box.style.justifyContent = cs.textAlign === 'center' ? 'center' : (cs.textAlign === 'right' || cs.textAlign === 'end') ? 'flex-end' : 'flex-start';
                     box.style.whiteSpace = 'pre-wrap';
                     box.style.lineHeight = '1.4';
                 }

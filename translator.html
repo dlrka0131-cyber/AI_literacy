@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 번역기</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+
+<style>
+  :root {
+    --bg: #f2f6fc;
+    --surface: #ffffff;
+    --surface-2: #eaf1fb;
+    --text: #1f2937;
+    --text-muted: #6b7280;
+    --accent: #2563eb;
+    --accent-strong: #1e40af;
+    --accent-soft: #dbeafe;
+    --divider: #dfe6f0;
+    --warn-bg: #fff7e6;
+    --warn-text: #92400e;
+    --error: #dc2626;
+    --shadow: 0 2px 6px rgba(15,35,80,0.05), 0 10px 26px rgba(15,35,80,0.08);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Pretendard", -apple-system, "Malgun Gothic", sans-serif;
+    padding: 28px 16px 48px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .page { width: 100%; max-width: 1000px; }
+
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 { margin: 0 0 6px; font-size: 2rem; letter-spacing: -0.02em; }
+  header p { margin: 0; color: var(--text-muted); }
+
+  .lang-bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  select {
+    width: 100%;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 11px 12px;
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .swap {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--divider);
+    background: var(--surface);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform .2s, background .2s;
+  }
+  .swap:hover { background: var(--accent-soft); transform: rotate(180deg); }
+
+  .panes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .pane {
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+    overflow: hidden;
+  }
+  .pane.out { background: var(--surface-2); }
+
+  textarea, .result {
+    flex: 1;
+    font: inherit;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    padding: 18px;
+    border: none;
+    outline: none;
+    resize: none;
+    background: transparent;
+    color: var(--text);
+    min-height: 200px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .result.placeholder { color: var(--text-muted); }
+  .result.error { color: var(--error); font-size: 1rem; }
+
+  .pane-tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-top: 1px solid var(--divider);
+  }
+  .pane-tools .spacer { flex: 1; }
+  .count { font-size: .85rem; color: var(--text-muted); }
+
+  .icon-btn {
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: .9rem;
+    padding: 7px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text);
+  }
+  .icon-btn:hover { background: var(--accent-soft); }
+  .icon-btn.on { background: #fee2e2; color: var(--error); }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    flex: 1;
+    min-width: 200px;
+    font: inherit;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background .2s, opacity .2s;
+  }
+  .btn-main { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(37,99,235,.3); }
+  .btn-main:hover { background: var(--accent-strong); }
+  .btn-sub { background: var(--surface); color: var(--accent-strong); border: 2px solid var(--accent-soft); }
+  .btn-sub:hover { background: var(--accent-soft); }
+  .btn:disabled { opacity: .55; cursor: wait; }
+  .hint { text-align: center; color: var(--text-muted); font-size: .85rem; margin-top: 8px; }
+
+  .back {
+    margin-top: 18px;
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    display: none;
+  }
+  .back.show { display: block; }
+  .back h3 { margin: 0 0 6px; font-size: 1rem; color: var(--accent-strong); }
+  .back p { margin: 0; line-height: 1.6; white-space: pre-wrap; }
+
+  .tips {
+    margin-top: 22px;
+    background: var(--warn-bg);
+    color: var(--warn-text);
+    border-radius: 16px;
+    padding: 16px 20px;
+    line-height: 1.7;
+  }
+  .tips h2 { margin: 0 0 6px; font-size: 1.05rem; }
+  .tips ul { margin: 0; padding-left: 20px; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #111827; color: #fff;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: .95rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s, transform .25s;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 700px) {
+    header h1 { font-size: 1.6rem; }
+    .panes { grid-template-columns: 1fr; }
+    .pane { min-height: 200px; }
+    textarea, .result { min-height: 150px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>🌏 AI 번역기</h1>
+    <p>글을 쓰거나 말하면 AI가 다른 나라 말로 바꿔 줘요</p>
+  </header>
+
+  <div class="lang-bar">
+    <select id="src" aria-label="원래 언어"></select>
+    <button class="swap" id="swap" title="언어 바꾸기" aria-label="언어 바꾸기">⇄</button>
+    <select id="tgt" aria-label="바꿀 언어"></select>
+  </div>
+
+  <div class="panes">
+    <div class="pane">
+      <textarea id="input" maxlength="2000" placeholder="번역할 내용을 입력하세요"></textarea>
+      <div class="pane-tools">
+        <button class="icon-btn" id="mic" title="말로 입력하기">🎤 말하기</button>
+        <button class="icon-btn" id="speakIn" title="소리 내어 읽기">🔊 듣기</button>
+        <button class="icon-btn" id="clear" title="지우기">✖ 지우기</button>
+        <span class="spacer"></span>
+        <span class="count" id="count">0 / 2000</span>
+      </div>
+    </div>
+    <div class="pane out">
+      <div class="result placeholder" id="output" aria-live="polite">번역 결과가 여기에 나와요</div>
+      <div class="pane-tools">
+        <span class="count" id="detected"></span>
+        <span class="spacer"></span>
+        <button class="icon-btn" id="speakOut" title="소리 내어 읽기">🔊 듣기</button>
+        <button class="icon-btn" id="copy" title="복사하기">📋 복사</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-main" id="go">번역하기</button>
+    <button class="btn btn-sub" id="checkBack">🔁 거꾸로 번역해서 확인하기</button>
+  </div>
+  <div class="hint">Ctrl + Enter 를 누르면 바로 번역돼요</div>
+
+  <div class="back" id="back">
+    <h3>🔁 다시 원래 말로 번역해 보면…</h3>
+    <p id="backText"></p>
+  </div>
+
+  <section class="tips">
+    <h2>💡 AI 번역기를 똑똑하게 쓰는 법</h2>
+    <ul>
+      <li>AI 번역은 <b>틀릴 수 있어요.</b> 거꾸로 번역해서 뜻이 그대로인지 꼭 확인해 보세요.</li>
+      <li>문장을 <b>짧고 정확하게</b> 쓸수록 번역이 더 잘 돼요. (주어를 빼먹지 않기!)</li>
+      <li>속담이나 유행어는 그대로 번역하면 이상해질 수 있어요. 뜻을 풀어서 써 보세요.</li>
+      <li>이름, 주소, 전화번호 같은 <b>개인정보는 입력하지 마세요.</b> 입력한 글은 인터넷 번역 서비스로 보내져요.</li>
+    </ul>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const LANGS = [
+    ['ko', '한국어', 'ko-KR'],
+    ['en', '영어', 'en-US'],
+    ['ja', '일본어', 'ja-JP'],
+    ['zh-CN', '중국어(간체)', 'zh-CN'],
+    ['zh-TW', '중국어(번체)', 'zh-TW'],
+    ['vi', '베트남어', 'vi-VN'],
+    ['th', '태국어', 'th-TH'],
+    ['ru', '러시아어', 'ru-RU'],
+    ['uz', '우즈베크어', 'uz-UZ'],
+    ['mn', '몽골어', 'mn-MN'],
+    ['es', '스페인어', 'es-ES'],
+    ['fr', '프랑스어', 'fr-FR'],
+    ['de', '독일어', 'de-DE'],
+    ['id', '인도네시아어', 'id-ID'],
+    ['ar', '아랍어', 'ar-SA'],
+  ];
+  const NAME = Object.fromEntries(LANGS.map(([c, n]) => [c, n]));
+  const VOICE = Object.fromEntries(LANGS.map(([c, , v]) => [c, v]));
+
+  const $ = id => document.getElementById(id);
+  const src = $('src'), tgt = $('tgt'), input = $('input'), output = $('output');
+  const goBtn = $('go'), backBtn = $('checkBack');
+
+  src.innerHTML = '<option value="auto">🔍 언어 자동 감지</option>' +
+    LANGS.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
+  tgt.innerHTML = LANGS.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
+  src.value = 'ko';
+  tgt.value = 'en';
+
+  let lastResult = '';
+  let lastDetected = '';
+
+  function toast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  async function googleTranslate(text, from, to) {
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&dt=t' +
+      `&sl=${encodeURIComponent(from)}&tl=${encodeURIComponent(to)}&q=${encodeURIComponent(text)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('google ' + res.status);
+    const data = await res.json();
+    return {
+      text: data[0].map(part => part[0]).join(''),
+      detected: data[2] || from,
+    };
+  }
+
+  async function myMemoryTranslate(text, from, to) {
+    // 예비 번역 서비스 (자동 감지를 지원하지 않아 한국어를 기본값으로 사용)
+    const pair = `${from === 'auto' ? 'ko' : from}|${to}`;
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.slice(0, 500))}&langpair=${pair}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('mymemory ' + res.status);
+    const data = await res.json();
+    if (data.responseStatus !== 200) throw new Error(data.responseDetails);
+    return { text: data.responseData.translatedText, detected: from };
+  }
+
+  async function translate(text, from, to) {
+    try {
+      return await googleTranslate(text, from, to);
+    } catch (e) {
+      return await myMemoryTranslate(text, from, to);
+    }
+  }
+
+  function setBusy(busy) {
+    goBtn.disabled = backBtn.disabled = busy;
+    goBtn.textContent = busy ? '번역하는 중…' : '번역하기';
+  }
+
+  async function run() {
+    const text = input.value.trim();
+    if (!text) { input.focus(); toast('번역할 내용을 먼저 입력하세요'); return; }
+    if (src.value === tgt.value) { toast('두 언어가 같아요. 다른 언어를 골라 주세요'); return; }
+
+    setBusy(true);
+    $('back').classList.remove('show');
+    try {
+      const r = await translate(text, src.value, tgt.value);
+      lastResult = r.text;
+      lastDetected = r.detected;
+      output.textContent = r.text;
+      output.className = 'result';
+      $('detected').textContent = src.value === 'auto' && NAME[r.detected]
+        ? `감지된 언어: ${NAME[r.detected]}` : '';
+    } catch (e) {
+      lastResult = '';
+      output.textContent = '번역에 실패했어요 😢 인터넷 연결을 확인하고 잠시 후 다시 시도해 주세요.';
+      output.className = 'result error';
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function checkBack() {
+    if (!lastResult) { toast('먼저 번역을 해 주세요'); return; }
+    const original = src.value === 'auto' ? lastDetected : src.value;
+    setBusy(true);
+    try {
+      const r = await translate(lastResult, tgt.value, original || 'ko');
+      $('backText').textContent = r.text;
+      $('back').classList.add('show');
+    } catch (e) {
+      toast('거꾸로 번역에 실패했어요');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function speak(text, lang) {
+    if (!text) { toast('읽을 내용이 없어요'); return; }
+    if (!('speechSynthesis' in window)) { toast('이 브라우저는 읽어 주기를 지원하지 않아요'); return; }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = VOICE[lang] || lang;
+    u.rate = 0.9;
+    speechSynthesis.speak(u);
+  }
+
+  // 말로 입력하기 (크롬·엣지에서 동작)
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let rec = null;
+  $('mic').addEventListener('click', () => {
+    if (!Recognition) { toast('크롬이나 엣지 브라우저에서 사용할 수 있어요'); return; }
+    if (rec) { rec.stop(); return; }
+    rec = new Recognition();
+    rec.lang = VOICE[src.value === 'auto' ? 'ko' : src.value];
+    rec.interimResults = false;
+    rec.onresult = e => {
+      const said = Array.from(e.results).map(r => r[0].transcript).join(' ');
+      input.value = (input.value ? input.value + ' ' : '') + said;
+      updateCount();
+      run();
+    };
+    rec.onerror = () => toast('잘 듣지 못했어요. 다시 말해 주세요');
+    rec.onend = () => { rec = null; $('mic').classList.remove('on'); $('mic').textContent = '🎤 말하기'; };
+    rec.start();
+    $('mic').classList.add('on');
+    $('mic').textContent = '⏹ 듣는 중…';
+  });
+
+  function updateCount() { $('count').textContent = `${input.value.length} / 2000`; }
+
+  input.addEventListener('input', updateCount);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); run(); }
+  });
+  goBtn.addEventListener('click', run);
+  backBtn.addEventListener('click', checkBack);
+
+  $('swap').addEventListener('click', () => {
+    const from = src.value === 'auto' ? (lastDetected || 'ko') : src.value;
+    src.value = tgt.value;
+    tgt.value = from === tgt.value ? 'en' : from;
+    if (lastResult) { input.value = lastResult; updateCount(); run(); }
+  });
+
+  $('clear').addEventListener('click', () => {
+    input.value = '';
+    lastResult = '';
+    output.textContent = '번역 결과가 여기에 나와요';
+    output.className = 'result placeholder';
+    $('detected').textContent = '';
+    $('back').classList.remove('show');
+    updateCount();
+    input.focus();
+  });
+
+  $('speakIn').addEventListener('click', () =>
+    speak(input.value.trim(), src.value === 'auto' ? (lastDetected || 'ko') : src.value));
+  $('speakOut').addEventListener('click', () => speak(lastResult, tgt.value));
+
+  $('copy').addEventListener('click', async () => {
+    if (!lastResult) { toast('복사할 결과가 없어요'); return; }
+    try {
+      await navigator.clipboard.writeText(lastResult);
+      toast('복사했어요!');
+    } catch (e) {
+      toast('복사에 실패했어요');
+    }
+  });
+</script>
+</body>
+</html>

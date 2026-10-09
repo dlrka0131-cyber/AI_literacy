@@ -9,8 +9,8 @@
 <style>
   :root {
     --ink: #1e1b4b;
-    --ink-soft: #5b5885;
-    --muted: #8b88ad;
+    --ink-soft: #3f3b6b;
+    --muted: #66628c;
     --card: #ffffff;
     --line: #e9e6f7;
     --field: #f7f5ff;
@@ -22,7 +22,7 @@
     --mint-strong: #059669;
     --sun: #fbbf24;
     --error: #e11d48;
-    --shadow: 0 1px 2px rgba(30,27,75,.04), 0 12px 32px rgba(76,52,160,.10);
+    --shadow: 0 2px 4px rgba(30,27,75,.06), 0 16px 40px rgba(60,40,140,.18);
   }
 
   * { box-sizing: border-box; }
@@ -33,11 +33,11 @@
     font-family: "Pretendard", -apple-system, "Malgun Gothic", sans-serif;
     color: var(--ink);
     background:
-      radial-gradient(700px 420px at 0% 0%, #ffe4ef 0%, transparent 60%),
-      radial-gradient(700px 420px at 100% 0%, #e0f0ff 0%, transparent 60%),
-      radial-gradient(800px 500px at 0% 70%, #fff6d6 0%, transparent 60%),
-      radial-gradient(800px 500px at 100% 100%, #dcf8ec 0%, transparent 60%),
-      #fbf9ff;
+      radial-gradient(800px 500px at 0% 0%, #f6b8d4 0%, transparent 60%),
+      radial-gradient(800px 500px at 100% 0%, #a9cdf7 0%, transparent 60%),
+      radial-gradient(900px 600px at 0% 75%, #f9dc9a 0%, transparent 60%),
+      radial-gradient(900px 600px at 100% 100%, #9fe3c4 0%, transparent 60%),
+      #c9c1f0;
     padding: 32px 16px 56px;
   }
 
@@ -48,7 +48,7 @@
   .hero .tag {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 6px 14px; border-radius: 999px;
-    background: rgba(255,255,255,.75);
+    background: #fff;
     border: 1px solid var(--line);
     font-size: .85rem; font-weight: 700; color: var(--violet);
     backdrop-filter: blur(6px);
@@ -61,10 +61,9 @@
     letter-spacing: -0.03em;
   }
   .hero h1 .grad {
-    background: linear-gradient(90deg, #a78bfa, #f472b6 50%, #fb923c);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+    color: #6d28d9;
   }
-  .hero p { margin: 0; color: var(--ink-soft); font-size: 1.05rem; }
+  .hero p { margin: 0; color: #2a2656; font-size: 1.1rem; font-weight: 600; }
 
   /* ── 단계 카드 ── */
   .step {
@@ -121,7 +120,7 @@
   #fAction { background-color: #e8f8ef; }
   #fPlace  { background-color: #e6f3ff; }
   #fStyle  { background-color: #f3edff; }
-  .fields input[type=text]::placeholder { color: #b4b1d0; font-weight: 500; }
+  .fields input[type=text]::placeholder { color: #9a96bd; font-weight: 500; }
   .fields input[type=text]:focus, .fields select:focus {
     outline: none; border-color: #c4b5fd; background-color: #fff;
     box-shadow: 0 0 0 4px var(--violet-soft);
@@ -132,7 +131,7 @@
     background-repeat: no-repeat; background-position: right 14px center;
     padding-right: 36px;
   }
-  .fields select.empty { color: #b4b1d0; font-weight: 500; }
+  .fields select.empty { color: #9a96bd; font-weight: 500; }
   .fields select:disabled { opacity: .4; cursor: not-allowed; }
 
   /* 성별 토글 */
@@ -178,8 +177,8 @@
     color: var(--ink);
     min-height: 56px;
   }
-  .preview .ph { color: #b4b1d0; }
-  .preview b { color: var(--violet); }
+  .preview .ph { color: #8f8bb3; }
+  .preview b { color: #5b21b6; }
 
   .big-btn {
     display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -245,7 +244,7 @@
     min-height: 140px;
     white-space: pre-wrap; word-break: break-word;
   }
-  textarea::placeholder { color: #b4b1d0; }
+  textarea::placeholder { color: #9a96bd; }
   .result { font-size: 1.3rem; font-weight: 600; }
   .result.placeholder { color: #a39fcf; font-weight: 500; font-size: 1.1rem; }
   .result.error { color: var(--error); font-size: 1.05rem; }

@@ -156,6 +156,47 @@
   .btn:disabled { opacity: .55; cursor: wait; }
   .hint { text-align: center; color: var(--text-muted); font-size: .85rem; margin-top: 8px; }
 
+  .copy-big {
+    margin: 0 12px 12px;
+    font: inherit;
+    font-size: 1.15rem;
+    font-weight: 800;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #16a34a;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(22,163,74,.3);
+    transition: background .2s;
+  }
+  .copy-big:hover { background: #15803d; }
+  .copy-big:disabled { background: #a7c4b2; box-shadow: none; cursor: default; }
+  .copy-big.done { background: #0f766e; }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin: 0 0 12px;
+    font-size: .9rem;
+    color: var(--text-muted);
+  }
+  .chip {
+    font: inherit;
+    font-size: .9rem;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--divider);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+  .chip:hover { background: var(--accent-soft); }
+
+  .engine { font-size: .8rem; color: var(--text-muted); }
+
   .back {
     margin-top: 18px;
     background: var(--surface);
@@ -205,13 +246,17 @@
 <div class="page">
   <header>
     <h1>🌏 AI 번역기</h1>
-    <p>글을 쓰거나 말하면 AI가 다른 나라 말로 바꿔 줘요</p>
+    <p>내가 상상한 미래 모습을 한국어로 쓰면, 그림 AI가 알아듣는 영어로 바꿔 줘요</p>
   </header>
 
   <div class="lang-bar">
     <select id="src" aria-label="원래 언어"></select>
     <button class="swap" id="swap" title="언어 바꾸기" aria-label="언어 바꾸기">⇄</button>
     <select id="tgt" aria-label="바꿀 언어"></select>
+  </div>
+
+  <div class="examples" id="examples">
+    <span>예시 눌러 보기 👉</span>
   </div>
 
   <div class="panes">
@@ -228,11 +273,12 @@
     <div class="pane out">
       <div class="result placeholder" id="output" aria-live="polite">번역 결과가 여기에 나와요</div>
       <div class="pane-tools">
-        <span class="count" id="detected"></span>
+        <span class="engine" id="engine"></span>
         <span class="spacer"></span>
+        <span class="count" id="detected"></span>
         <button class="icon-btn" id="speakOut" title="소리 내어 읽기">🔊 듣기</button>
-        <button class="icon-btn" id="copy" title="복사하기">📋 복사</button>
       </div>
+      <button class="copy-big" id="copy" disabled>📋 번역 결과 복사하기</button>
     </div>
   </div>
 
@@ -250,10 +296,10 @@
   <section class="tips">
     <h2>💡 AI 번역기를 똑똑하게 쓰는 법</h2>
     <ul>
-      <li>AI 번역은 <b>틀릴 수 있어요.</b> 거꾸로 번역해서 뜻이 그대로인지 꼭 확인해 보세요.</li>
-      <li>문장을 <b>짧고 정확하게</b> 쓸수록 번역이 더 잘 돼요. (주어를 빼먹지 않기!)</li>
-      <li>속담이나 유행어는 그대로 번역하면 이상해질 수 있어요. 뜻을 풀어서 써 보세요.</li>
-      <li>이름, 주소, 전화번호 같은 <b>개인정보는 입력하지 마세요.</b> 입력한 글은 인터넷 번역 서비스로 보내져요.</li>
+      <li>그림 AI에게는 <b>누가 · 어디서 · 무엇을 · 어떤 느낌으로</b>를 자세히 써 주면 더 멋진 그림이 나와요.</li>
+      <li>AI 번역은 <b>틀릴 수 있어요.</b> '거꾸로 번역해서 확인하기'로 내 뜻이 그대로인지 꼭 확인해 보세요.</li>
+      <li>문장을 <b>짧고 정확하게</b> 쓸수록 번역이 더 잘 돼요. 유행어나 줄임말은 풀어서 써 보세요.</li>
+      <li>이름, 주소, 전화번호 같은 <b>개인정보는 입력하지 마세요.</b></li>
     </ul>
   </section>
 </div>
@@ -281,15 +327,30 @@
   const NAME = Object.fromEntries(LANGS.map(([c, n]) => [c, n]));
   const VOICE = Object.fromEntries(LANGS.map(([c, , v]) => [c, v]));
 
+  const EXAMPLES = [
+    '하늘을 나는 자동차가 다니는 미래 도시',
+    '로봇 선생님과 함께 공부하는 교실',
+    '바닷속에 지어진 투명한 학교',
+    '나무와 건물이 하나로 연결된 초록 도시',
+  ];
+
   const $ = id => document.getElementById(id);
   const src = $('src'), tgt = $('tgt'), input = $('input'), output = $('output');
-  const goBtn = $('go'), backBtn = $('checkBack');
+  const goBtn = $('go'), backBtn = $('checkBack'), copyBtn = $('copy');
 
   src.innerHTML = '<option value="auto">🔍 언어 자동 감지</option>' +
     LANGS.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
   tgt.innerHTML = LANGS.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
   src.value = 'ko';
   tgt.value = 'en';
+
+  EXAMPLES.forEach(ex => {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.textContent = ex;
+    b.addEventListener('click', () => { input.value = ex; updateCount(); run(); });
+    $('examples').appendChild(b);
+  });
 
   let lastResult = '';
   let lastDetected = '';
@@ -302,40 +363,130 @@
     toast.timer = setTimeout(() => t.classList.remove('show'), 1800);
   }
 
-  async function googleTranslate(text, from, to) {
-    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&dt=t' +
-      `&sl=${encodeURIComponent(from)}&tl=${encodeURIComponent(to)}&q=${encodeURIComponent(text)}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('google ' + res.status);
-    const data = await res.json();
-    return {
-      text: data[0].map(part => part[0]).join(''),
-      detected: data[2] || from,
-    };
-  }
+  /* ───────── 번역 엔진들 ─────────
+     한 교실(같은 인터넷 주소)에서 30명이 동시에 쓰면 번역 서비스가 잠깐 막을 수 있어요.
+     그래서 여러 엔진을 순서대로 시도하고, 막힌 엔진은 잠시 쉬게 해요.
+     ① 구글 번역  ② 내 컴퓨터 속 AI(크롬 내장, 인터넷 사용 X)  ③ 예비 서버들 */
 
-  async function myMemoryTranslate(text, from, to) {
-    // 예비 번역 서비스 (자동 감지를 지원하지 않아 한국어를 기본값으로 사용)
-    const pair = `${from === 'auto' ? 'ko' : from}|${to}`;
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.slice(0, 500))}&langpair=${pair}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('mymemory ' + res.status);
-    const data = await res.json();
-    if (data.responseStatus !== 200) throw new Error(data.responseDetails);
-    return { text: data.responseData.translatedText, detected: from };
-  }
-
-  async function translate(text, from, to) {
+  async function fetchJson(url, ms = 5000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
     try {
-      return await googleTranslate(text, from, to);
-    } catch (e) {
-      return await myMemoryTranslate(text, from, to);
+      const res = await fetch(url, { signal: ctrl.signal });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return await res.json();
+    } finally {
+      clearTimeout(timer);
     }
   }
+
+  const google = {
+    label: '구글 번역',
+    async translate(text, from, to) {
+      const data = await fetchJson('https://translate.googleapis.com/translate_a/single?client=gtx&dt=t' +
+        `&sl=${encodeURIComponent(from)}&tl=${encodeURIComponent(to)}&q=${encodeURIComponent(text)}`);
+      return { text: data[0].map(part => part[0]).join(''), detected: data[2] || from };
+    },
+  };
+
+  // 크롬 내장 번역 AI: 처음 한 번 내려받으면 그 뒤로는 인터넷 없이 내 컴퓨터에서 번역해요.
+  const onDevice = {
+    label: '내 컴퓨터 속 AI',
+    ready: {},     // 'ko>en' → 사용 가능한 번역기
+    loading: {},   // 'ko>en' → 내려받는 중인 Promise
+    supported: () => 'Translator' in self,
+    async detect(text) {
+      if (!('LanguageDetector' in self)) return null;
+      try {
+        const d = await LanguageDetector.create();
+        const [top] = await d.detect(text);
+        return top && top.confidence > 0.5 ? top.detectedLanguage : null;
+      } catch (e) { return null; }
+    },
+    base: code => code.split('-')[0] === 'zh' ? code : code.split('-')[0],
+    // 버튼을 누를 때(사용자 동작) 미리 내려받기를 시작해 둬요.
+    prepare(from, to) {
+      if (!this.supported() || from === 'auto') return;
+      const key = from + '>' + to;
+      if (this.ready[key] || this.loading[key]) return;
+      this.loading[key] = (async () => {
+        const opts = { sourceLanguage: this.base(from), targetLanguage: this.base(to) };
+        if (await Translator.availability(opts) === 'unavailable') return null;
+        const t = await Translator.create(opts);
+        this.ready[key] = t;
+        return t;
+      })().catch(() => null);
+    },
+    async translate(text, from, to) {
+      if (!this.supported()) throw new Error('not supported');
+      if (from === 'auto') from = await this.detect(text) || 'ko';
+      const key = from + '>' + to;
+      this.prepare(from, to);
+      const t = this.ready[key];
+      if (!t) throw new Error('not ready');
+      return { text: await t.translate(text), detected: from };
+    },
+  };
+
+  const lingva = host => ({
+    label: '예비 번역 서버',
+    async translate(text, from, to) {
+      const data = await fetchJson(`https://${host}/api/v1/${from}/${to}/${encodeURIComponent(text)}`);
+      if (!data.translation) throw new Error('empty');
+      return { text: data.translation, detected: data.info?.detectedSource || from };
+    },
+  });
+
+  const myMemory = {
+    label: '예비 번역 서버',
+    async translate(text, from, to) {
+      const pair = `${from === 'auto' ? 'ko' : from}|${to}`;
+      const data = await fetchJson(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.slice(0, 500))}&langpair=${pair}`);
+      if (data.responseStatus !== 200) throw new Error(data.responseDetails);
+      return { text: data.responseData.translatedText, detected: from };
+    },
+  };
+
+  const ENGINES = [google, onDevice, lingva('lingva.ml'), lingva('lingva.lunar.icu'), myMemory];
+  const resting = new Map();          // 막힌 엔진 → 다시 써 볼 시각
+  const cache = new Map();            // 같은 문장은 다시 요청하지 않아요
+
+  async function translate(text, from, to) {
+    const key = `${from}|${to}|${text}`;
+    if (cache.has(key)) return cache.get(key);
+
+    onDevice.prepare(from === 'auto' ? 'ko' : from, to);
+    const now = Date.now();
+    const order = [
+      ...ENGINES.filter(e => !(resting.get(e) > now)),
+      ...ENGINES.filter(e => resting.get(e) > now),   // 쉬는 엔진도 마지막에 한 번 더
+    ];
+    for (const engine of order) {
+      try {
+        const r = await engine.translate(text, from, to);
+        if (!r.text) throw new Error('empty');
+        resting.delete(engine);
+        r.engine = engine.label;
+        cache.set(key, r);
+        return r;
+      } catch (e) {
+        if (engine !== onDevice) resting.set(engine, Date.now() + 60_000);  // 1분 쉬기
+      }
+    }
+    throw new Error('all engines failed');
+  }
+
+  /* ───────── 화면 동작 ───────── */
 
   function setBusy(busy) {
     goBtn.disabled = backBtn.disabled = busy;
     goBtn.textContent = busy ? '번역하는 중…' : '번역하기';
+  }
+
+  function resetCopy() {
+    copyBtn.classList.remove('done');
+    copyBtn.textContent = '📋 번역 결과 복사하기';
+    copyBtn.disabled = !lastResult;
   }
 
   async function run() {
@@ -351,14 +502,17 @@
       lastDetected = r.detected;
       output.textContent = r.text;
       output.className = 'result';
+      $('engine').textContent = '번역: ' + r.engine;
       $('detected').textContent = src.value === 'auto' && NAME[r.detected]
-        ? `감지된 언어: ${NAME[r.detected]}` : '';
+        ? `감지: ${NAME[r.detected]}` : '';
     } catch (e) {
       lastResult = '';
-      output.textContent = '번역에 실패했어요 😢 인터넷 연결을 확인하고 잠시 후 다시 시도해 주세요.';
+      output.textContent = '지금 번역하는 사람이 많아서 잠깐 막혔어요 😢\n10초 뒤에 다시 [번역하기]를 눌러 주세요.';
       output.className = 'result error';
+      $('engine').textContent = '';
     } finally {
       setBusy(false);
+      resetCopy();
     }
   }
 
@@ -371,11 +525,41 @@
       $('backText').textContent = r.text;
       $('back').classList.add('show');
     } catch (e) {
-      toast('거꾸로 번역에 실패했어요');
+      toast('거꾸로 번역에 실패했어요. 잠시 후 다시 눌러 주세요');
     } finally {
       setBusy(false);
     }
   }
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      // 보안 연결(https)이 아닌 곳에서도 복사되도록 예전 방식으로 한 번 더 시도
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      ta.remove();
+      return ok;
+    }
+  }
+
+  copyBtn.addEventListener('click', async () => {
+    if (!lastResult) return;
+    if (await copyText(lastResult)) {
+      copyBtn.classList.add('done');
+      copyBtn.textContent = '✅ 복사됐어요! 그림 AI에 붙여넣기(Ctrl+V)';
+      clearTimeout(copyBtn.timer);
+      copyBtn.timer = setTimeout(resetCopy, 3000);
+    } else {
+      toast('복사에 실패했어요. 결과 글자를 직접 드래그해서 복사해 주세요');
+    }
+  });
 
   function speak(text, lang) {
     if (!text) { toast('읽을 내용이 없어요'); return; }
@@ -431,7 +615,9 @@
     output.textContent = '번역 결과가 여기에 나와요';
     output.className = 'result placeholder';
     $('detected').textContent = '';
+    $('engine').textContent = '';
     $('back').classList.remove('show');
+    resetCopy();
     updateCount();
     input.focus();
   });
@@ -439,16 +625,6 @@
   $('speakIn').addEventListener('click', () =>
     speak(input.value.trim(), src.value === 'auto' ? (lastDetected || 'ko') : src.value));
   $('speakOut').addEventListener('click', () => speak(lastResult, tgt.value));
-
-  $('copy').addEventListener('click', async () => {
-    if (!lastResult) { toast('복사할 결과가 없어요'); return; }
-    try {
-      await navigator.clipboard.writeText(lastResult);
-      toast('복사했어요!');
-    } catch (e) {
-      toast('복사에 실패했어요');
-    }
-  });
 </script>
 </body>
 </html>

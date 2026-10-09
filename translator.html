@@ -52,66 +52,36 @@
     .main-grid .s1 .preview { flex: 1; display: flex; align-items: center; font-size: 1.35rem; }
   }
 
-  /* ── 머리말 ── */
+  /* ── 머리말 (한 줄) ── */
   .hero {
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    margin-bottom: 22px;
-    padding: 30px 24px 28px;
-    border-radius: 32px;
-    background: linear-gradient(120deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
-    border: 2px solid rgba(255,255,255,.95);
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+    gap: 10px 16px;
+    margin-bottom: 20px;
+    padding: 16px 24px;
+    border-radius: 24px;
+    background: rgba(255,255,255,.9);
     box-shadow: var(--shadow);
   }
-  /* 은은한 파스텔 동그라미 */
-  .hero::before, .hero::after {
-    content: ""; position: absolute; border-radius: 50%; z-index: 0; filter: blur(2px);
-  }
-  .hero::before { width: 260px; height: 260px; left: -70px; top: -110px; background: #fbcfe8; opacity: .55; }
-  .hero::after  { width: 300px; height: 300px; right: -90px; bottom: -170px; background: #bfdbfe; opacity: .6; }
-  .hero > * { position: relative; z-index: 1; }
-
-  .deco { position: absolute; z-index: 1; font-size: 2.3rem; animation: float 4s ease-in-out infinite; user-select: none; }
-  .deco:nth-of-type(2) { animation-delay: -1s; }
-  .deco:nth-of-type(3) { animation-delay: -2s; }
-  .deco:nth-of-type(4) { animation-delay: -3s; }
-  .deco:nth-of-type(5) { animation-delay: -1.5s; }
-  .deco:nth-of-type(6) { animation-delay: -2.5s; }
-  @keyframes float { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(4deg); } }
-  @media (prefers-reduced-motion: reduce) { .deco { animation: none; } }
-
   .hero .tag {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 7px 16px; border-radius: 999px;
+    padding: 6px 14px; border-radius: 999px;
     background: #f3edff;
     border: 1.5px solid #ddd0fb;
-    font-size: .92rem; font-weight: 800; color: #6d28d9;
+    font-size: .9rem; font-weight: 800; color: #6d28d9;
   }
   .hero h1 {
+    margin: 0;
     font-weight: 900;
-    font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
     line-height: 1.2;
-    margin: 14px 0 10px;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.03em;
     color: var(--ink);
   }
   .hero h1 .grad {
     color: #6d28d9;
-    background: linear-gradient(transparent 64%, #fde68a 64%, #fde68a 92%, transparent 92%);
-    padding: 0 .1em;
+    background: linear-gradient(transparent 62%, #fde68a 62%, #fde68a 92%, transparent 92%);
+    padding: 0 .08em;
   }
-  .hero h1 .spark { font-size: .7em; vertical-align: .35em; }
-  .hero p {
-    display: inline-block;
-    margin: 0;
-    padding: 8px 18px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.75);
-    color: #221e4d; font-size: 1.15rem; font-weight: 700;
-  }
-  .hero p b { color: #be185d; }
-  .hero p b.en { color: #1d4ed8; }
 
   /* ── 단계 카드 ── */
   .step {
@@ -164,6 +134,7 @@
     transition: border-color .15s, background .15s, box-shadow .15s;
   }
   #fAge    { background-color: #fff1e6; border-color: #fbd3b6; }
+  #fGender { background-color: #ffeef5; border-color: #f7c6dc; }
   #fJob    { background-color: #fff9db; border-color: #f5e08e; }
   #fAction { background-color: #e8f8ef; border-color: #b5e6c8; }
   #fPlace  { background-color: #e6f3ff; border-color: #b9d8f7; }
@@ -182,21 +153,6 @@
   .fields select.empty { color: #75719c; font-weight: 600; }
   .fields select:disabled { opacity: .6; color: #75719c; cursor: not-allowed; }
 
-  /* 성별 토글 */
-  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .seg button {
-    font: inherit; font-size: 1.15rem; font-weight: 800;
-    padding: 13px 6px;
-    border-radius: 14px;
-    border: 2px solid #e2dcf7;
-    background: var(--field);
-    color: var(--ink);
-    cursor: pointer;
-    transition: all .15s;
-  }
-  .seg button:hover { border-color: #d8d2f5; }
-  .seg button.on[data-v="여자"] { background: #ffe4ef; border-color: #f9a8d4; color: #be185d; }
-  .seg button.on[data-v="남자"] { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
 
   /* 스타일 체크 */
   .check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
@@ -433,10 +389,7 @@
     .tips { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 640px) {
-    .deco { display: none; }
-    .hero h1 { font-size: 2rem; }
-    .hero p { font-size: 1rem; }
-    .hero { padding: 24px 14px; }
+    .hero { padding: 14px; }
     html { font-size: 16px; }
     body { padding-top: 22px; }
     .step { padding: 20px 16px; border-radius: 22px; }
@@ -451,15 +404,8 @@
 <div class="page">
 
   <header class="hero">
-    <span class="deco" style="left:5%;top:22%" aria-hidden="true">🚀</span>
-    <span class="deco" style="left:13%;top:58%" aria-hidden="true">🩺</span>
-    <span class="deco" style="left:22%;top:16%" aria-hidden="true">🎨</span>
-    <span class="deco" style="right:22%;top:16%" aria-hidden="true">🍳</span>
-    <span class="deco" style="right:13%;top:58%" aria-hidden="true">✈️</span>
-    <span class="deco" style="right:5%;top:22%" aria-hidden="true">💻</span>
     <span class="tag">🎨 생성형 AI로 그리는 나의 미래</span>
-    <h1><span class="grad">나의 미래 직업</span> <span style="white-space:nowrap">번역기 <span class="spark">✨</span></span></h1>
-    <p>미래의 내 모습을 <b>한국어</b>로 만들면, 그림 AI가 알아듣는 <b class="en">영어</b>로 바꿔 줘요</p>
+    <h1><span class="grad">나의 미래 직업</span> 번역기 ✨</h1>
   </header>
 
   <div class="main-grid">
@@ -481,13 +427,14 @@
         </select>
       </label>
 
-      <div class="f c2">
-        <span class="lbl"><span class="emo">🙂</span>성별</span>
-        <div class="seg" id="fGender" role="group" aria-label="성별">
-          <button type="button" data-v="여자">👩 여자</button>
-          <button type="button" data-v="남자">👨 남자</button>
-        </div>
-      </div>
+      <label class="f c2">
+        <span class="lbl">성별</span>
+        <select id="fGender" class="empty">
+          <option value="">성별 고르기</option>
+          <option>여자</option>
+          <option>남자</option>
+        </select>
+      </label>
 
       <label class="f c2">
         <span class="lbl"><span class="emo">💼</span>미래 직업</span>
@@ -642,19 +589,14 @@
   for (let a = 10; a <= 90; a += 10) $('fAge').add(new Option(`${a}대`, `${a}대`));
   $('fAge').addEventListener('change', e => e.target.classList.toggle('empty', !e.target.value));
 
-  let gender = '';
-  document.querySelectorAll('#fGender button').forEach(b => b.addEventListener('click', () => {
-    gender = gender === b.dataset.v ? '' : b.dataset.v;   // 한 번 더 누르면 선택 해제
-    document.querySelectorAll('#fGender button').forEach(x => x.classList.toggle('on', x.dataset.v === gender));
-    updatePreview();
-  }));
+  $('fGender').addEventListener('change', e => e.target.classList.toggle('empty', !e.target.value));
 
   // 그림 사이트에 스타일 목록이 이미 있으면 체크하지 않아요 (기본: 넣지 않음)
   $('useStyle').addEventListener('change', e => { $('fStyle').disabled = !e.target.checked; updatePreview(); });
 
   // 예: "30대 남자 파일럿, 비행기를 조종하고 있는 모습, 배경은 비행기 조종석"
   function parts() {
-    const age = $('fAge').value, job = $('fJob').value.trim();
+    const age = $('fAge').value, gender = $('fGender').value, job = $('fJob').value.trim();
     const action = $('fAction').value.trim(), place = $('fPlace').value.trim();
     const style = $('useStyle').checked ? $('fStyle').value : '';
     const who = [age, gender, job].filter(Boolean).join(' ');
@@ -668,7 +610,7 @@
       ? '<span>' + p.map(x => `<b>${x.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))}</b>`).join(', ') + '</span>'
       : '<span class="ph">여기에 내가 만든 문장이 보여요 👀</span>';
   }
-  ['fAge', 'fJob', 'fAction', 'fPlace', 'fStyle'].forEach(id => {
+  ['fAge', 'fGender', 'fJob', 'fAction', 'fPlace', 'fStyle'].forEach(id => {
     $(id).addEventListener('input', updatePreview);
     $(id).addEventListener('change', updatePreview);
     $(id).addEventListener('keydown', e => { if (e.key === 'Enter') buildBtn.click(); });

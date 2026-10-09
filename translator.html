@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>나의 미래 직업 번역기</title>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -36,10 +33,11 @@
     font-family: "Pretendard", -apple-system, "Malgun Gothic", sans-serif;
     color: var(--ink);
     background:
-      radial-gradient(900px 500px at 0% 0%, #e0e7ff 0%, transparent 60%),
-      radial-gradient(800px 500px at 100% 10%, #fce7f3 0%, transparent 55%),
-      radial-gradient(900px 600px at 50% 100%, #dcfce7 0%, transparent 60%),
-      #f8f7ff;
+      radial-gradient(700px 420px at 0% 0%, #ffe4ef 0%, transparent 60%),
+      radial-gradient(700px 420px at 100% 0%, #e0f0ff 0%, transparent 60%),
+      radial-gradient(800px 500px at 0% 70%, #fff6d6 0%, transparent 60%),
+      radial-gradient(800px 500px at 100% 100%, #dcf8ec 0%, transparent 60%),
+      #fbf9ff;
     padding: 32px 16px 56px;
   }
 
@@ -56,15 +54,14 @@
     backdrop-filter: blur(6px);
   }
   .hero h1 {
-    font-family: "Jua", "Pretendard", sans-serif;
-    font-weight: 400;
+    font-weight: 900;
     font-size: clamp(2rem, 5vw, 3rem);
     line-height: 1.15;
     margin: 14px 0 8px;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.03em;
   }
   .hero h1 .grad {
-    background: linear-gradient(90deg, var(--violet), var(--pink) 55%, #f97316);
+    background: linear-gradient(90deg, #a78bfa, #f472b6 50%, #fb923c);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .hero p { margin: 0; color: var(--ink-soft); font-size: 1.05rem; }
@@ -77,17 +74,21 @@
     padding: 26px 26px 24px;
     margin-bottom: 18px;
   }
+  .step { border-top: 6px solid transparent; }
+  .step.s1 { border-top-color: #fbcfe8; }
+  .step.s2 { border-top-color: #bfdbfe; }
+  .step.s3 { border-top-color: #bbf7d0; }
   .step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
   .num {
     flex: none;
     width: 38px; height: 38px; border-radius: 12px;
     display: grid; place-items: center;
-    font-family: "Jua", sans-serif; font-size: 1.25rem; color: #fff;
+    font-size: 1.15rem; font-weight: 900;
   }
-  .num.n1 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
-  .num.n2 { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
-  .num.n3 { background: linear-gradient(135deg, #10b981, #3b82f6); }
-  .step-head h2 { margin: 0; font-family: "Jua", sans-serif; font-weight: 400; font-size: 1.45rem; }
+  .num.n1 { background: #fbcfe8; color: #9d174d; }
+  .num.n2 { background: #bfdbfe; color: #1e40af; }
+  .num.n3 { background: #bbf7d0; color: #166534; }
+  .step-head h2 { margin: 0; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; }
   .step-head p { margin: 2px 0 0; color: var(--muted); font-size: .9rem; }
 
   /* ── 1단계: 칸 채우기 ── */
@@ -115,9 +116,14 @@
     color: var(--ink);
     transition: border-color .15s, background .15s, box-shadow .15s;
   }
+  #fAge    { background-color: #fff1e6; }
+  #fJob    { background-color: #fff9db; }
+  #fAction { background-color: #e8f8ef; }
+  #fPlace  { background-color: #e6f3ff; }
+  #fStyle  { background-color: #f3edff; }
   .fields input[type=text]::placeholder { color: #b4b1d0; font-weight: 500; }
   .fields input[type=text]:focus, .fields select:focus {
-    outline: none; border-color: var(--violet); background: #fff;
+    outline: none; border-color: #c4b5fd; background-color: #fff;
     box-shadow: 0 0 0 4px var(--violet-soft);
   }
   .fields select {
@@ -142,8 +148,8 @@
     transition: all .15s;
   }
   .seg button:hover { border-color: #d8d2f5; }
-  .seg button.on[data-v="여자"] { background: #fdf2f8; border-color: var(--pink); color: #be185d; }
-  .seg button.on[data-v="남자"] { background: #eff6ff; border-color: var(--blue); color: #1d4ed8; }
+  .seg button.on[data-v="여자"] { background: #ffe4ef; border-color: #f9a8d4; color: #be185d; }
+  .seg button.on[data-v="남자"] { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
 
   /* 스타일 체크 */
   .check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
@@ -182,13 +188,13 @@
     font: inherit; font-size: 1.2rem; font-weight: 800;
     padding: 17px;
     border: none; border-radius: 18px;
-    color: #fff;
-    background: linear-gradient(90deg, #7c3aed, #db2777);
-    box-shadow: 0 10px 24px rgba(124,58,237,.30);
+    color: #4c1d95;
+    background: linear-gradient(90deg, #c4b5fd, #f9a8d4 55%, #fdba74);
+    box-shadow: 0 10px 24px rgba(244,114,182,.25);
     cursor: pointer;
     transition: transform .12s, box-shadow .12s, opacity .2s;
   }
-  .big-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(124,58,237,.36); }
+  .big-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(244,114,182,.32); }
   .big-btn:active { transform: translateY(0); }
   .big-btn:disabled { opacity: .6; cursor: wait; transform: none; }
 
@@ -218,9 +224,9 @@
   }
   .box-in { background: var(--field); }
   .box-out {
-    background: linear-gradient(145deg, #312e81, #5b21b6 60%, #7e22ce);
-    color: #fff;
-    box-shadow: 0 14px 30px rgba(76,29,149,.28);
+    background: linear-gradient(145deg, #dbeafe, #ede9fe 55%, #fce7f3);
+    color: var(--ink);
+    box-shadow: 0 12px 26px rgba(147,197,253,.30);
   }
   .box-title {
     display: flex; align-items: center; gap: 6px;
@@ -228,7 +234,7 @@
     font-size: .8rem; font-weight: 800; letter-spacing: .04em;
     color: var(--muted);
   }
-  .box-out .box-title { color: #c4b5fd; }
+  .box-out .box-title { color: #7c6fd6; }
 
   textarea, .result {
     flex: 1;
@@ -241,8 +247,8 @@
   }
   textarea::placeholder { color: #b4b1d0; }
   .result { font-size: 1.3rem; font-weight: 600; }
-  .result.placeholder { color: #a5b4fc; font-weight: 500; font-size: 1.1rem; }
-  .result.error { color: #fecdd3; font-size: 1.05rem; }
+  .result.placeholder { color: #a39fcf; font-weight: 500; font-size: 1.1rem; }
+  .result.error { color: var(--error); font-size: 1.05rem; }
 
   .tools { display: flex; align-items: center; gap: 4px; padding: 6px 10px 10px; }
   .tools .sp { flex: 1; }
@@ -253,10 +259,9 @@
   }
   .ib:hover { background: rgba(124,58,237,.08); }
   .ib.on { background: #ffe4e6; color: var(--error); }
-  .box-out .ib { color: #ddd6fe; }
-  .box-out .ib:hover { background: rgba(255,255,255,.12); }
+  .box-out .ib:hover { background: rgba(255,255,255,.6); }
   .meta { font-size: .78rem; color: var(--muted); padding: 0 6px; }
-  .box-out .meta { color: #a5b4fc; }
+  .box-out .meta { color: #8b88ad; }
 
   .copy {
     margin: 0 14px 14px;
@@ -264,14 +269,14 @@
     font: inherit; font-size: 1.2rem; font-weight: 800;
     padding: 16px;
     border: none; border-radius: 16px;
-    background: var(--sun); color: #3b2300;
-    box-shadow: 0 8px 18px rgba(251,191,36,.35);
+    background: #fde68a; color: #713f12;
+    box-shadow: 0 8px 18px rgba(253,230,138,.6);
     cursor: pointer;
     transition: transform .12s, background .2s;
   }
   .copy:hover { transform: translateY(-2px); }
-  .copy:disabled { background: rgba(255,255,255,.18); color: rgba(255,255,255,.55); box-shadow: none; cursor: default; transform: none; }
-  .copy.done { background: #34d399; color: #022c22; }
+  .copy:disabled { background: rgba(255,255,255,.65); color: #b4b1d0; box-shadow: none; cursor: default; transform: none; }
+  .copy.done { background: #a7f3d0; color: #065f46; }
 
   .sub-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
   .ghost {
@@ -308,10 +313,10 @@
   }
   .tip .t-emo { font-size: 1.6rem; display: block; margin-bottom: 6px; }
   .tip b { color: var(--ink); }
-  .tip:nth-child(1) { background: #f5f3ff; }
-  .tip:nth-child(2) { background: #fff7ed; }
-  .tip:nth-child(3) { background: #ecfeff; }
-  .tip:nth-child(4) { background: #fff1f2; }
+  .tip:nth-child(1) { background: #f1ebff; }
+  .tip:nth-child(2) { background: #fff4dc; }
+  .tip:nth-child(3) { background: #e3f6ff; }
+  .tip:nth-child(4) { background: #ffe8ef; }
 
   .toast {
     position: fixed; bottom: 24px; left: 50%;
@@ -352,7 +357,7 @@
   </header>
 
   <!-- 1단계 -->
-  <section class="step">
+  <section class="step s1">
     <div class="step-head">
       <div class="num n1">1</div>
       <div>
@@ -415,12 +420,12 @@
   </section>
 
   <!-- 2단계 -->
-  <section class="step">
+  <section class="step s2">
     <div class="step-head">
       <div class="num n2">2</div>
       <div>
         <h2>복사해서 그림 AI에 붙여넣기</h2>
-        <p>노란 버튼을 누르고, 그림 AI 입력창에서 Ctrl + V</p>
+        <p>노란 [복사하기] 버튼을 누르고, 그림 AI 입력창에서 Ctrl + V</p>
       </div>
       <div class="langs">
         <select id="src" aria-label="원래 언어"></select>
@@ -466,7 +471,7 @@
   </section>
 
   <!-- 3단계 -->
-  <section class="step">
+  <section class="step s3">
     <div class="step-head">
       <div class="num n3">3</div>
       <div>

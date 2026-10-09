@@ -3,303 +3,402 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI 번역기</title>
+<title>나의 미래 직업 번역기</title>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --bg: #f2f6fc;
-    --surface: #ffffff;
-    --surface-2: #eaf1fb;
-    --text: #1f2937;
-    --text-muted: #6b7280;
-    --accent: #2563eb;
-    --accent-strong: #1e40af;
-    --accent-soft: #dbeafe;
-    --divider: #dfe6f0;
-    --warn-bg: #fff7e6;
-    --warn-text: #92400e;
-    --error: #dc2626;
-    --shadow: 0 2px 6px rgba(15,35,80,0.05), 0 10px 26px rgba(15,35,80,0.08);
+    --ink: #1e1b4b;
+    --ink-soft: #5b5885;
+    --muted: #8b88ad;
+    --card: #ffffff;
+    --line: #e9e6f7;
+    --field: #f7f5ff;
+    --violet: #7c3aed;
+    --violet-soft: #ede9fe;
+    --pink: #ec4899;
+    --blue: #3b82f6;
+    --mint: #10b981;
+    --mint-strong: #059669;
+    --sun: #fbbf24;
+    --error: #e11d48;
+    --shadow: 0 1px 2px rgba(30,27,75,.04), 0 12px 32px rgba(76,52,160,.10);
   }
 
   * { box-sizing: border-box; }
   html, body { margin: 0; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
+    min-height: 100vh;
     font-family: "Pretendard", -apple-system, "Malgun Gothic", sans-serif;
-    padding: 28px 16px 48px;
-    display: flex;
-    justify-content: center;
+    color: var(--ink);
+    background:
+      radial-gradient(900px 500px at 0% 0%, #e0e7ff 0%, transparent 60%),
+      radial-gradient(800px 500px at 100% 10%, #fce7f3 0%, transparent 55%),
+      radial-gradient(900px 600px at 50% 100%, #dcfce7 0%, transparent 60%),
+      #f8f7ff;
+    padding: 32px 16px 56px;
   }
 
-  .page { width: 100%; max-width: 1000px; }
+  .page { max-width: 1040px; margin: 0 auto; }
 
-  header { text-align: center; margin-bottom: 24px; }
-  header h1 { margin: 0 0 6px; font-size: 2rem; letter-spacing: -0.02em; }
-  header p { margin: 0; color: var(--text-muted); }
-
-  .lang-bar {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 12px;
+  /* ── 머리말 ── */
+  .hero { text-align: center; margin-bottom: 28px; }
+  .hero .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 999px;
+    background: rgba(255,255,255,.75);
+    border: 1px solid var(--line);
+    font-size: .85rem; font-weight: 700; color: var(--violet);
+    backdrop-filter: blur(6px);
   }
-
-  select {
-    width: 100%;
-    font: inherit;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 11px 12px;
-    border: 1px solid var(--divider);
-    border-radius: 10px;
-    background: var(--surface);
-    color: var(--text);
-    cursor: pointer;
+  .hero h1 {
+    font-family: "Jua", "Pretendard", sans-serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.15;
+    margin: 14px 0 8px;
+    letter-spacing: -0.01em;
   }
-
-  .swap {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    border: 1px solid var(--divider);
-    background: var(--surface);
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: transform .2s, background .2s;
+  .hero h1 .grad {
+    background: linear-gradient(90deg, var(--violet), var(--pink) 55%, #f97316);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .swap:hover { background: var(--accent-soft); transform: rotate(180deg); }
+  .hero p { margin: 0; color: var(--ink-soft); font-size: 1.05rem; }
 
-  .panes {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-
-  .pane {
-    background: var(--surface);
-    border-radius: 16px;
+  /* ── 단계 카드 ── */
+  .step {
+    background: var(--card);
+    border-radius: 28px;
     box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    min-height: 260px;
+    padding: 26px 26px 24px;
+    margin-bottom: 18px;
+  }
+  .step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .num {
+    flex: none;
+    width: 38px; height: 38px; border-radius: 12px;
+    display: grid; place-items: center;
+    font-family: "Jua", sans-serif; font-size: 1.25rem; color: #fff;
+  }
+  .num.n1 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+  .num.n2 { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+  .num.n3 { background: linear-gradient(135deg, #10b981, #3b82f6); }
+  .step-head h2 { margin: 0; font-family: "Jua", sans-serif; font-weight: 400; font-size: 1.45rem; }
+  .step-head p { margin: 2px 0 0; color: var(--muted); font-size: .9rem; }
+
+  /* ── 1단계: 칸 채우기 ── */
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px 14px;
+  }
+  .f { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+  .f.c2 { grid-column: span 2; }
+  .f.c3 { grid-column: span 3; }
+  .f > .lbl {
+    display: flex; align-items: center; gap: 6px;
+    font-size: .9rem; font-weight: 800; color: var(--ink-soft);
+  }
+  .f > .lbl .emo { font-size: 1.05rem; }
+
+  .fields input[type=text], .fields select {
+    width: 100%; min-width: 0;
+    font: inherit; font-size: 1.05rem; font-weight: 600;
+    padding: 13px 14px;
+    border: 2px solid transparent;
+    border-radius: 14px;
+    background: var(--field);
+    color: var(--ink);
+    transition: border-color .15s, background .15s, box-shadow .15s;
+  }
+  .fields input[type=text]::placeholder { color: #b4b1d0; font-weight: 500; }
+  .fields input[type=text]:focus, .fields select:focus {
+    outline: none; border-color: var(--violet); background: #fff;
+    box-shadow: 0 0 0 4px var(--violet-soft);
+  }
+  .fields select {
+    appearance: none; -webkit-appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237c3aed' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    padding-right: 36px;
+  }
+  .fields select.empty { color: #b4b1d0; font-weight: 500; }
+  .fields select:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* 성별 토글 */
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .seg button {
+    font: inherit; font-size: 1.05rem; font-weight: 700;
+    padding: 12px 6px;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    background: var(--field);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .seg button:hover { border-color: #d8d2f5; }
+  .seg button.on[data-v="여자"] { background: #fdf2f8; border-color: var(--pink); color: #be185d; }
+  .seg button.on[data-v="남자"] { background: #eff6ff; border-color: var(--blue); color: #1d4ed8; }
+
+  /* 스타일 체크 */
+  .check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+  .check input { position: absolute; opacity: 0; pointer-events: none; }
+  .check .box {
+    width: 22px; height: 22px; border-radius: 7px;
+    border: 2px solid #c9c3ec; background: #fff;
+    display: grid; place-items: center;
+    transition: all .15s;
+  }
+  .check .box::after { content: "✓"; color: #fff; font-size: .8rem; font-weight: 900; opacity: 0; }
+  .check input:checked + .box { background: var(--violet); border-color: var(--violet); }
+  .check input:checked + .box::after { opacity: 1; }
+  .check input:focus-visible + .box { box-shadow: 0 0 0 4px var(--violet-soft); }
+  .check .hint-s { font-weight: 500; color: var(--muted); font-size: .8rem; }
+
+  /* 미리보기 */
+  .preview {
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 2px dashed #d8d2f5;
+    background: #fbfaff;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--ink);
+    min-height: 56px;
+  }
+  .preview .ph { color: #b4b1d0; }
+  .preview b { color: var(--violet); }
+
+  .big-btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%;
+    margin-top: 16px;
+    font: inherit; font-size: 1.2rem; font-weight: 800;
+    padding: 17px;
+    border: none; border-radius: 18px;
+    color: #fff;
+    background: linear-gradient(90deg, #7c3aed, #db2777);
+    box-shadow: 0 10px 24px rgba(124,58,237,.30);
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s, opacity .2s;
+  }
+  .big-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(124,58,237,.36); }
+  .big-btn:active { transform: translateY(0); }
+  .big-btn:disabled { opacity: .6; cursor: wait; transform: none; }
+
+  /* ── 2단계: 결과 ── */
+  .langs { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .langs select {
+    font: inherit; font-size: .85rem; font-weight: 700;
+    padding: 7px 10px; border-radius: 10px;
+    border: 1px solid var(--line); background: #fff; color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .swap {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--line); background: #fff; cursor: pointer;
+    color: var(--ink-soft); font-size: .95rem;
+    transition: transform .25s;
+  }
+  .swap:hover { transform: rotate(180deg); }
+
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .box-in, .box-out {
+    border-radius: 22px;
+    display: flex; flex-direction: column;
+    min-height: 240px;
     overflow: hidden;
   }
-  .pane.out { background: var(--surface-2); }
+  .box-in { background: var(--field); }
+  .box-out {
+    background: linear-gradient(145deg, #312e81, #5b21b6 60%, #7e22ce);
+    color: #fff;
+    box-shadow: 0 14px 30px rgba(76,29,149,.28);
+  }
+  .box-title {
+    display: flex; align-items: center; gap: 6px;
+    padding: 14px 18px 0;
+    font-size: .8rem; font-weight: 800; letter-spacing: .04em;
+    color: var(--muted);
+  }
+  .box-out .box-title { color: #c4b5fd; }
 
   textarea, .result {
     flex: 1;
-    font: inherit;
-    font-size: 1.15rem;
-    line-height: 1.6;
-    padding: 18px;
-    border: none;
-    outline: none;
-    resize: none;
-    background: transparent;
-    color: var(--text);
-    min-height: 200px;
-    white-space: pre-wrap;
-    word-break: break-word;
+    font: inherit; font-size: 1.15rem; line-height: 1.6;
+    padding: 8px 18px 14px;
+    border: none; outline: none; resize: none;
+    background: transparent; color: inherit;
+    min-height: 140px;
+    white-space: pre-wrap; word-break: break-word;
   }
-  .result.placeholder { color: var(--text-muted); }
-  .result.error { color: var(--error); font-size: 1rem; }
+  textarea::placeholder { color: #b4b1d0; }
+  .result { font-size: 1.3rem; font-weight: 600; }
+  .result.placeholder { color: #a5b4fc; font-weight: 500; font-size: 1.1rem; }
+  .result.error { color: #fecdd3; font-size: 1.05rem; }
 
-  .pane-tools {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 10px;
-    border-top: 1px solid var(--divider);
+  .tools { display: flex; align-items: center; gap: 4px; padding: 6px 10px 10px; }
+  .tools .sp { flex: 1; }
+  .ib {
+    font: inherit; font-size: .88rem; font-weight: 600;
+    border: none; background: transparent; color: var(--ink-soft);
+    padding: 7px 10px; border-radius: 10px; cursor: pointer;
   }
-  .pane-tools .spacer { flex: 1; }
-  .count { font-size: .85rem; color: var(--text-muted); }
+  .ib:hover { background: rgba(124,58,237,.08); }
+  .ib.on { background: #ffe4e6; color: var(--error); }
+  .box-out .ib { color: #ddd6fe; }
+  .box-out .ib:hover { background: rgba(255,255,255,.12); }
+  .meta { font-size: .78rem; color: var(--muted); padding: 0 6px; }
+  .box-out .meta { color: #a5b4fc; }
 
-  .icon-btn {
-    border: none;
-    background: transparent;
-    font: inherit;
-    font-size: .9rem;
-    padding: 7px 10px;
-    border-radius: 8px;
+  .copy {
+    margin: 0 14px 14px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font: inherit; font-size: 1.2rem; font-weight: 800;
+    padding: 16px;
+    border: none; border-radius: 16px;
+    background: var(--sun); color: #3b2300;
+    box-shadow: 0 8px 18px rgba(251,191,36,.35);
     cursor: pointer;
-    color: var(--text);
+    transition: transform .12s, background .2s;
   }
-  .icon-btn:hover { background: var(--accent-soft); }
-  .icon-btn.on { background: #fee2e2; color: var(--error); }
+  .copy:hover { transform: translateY(-2px); }
+  .copy:disabled { background: rgba(255,255,255,.18); color: rgba(255,255,255,.55); box-shadow: none; cursor: default; transform: none; }
+  .copy.done { background: #34d399; color: #022c22; }
 
-  .actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
-  .btn {
-    flex: 1;
-    min-width: 200px;
-    font: inherit;
-    font-size: 1.1rem;
-    font-weight: 700;
-    padding: 14px;
-    border-radius: 12px;
-    border: none;
+  .sub-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .ghost {
+    flex: 1; min-width: 220px;
+    font: inherit; font-size: 1rem; font-weight: 700;
+    padding: 13px; border-radius: 14px;
+    border: 2px solid var(--line); background: #fff; color: var(--ink-soft);
     cursor: pointer;
-    transition: background .2s, opacity .2s;
+    transition: border-color .15s, color .15s;
   }
-  .btn-main { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(37,99,235,.3); }
-  .btn-main:hover { background: var(--accent-strong); }
-  .btn-sub { background: var(--surface); color: var(--accent-strong); border: 2px solid var(--accent-soft); }
-  .btn-sub:hover { background: var(--accent-soft); }
-  .btn:disabled { opacity: .55; cursor: wait; }
-  .hint { text-align: center; color: var(--text-muted); font-size: .85rem; margin-top: 8px; }
-
-  .copy-big {
-    margin: 0 12px 12px;
-    font: inherit;
-    font-size: 1.15rem;
-    font-weight: 800;
-    padding: 14px;
-    border: none;
-    border-radius: 12px;
-    background: #16a34a;
-    color: #fff;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(22,163,74,.3);
-    transition: background .2s;
-  }
-  .copy-big:hover { background: #15803d; }
-  .copy-big:disabled { background: #a7c4b2; box-shadow: none; cursor: default; }
-  .copy-big.done { background: #0f766e; }
-
-  .examples {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    margin: 0 0 12px;
-    font-size: .9rem;
-    color: var(--text-muted);
-  }
-  .chip {
-    font: inherit;
-    font-size: .9rem;
-    padding: 6px 12px;
-    border-radius: 999px;
-    border: 1px solid var(--divider);
-    background: var(--surface);
-    color: var(--text);
-    cursor: pointer;
-  }
-  .chip:hover { background: var(--accent-soft); }
-
-  .builder {
-    background: var(--surface);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    padding: 16px 18px;
-    margin-bottom: 14px;
-  }
-  .builder h2 { margin: 0 0 4px; font-size: 1.05rem; color: var(--accent-strong); }
-  .builder .sub { margin: 0 0 12px; font-size: .88rem; color: var(--text-muted); }
-  .fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1.4fr;
-    gap: 10px;
-  }
-  .fields label { min-width: 0; display: flex; flex-direction: column; gap: 4px; font-size: .85rem; font-weight: 700; color: var(--text-muted); }
-  .fields input:not([type=checkbox]), .fields select {
-    font: inherit;
-    font-size: 1rem;
-    padding: 10px 11px;
-    border: 1px solid var(--divider);
-    border-radius: 10px;
-    background: var(--bg);
-    color: var(--text);
-    width: 100%;
-    min-width: 0;
-  }
-  .style-check { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-  .style-check input { width: 18px; height: 18px; padding: 0; margin: 0; accent-color: var(--accent); cursor: pointer; }
-  .fields select:disabled { opacity: .45; cursor: not-allowed; }
-  .fields input:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
-  .builder .btn { margin-top: 12px; width: 100%; min-width: 0; }
-
-  .engine { font-size: .8rem; color: var(--text-muted); }
+  .ghost:hover { border-color: var(--violet); color: var(--violet); }
+  .ghost.primary { border-color: transparent; background: var(--violet-soft); color: var(--violet); }
+  .ghost:disabled { opacity: .55; cursor: wait; }
 
   .back {
-    margin-top: 18px;
-    background: var(--surface);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    padding: 16px 18px;
     display: none;
+    margin-top: 14px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
   }
   .back.show { display: block; }
-  .back h3 { margin: 0 0 6px; font-size: 1rem; color: var(--accent-strong); }
-  .back p { margin: 0; line-height: 1.6; white-space: pre-wrap; }
+  .back h3 { margin: 0 0 4px; font-size: .9rem; color: var(--mint-strong); }
+  .back p { margin: 0; font-size: 1.05rem; line-height: 1.6; white-space: pre-wrap; }
 
-  .tips {
-    margin-top: 22px;
-    background: var(--warn-bg);
-    color: var(--warn-text);
-    border-radius: 16px;
-    padding: 16px 20px;
-    line-height: 1.7;
+  /* ── 3단계: 팁 ── */
+  .tips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .tip {
+    border-radius: 18px;
+    padding: 16px;
+    font-size: .92rem; line-height: 1.55;
+    color: var(--ink-soft);
   }
-  .tips h2 { margin: 0 0 6px; font-size: 1.05rem; }
-  .tips ul { margin: 0; padding-left: 20px; }
+  .tip .t-emo { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+  .tip b { color: var(--ink); }
+  .tip:nth-child(1) { background: #f5f3ff; }
+  .tip:nth-child(2) { background: #fff7ed; }
+  .tip:nth-child(3) { background: #ecfeff; }
+  .tip:nth-child(4) { background: #fff1f2; }
 
   .toast {
-    position: fixed;
-    bottom: 24px; left: 50%;
+    position: fixed; bottom: 24px; left: 50%;
     transform: translateX(-50%) translateY(20px);
-    background: #111827; color: #fff;
-    padding: 10px 18px;
-    border-radius: 999px;
-    font-size: .95rem;
-    opacity: 0;
-    pointer-events: none;
+    background: var(--ink); color: #fff;
+    padding: 11px 20px; border-radius: 999px;
+    font-size: .95rem; font-weight: 600;
+    opacity: 0; pointer-events: none;
     transition: opacity .25s, transform .25s;
+    z-index: 10;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  @media (max-width: 700px) {
+  @media (max-width: 820px) {
     .fields { grid-template-columns: 1fr 1fr; }
-    .fields label.wide { grid-column: 1 / -1; }
-    header h1 { font-size: 1.6rem; }
-    .panes { grid-template-columns: 1fr; }
-    .pane { min-height: 200px; }
-    textarea, .result { min-height: 150px; }
+    .f.c2, .f.c3 { grid-column: 1 / -1; }
+    .tips { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    body { padding-top: 22px; }
+    .step { padding: 20px 16px; border-radius: 22px; }
+    .pair { grid-template-columns: 1fr; }
+    .step-head { flex-wrap: wrap; }
+    .langs { margin-left: 50px; }
+    .tips { grid-template-columns: 1fr; }
+    .check { flex-wrap: wrap; row-gap: 2px; }
+    .check .hint-s { flex-basis: 100%; padding-left: 30px; }
   }
 </style>
 </head>
 <body>
 <div class="page">
-  <header>
-    <h1>🌏 AI 번역기</h1>
-    <p>나의 미래 직업 모습을 한국어로 쓰면, 그림 AI가 알아듣는 영어로 바꿔 줘요</p>
+
+  <header class="hero">
+    <span class="tag">🎨 생성형 AI로 그리는 나의 미래</span>
+    <h1><span class="grad">나의 미래 직업</span> 번역기</h1>
+    <p>미래의 내 모습을 한국어로 만들면, 그림 AI가 알아듣는 영어로 바꿔 줘요</p>
   </header>
 
-  <div class="lang-bar">
-    <select id="src" aria-label="원래 언어"></select>
-    <button class="swap" id="swap" title="언어 바꾸기" aria-label="언어 바꾸기">⇄</button>
-    <select id="tgt" aria-label="바꿀 언어"></select>
-  </div>
+  <!-- 1단계 -->
+  <section class="step">
+    <div class="step-head">
+      <div class="num n1">1</div>
+      <div>
+        <h2>미래의 내 모습 만들기</h2>
+        <p>칸을 채우면 문장이 저절로 만들어져요. 빈칸은 건너뛰어도 괜찮아요.</p>
+      </div>
+    </div>
 
-  <section class="builder">
-    <h2>✏️ 문장 만들기 도우미</h2>
-    <p class="sub">칸을 채우면 그림 AI에게 줄 문장을 만들어 줘요. 빈칸은 건너뛰어도 괜찮아요.</p>
     <div class="fields">
-      <label>나이<input id="fAge" placeholder="30대"></label>
-      <label>성별<input id="fGender" placeholder="남자"></label>
-      <label class="wide">미래 직업<input id="fJob" placeholder="파일럿"></label>
-      <label class="wide">하고 있는 일<input id="fAction" placeholder="비행기를 조종하고 있는 모습"></label>
-      <label class="wide">배경<input id="fPlace" placeholder="비행기 조종석"></label>
-      <label class="wide">
-        <span class="style-check"><input type="checkbox" id="useStyle"> 그림 스타일 넣기</span>
+      <label class="f c2">
+        <span class="lbl"><span class="emo">🎂</span>나이</span>
+        <select id="fAge" class="empty">
+          <option value="">나이 고르기</option>
+        </select>
+      </label>
+
+      <div class="f c2">
+        <span class="lbl"><span class="emo">🙂</span>성별</span>
+        <div class="seg" id="fGender" role="group" aria-label="성별">
+          <button type="button" data-v="여자">👩 여자</button>
+          <button type="button" data-v="남자">👨 남자</button>
+        </div>
+      </div>
+
+      <label class="f c2">
+        <span class="lbl"><span class="emo">💼</span>미래 직업</span>
+        <input type="text" id="fJob" placeholder="어떤 직업?">
+      </label>
+
+      <label class="f c3">
+        <span class="lbl"><span class="emo">✨</span>하고 있는 일</span>
+        <input type="text" id="fAction" placeholder="무엇을 하고 있는 모습인가요?">
+      </label>
+
+      <label class="f c3">
+        <span class="lbl"><span class="emo">🏙️</span>배경</span>
+        <input type="text" id="fPlace" placeholder="어디에 있나요?">
+      </label>
+
+      <div class="f c3">
+        <label class="lbl check">
+          <input type="checkbox" id="useStyle">
+          <span class="box"></span>
+          <span>🖌️ 그림 스타일 넣기</span>
+          <span class="hint-s">(그림 사이트에 스타일 목록이 없을 때만)</span>
+        </label>
         <select id="fStyle" disabled>
           <option>3D 애니메이션 스타일</option>
           <option>웹툰 스타일</option>
@@ -307,58 +406,79 @@
           <option>실사 사진 스타일</option>
           <option>픽셀 아트 스타일</option>
         </select>
-      </label>
+      </div>
     </div>
-    <button class="btn btn-main" id="build">문장 만들고 번역하기</button>
+
+    <div class="preview" id="preview"><span class="ph">여기에 내가 만든 문장이 보여요 👀</span></div>
+
+    <button class="big-btn" id="build">🪄 영어로 바꾸기</button>
   </section>
 
-  <div class="examples" id="examples">
-    <span>예시 눌러 보기 👉</span>
-  </div>
-
-  <div class="panes">
-    <div class="pane">
-      <textarea id="input" maxlength="2000" placeholder="번역할 내용을 입력하세요"></textarea>
-      <div class="pane-tools">
-        <button class="icon-btn" id="mic" title="말로 입력하기">🎤 말하기</button>
-        <button class="icon-btn" id="speakIn" title="소리 내어 읽기">🔊 듣기</button>
-        <button class="icon-btn" id="clear" title="지우기">✖ 지우기</button>
-        <span class="spacer"></span>
-        <span class="count" id="count">0 / 2000</span>
+  <!-- 2단계 -->
+  <section class="step">
+    <div class="step-head">
+      <div class="num n2">2</div>
+      <div>
+        <h2>복사해서 그림 AI에 붙여넣기</h2>
+        <p>노란 버튼을 누르고, 그림 AI 입력창에서 Ctrl + V</p>
+      </div>
+      <div class="langs">
+        <select id="src" aria-label="원래 언어"></select>
+        <button class="swap" id="swap" title="언어 바꾸기" aria-label="언어 바꾸기">⇄</button>
+        <select id="tgt" aria-label="바꿀 언어"></select>
       </div>
     </div>
-    <div class="pane out">
-      <div class="result placeholder" id="output" aria-live="polite">번역 결과가 여기에 나와요</div>
-      <div class="pane-tools">
-        <span class="engine" id="engine"></span>
-        <span class="spacer"></span>
-        <span class="count" id="detected"></span>
-        <button class="icon-btn" id="speakOut" title="소리 내어 읽기">🔊 듣기</button>
+
+    <div class="pair">
+      <div class="box-in">
+        <div class="box-title">✏️ 내 문장 (직접 고쳐도 돼요)</div>
+        <textarea id="input" maxlength="2000" placeholder="1단계에서 만든 문장이 여기에 들어와요. 직접 써도 돼요!"></textarea>
+        <div class="tools">
+          <button class="ib" id="mic" title="말로 입력하기">🎤 말하기</button>
+          <button class="ib" id="clear" title="지우기">🧽 지우기</button>
+          <span class="sp"></span>
+          <span class="meta" id="count">0 / 2000</span>
+        </div>
       </div>
-      <button class="copy-big" id="copy" disabled>📋 번역 결과 복사하기</button>
+
+      <div class="box-out">
+        <div class="box-title">🌏 영어 번역</div>
+        <div class="result placeholder" id="output" aria-live="polite">번역 결과가 여기에 나와요</div>
+        <div class="tools">
+          <span class="meta" id="engine"></span>
+          <span class="sp"></span>
+          <span class="meta" id="detected"></span>
+          <button class="ib" id="speakOut" title="소리 내어 읽기">🔊 듣기</button>
+        </div>
+        <button class="copy" id="copy" disabled>📋 복사하기</button>
+      </div>
     </div>
-  </div>
 
-  <div class="actions">
-    <button class="btn btn-main" id="go">번역하기</button>
-    <button class="btn btn-sub" id="checkBack">🔁 거꾸로 번역해서 확인하기</button>
-  </div>
-  <div class="hint">Ctrl + Enter 를 누르면 바로 번역돼요</div>
+    <div class="sub-row">
+      <button class="ghost primary" id="go">🔄 내 문장 다시 번역하기</button>
+      <button class="ghost" id="checkBack">🔁 거꾸로 번역해서 뜻 확인하기</button>
+    </div>
 
-  <div class="back" id="back">
-    <h3>🔁 다시 원래 말로 번역해 보면…</h3>
-    <p id="backText"></p>
-  </div>
+    <div class="back" id="back">
+      <h3>🔁 다시 한국어로 바꿔 보면…</h3>
+      <p id="backText"></p>
+    </div>
+  </section>
 
-  <section class="tips">
-    <h2>💡 AI 번역기를 똑똑하게 쓰는 법</h2>
-    <ul>
-      <li>그림 AI에게는 <b>나이 · 성별 · 직업 · 하고 있는 일 · 배경</b>을 자세히 써 주면 내가 원하는 그림에 더 가까워져요.</li>
-      <li>그림 사이트에 <b>스타일 고르는 목록이 없을 때만</b> '그림 스타일 넣기'를 체크하세요.</li>
-      <li>AI 번역은 <b>틀릴 수 있어요.</b> '거꾸로 번역해서 확인하기'로 내 뜻이 그대로인지 꼭 확인해 보세요.</li>
-      <li>문장을 <b>짧고 정확하게</b> 쓸수록 번역이 더 잘 돼요. 유행어나 줄임말은 풀어서 써 보세요.</li>
-      <li>이름, 주소, 전화번호 같은 <b>개인정보는 입력하지 마세요.</b></li>
-    </ul>
+  <!-- 3단계 -->
+  <section class="step">
+    <div class="step-head">
+      <div class="num n3">3</div>
+      <div>
+        <h2>AI 번역기 똑똑하게 쓰기</h2>
+      </div>
+    </div>
+    <div class="tips">
+      <div class="tip"><span class="t-emo">🔍</span><b>자세할수록 좋아요.</b> 나이·성별·직업·하는 일·배경을 채우면 원하는 그림에 더 가까워져요.</div>
+      <div class="tip"><span class="t-emo">🤔</span><b>AI도 틀릴 수 있어요.</b> '거꾸로 번역'으로 내 뜻이 그대로인지 확인해 보세요.</div>
+      <div class="tip"><span class="t-emo">✂️</span><b>짧고 정확하게!</b> 유행어나 줄임말은 풀어서 쓰면 번역이 더 잘 돼요.</div>
+      <div class="tip"><span class="t-emo">🔒</span><b>개인정보는 NO!</b> 이름, 주소, 전화번호는 입력하지 마세요.</div>
+    </div>
   </section>
 </div>
 
@@ -385,59 +505,64 @@
   const NAME = Object.fromEntries(LANGS.map(([c, n]) => [c, n]));
   const VOICE = Object.fromEntries(LANGS.map(([c, , v]) => [c, v]));
 
-  const EXAMPLES = [
-    ['30대', '남자', '파일럿', '비행기를 조종하고 있는 모습', '비행기 조종석'],
-    ['20대', '여자', '수의사', '강아지를 진료하고 있는 모습', '동물병원 진료실'],
-    ['30대', '남자', '요리사', '스테이크를 굽고 있는 모습', '레스토랑 주방'],
-    ['40대', '여자', '우주비행사', '우주선 밖에서 수리를 하고 있는 모습', '지구가 보이는 우주'],
-  ];
-  const FIELDS = ['fAge', 'fGender', 'fJob', 'fAction', 'fPlace'];
-
-  // 예: "30대 남자 파일럿, 비행기를 조종하고 있는 모습, 배경은 비행기 조종석, 3D 애니메이션 스타일"
-  function buildSentence(age, gender, job, action, place) {
-    const who = [age, gender, job].filter(Boolean).join(' ');
-    if (!who && !action && !place) return '';
-    return [who, action, place && `배경은 ${place}`, $('useStyle').checked && $('fStyle').value].filter(Boolean).join(', ');
-  }
-
   const $ = id => document.getElementById(id);
   const src = $('src'), tgt = $('tgt'), input = $('input'), output = $('output');
-  const goBtn = $('go'), backBtn = $('checkBack'), copyBtn = $('copy');
+  const goBtn = $('go'), backBtn = $('checkBack'), copyBtn = $('copy'), buildBtn = $('build');
 
-  src.innerHTML = '<option value="auto">🔍 언어 자동 감지</option>' +
+  src.innerHTML = '<option value="auto">🔍 자동 감지</option>' +
     LANGS.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
   tgt.innerHTML = LANGS.map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
   src.value = 'ko';
   tgt.value = 'en';
 
-  EXAMPLES.forEach(ex => {
-    const b = document.createElement('button');
-    b.className = 'chip';
-    b.textContent = `${ex[0]} ${ex[1]} ${ex[2]}`;
-    b.addEventListener('click', () => {
-      FIELDS.forEach((id, i) => { $(id).value = ex[i]; });
-      input.value = buildSentence(...ex);
-      updateCount();
-      run();
-    });
-    $('examples').appendChild(b);
-  });
+  /* ───────── 1단계: 문장 만들기 ───────── */
+
+  for (let a = 10; a <= 90; a += 10) $('fAge').add(new Option(`${a}대`, `${a}대`));
+  $('fAge').addEventListener('change', e => e.target.classList.toggle('empty', !e.target.value));
+
+  let gender = '';
+  document.querySelectorAll('#fGender button').forEach(b => b.addEventListener('click', () => {
+    gender = gender === b.dataset.v ? '' : b.dataset.v;   // 한 번 더 누르면 선택 해제
+    document.querySelectorAll('#fGender button').forEach(x => x.classList.toggle('on', x.dataset.v === gender));
+    updatePreview();
+  }));
 
   // 그림 사이트에 스타일 목록이 이미 있으면 체크하지 않아요 (기본: 넣지 않음)
-  $('useStyle').addEventListener('change', e => { $('fStyle').disabled = !e.target.checked; });
+  $('useStyle').addEventListener('change', e => { $('fStyle').disabled = !e.target.checked; updatePreview(); });
 
-  $('build').addEventListener('click', () => {
-    const sentence = buildSentence(...FIELDS.map(id => $(id).value.trim()));
+  // 예: "30대 남자 파일럿, 비행기를 조종하고 있는 모습, 배경은 비행기 조종석"
+  function parts() {
+    const age = $('fAge').value, job = $('fJob').value.trim();
+    const action = $('fAction').value.trim(), place = $('fPlace').value.trim();
+    const style = $('useStyle').checked ? $('fStyle').value : '';
+    const who = [age, gender, job].filter(Boolean).join(' ');
+    return [who, action, place && `배경은 ${place}`, style].filter(Boolean);
+  }
+  const buildSentence = () => parts().join(', ');
+
+  function updatePreview() {
+    const p = parts();
+    $('preview').innerHTML = p.length
+      ? p.map(x => `<b>${x.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))}</b>`).join(', ')
+      : '<span class="ph">여기에 내가 만든 문장이 보여요 👀</span>';
+  }
+  ['fAge', 'fJob', 'fAction', 'fPlace', 'fStyle'].forEach(id => {
+    $(id).addEventListener('input', updatePreview);
+    $(id).addEventListener('change', updatePreview);
+    $(id).addEventListener('keydown', e => { if (e.key === 'Enter') buildBtn.click(); });
+  });
+
+  buildBtn.addEventListener('click', () => {
+    const sentence = buildSentence();
     if (!sentence) { $('fJob').focus(); toast('칸을 하나 이상 채워 주세요'); return; }
     src.value = 'ko';
     tgt.value = 'en';
     input.value = sentence;
     updateCount();
-    run();
+    run().then(() => {
+      if (window.innerWidth < 900) output.closest('.step').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
-  FIELDS.forEach(id => $(id).addEventListener('keydown', e => {
-    if (e.key === 'Enter') $('build').click();
-  }));
 
   let lastResult = '';
   let lastDetected = '';
@@ -563,16 +688,16 @@
     throw new Error('all engines failed');
   }
 
-  /* ───────── 화면 동작 ───────── */
+  /* ───────── 2단계: 번역 · 복사 ───────── */
 
   function setBusy(busy) {
-    goBtn.disabled = backBtn.disabled = busy;
-    goBtn.textContent = busy ? '번역하는 중…' : '번역하기';
+    goBtn.disabled = backBtn.disabled = buildBtn.disabled = busy;
+    buildBtn.textContent = busy ? '⏳ 번역하는 중…' : '🪄 영어로 바꾸기';
   }
 
   function resetCopy() {
     copyBtn.classList.remove('done');
-    copyBtn.textContent = '📋 번역 결과 복사하기';
+    copyBtn.textContent = '📋 복사하기';
     copyBtn.disabled = !lastResult;
   }
 
@@ -594,7 +719,7 @@
         ? `감지: ${NAME[r.detected]}` : '';
     } catch (e) {
       lastResult = '';
-      output.textContent = '지금 번역하는 사람이 많아서 잠깐 막혔어요 😢\n10초 뒤에 다시 [번역하기]를 눌러 주세요.';
+      output.textContent = '지금 번역하는 사람이 많아서 잠깐 막혔어요 😢\n10초 뒤에 다시 눌러 주세요.';
       output.className = 'result error';
       $('engine').textContent = '';
     } finally {
@@ -640,7 +765,7 @@
     if (!lastResult) return;
     if (await copyText(lastResult)) {
       copyBtn.classList.add('done');
-      copyBtn.textContent = '✅ 복사됐어요! 그림 AI에 붙여넣기(Ctrl+V)';
+      copyBtn.textContent = '✅ 복사됐어요! 그림 AI에 Ctrl+V';
       clearTimeout(copyBtn.timer);
       copyBtn.timer = setTimeout(resetCopy, 3000);
     } else {
@@ -709,8 +834,6 @@
     input.focus();
   });
 
-  $('speakIn').addEventListener('click', () =>
-    speak(input.value.trim(), src.value === 'auto' ? (lastDetected || 'ko') : src.value));
   $('speakOut').addEventListener('click', () => speak(lastResult, tgt.value));
 </script>
 </body>

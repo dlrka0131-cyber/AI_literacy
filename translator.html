@@ -206,11 +206,11 @@
   .builder .sub { margin: 0 0 12px; font-size: .88rem; color: var(--text-muted); }
   .fields {
     display: grid;
-    grid-template-columns: 0.8fr 0.8fr 1fr 1.6fr 1.4fr;
+    grid-template-columns: 1fr 1fr 1.4fr;
     gap: 10px;
   }
   .fields label { min-width: 0; display: flex; flex-direction: column; gap: 4px; font-size: .85rem; font-weight: 700; color: var(--text-muted); }
-  .fields input {
+  .fields input, .fields select {
     font: inherit;
     font-size: 1rem;
     padding: 10px 11px;
@@ -295,6 +295,16 @@
       <label class="wide">미래 직업<input id="fJob" placeholder="파일럿"></label>
       <label class="wide">하고 있는 일<input id="fAction" placeholder="비행기를 조종하고 있는 모습"></label>
       <label class="wide">배경<input id="fPlace" placeholder="비행기 조종석"></label>
+      <label class="wide">그림 스타일
+        <select id="fStyle">
+          <option>3D 애니메이션 스타일</option>
+          <option>웹툰 스타일</option>
+          <option>수채화 스타일</option>
+          <option>실사 사진 스타일</option>
+          <option>픽셀 아트 스타일</option>
+          <option value="">(스타일 안 넣기)</option>
+        </select>
+      </label>
     </div>
     <button class="btn btn-main" id="build">문장 만들고 번역하기</button>
   </section>
@@ -340,7 +350,7 @@
   <section class="tips">
     <h2>💡 AI 번역기를 똑똑하게 쓰는 법</h2>
     <ul>
-      <li>그림 AI에게는 <b>나이 · 성별 · 직업 · 하고 있는 일 · 배경</b>을 자세히 써 주면 내가 원하는 그림에 더 가까워져요.</li>
+      <li>그림 AI에게는 <b>나이 · 성별 · 직업 · 하고 있는 일 · 배경 · 그림 스타일</b>을 자세히 써 주면 내가 원하는 그림에 더 가까워져요.</li>
       <li>AI 번역은 <b>틀릴 수 있어요.</b> '거꾸로 번역해서 확인하기'로 내 뜻이 그대로인지 꼭 확인해 보세요.</li>
       <li>문장을 <b>짧고 정확하게</b> 쓸수록 번역이 더 잘 돼요. 유행어나 줄임말은 풀어서 써 보세요.</li>
       <li>이름, 주소, 전화번호 같은 <b>개인정보는 입력하지 마세요.</b></li>
@@ -379,10 +389,11 @@
   ];
   const FIELDS = ['fAge', 'fGender', 'fJob', 'fAction', 'fPlace'];
 
-  // 예: "30대 남자 파일럿, 비행기를 조종하고 있는 모습, 배경은 비행기 조종석"
+  // 예: "30대 남자 파일럿, 비행기를 조종하고 있는 모습, 배경은 비행기 조종석, 3D 애니메이션 스타일"
   function buildSentence(age, gender, job, action, place) {
     const who = [age, gender, job].filter(Boolean).join(' ');
-    return [who, action, place && `배경은 ${place}`].filter(Boolean).join(', ');
+    if (!who && !action && !place) return '';
+    return [who, action, place && `배경은 ${place}`, $('fStyle').value].filter(Boolean).join(', ');
   }
 
   const $ = id => document.getElementById(id);

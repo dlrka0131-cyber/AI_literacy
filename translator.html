@@ -38,10 +38,19 @@
       radial-gradient(900px 600px at 0% 75%, #f9dc9a 0%, transparent 60%),
       radial-gradient(900px 600px at 100% 100%, #9fe3c4 0%, transparent 60%),
       #c9c1f0;
-    padding: 32px 16px 56px;
+    padding: 28px clamp(16px, 2.5vw, 40px) 48px;
   }
 
-  .page { max-width: 1040px; margin: 0 auto; }
+  html { font-size: 18px; }
+  .page { width: 100%; }
+  .main-grid { display: grid; grid-template-columns: 1fr; gap: 0 22px; align-items: stretch; }
+  @media (min-width: 1280px) {
+    .main-grid { grid-template-columns: 1fr 1fr; }
+    .main-grid .step { display: flex; flex-direction: column; }
+    .main-grid .pair { grid-template-columns: 1fr; flex: 1; }
+    .main-grid .box-in, .main-grid .box-out { min-height: 200px; }
+    .main-grid .s1 .preview { flex: 1; display: flex; align-items: center; font-size: 1.35rem; }
+  }
 
   /* ── 머리말 ── */
   .hero { text-align: center; margin-bottom: 28px; }
@@ -50,12 +59,12 @@
     padding: 6px 14px; border-radius: 999px;
     background: #fff;
     border: 1px solid var(--line);
-    font-size: .85rem; font-weight: 700; color: var(--violet);
+    font-size: .9rem; font-weight: 800; color: var(--violet);
     backdrop-filter: blur(6px);
   }
   .hero h1 {
     font-weight: 900;
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(2.1rem, 4.5vw, 3.4rem);
     line-height: 1.15;
     margin: 14px 0 8px;
     letter-spacing: -0.03em;
@@ -63,7 +72,7 @@
   .hero h1 .grad {
     color: #6d28d9;
   }
-  .hero p { margin: 0; color: #2a2656; font-size: 1.1rem; font-weight: 600; }
+  .hero p { margin: 0; color: #221e4d; font-size: 1.2rem; font-weight: 700; }
 
   /* ── 단계 카드 ── */
   .step {
@@ -87,8 +96,8 @@
   .num.n1 { background: #fbcfe8; color: #9d174d; }
   .num.n2 { background: #bfdbfe; color: #1e40af; }
   .num.n3 { background: #bbf7d0; color: #166534; }
-  .step-head h2 { margin: 0; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; }
-  .step-head p { margin: 2px 0 0; color: var(--muted); font-size: .9rem; }
+  .step-head h2 { margin: 0; font-weight: 900; font-size: 1.55rem; letter-spacing: -0.02em; }
+  .step-head p { margin: 4px 0 0; color: var(--ink-soft); font-size: 1rem; font-weight: 600; }
 
   /* ── 1단계: 칸 채우기 ── */
   .fields {
@@ -101,14 +110,14 @@
   .f.c3 { grid-column: span 3; }
   .f > .lbl {
     display: flex; align-items: center; gap: 6px;
-    font-size: .9rem; font-weight: 800; color: var(--ink-soft);
+    font-size: 1.05rem; font-weight: 800; color: var(--ink);
   }
-  .f > .lbl .emo { font-size: 1.05rem; }
+  .f > .lbl .emo { font-size: 1.15rem; }
 
   .fields input[type=text], .fields select {
     width: 100%; min-width: 0;
-    font: inherit; font-size: 1.05rem; font-weight: 600;
-    padding: 13px 14px;
+    font: inherit; font-size: 1.15rem; font-weight: 700;
+    padding: 14px 16px;
     border: 2px solid transparent;
     border-radius: 14px;
     background: var(--field);
@@ -137,8 +146,8 @@
   /* 성별 토글 */
   .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .seg button {
-    font: inherit; font-size: 1.05rem; font-weight: 700;
-    padding: 12px 6px;
+    font: inherit; font-size: 1.15rem; font-weight: 800;
+    padding: 13px 6px;
     border-radius: 14px;
     border: 2px solid transparent;
     background: var(--field);
@@ -163,7 +172,8 @@
   .check input:checked + .box { background: var(--violet); border-color: var(--violet); }
   .check input:checked + .box::after { opacity: 1; }
   .check input:focus-visible + .box { box-shadow: 0 0 0 4px var(--violet-soft); }
-  .check .hint-s { font-weight: 500; color: var(--muted); font-size: .8rem; }
+  .check { flex-wrap: wrap; row-gap: 2px; }
+  .check .hint-s { flex-basis: 100%; padding-left: 30px;  font-weight: 600; color: var(--muted); font-size: .88rem; }
 
   /* 미리보기 */
   .preview {
@@ -172,7 +182,8 @@
     border-radius: 16px;
     border: 2px dashed #d8d2f5;
     background: #fbfaff;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
+    font-weight: 600;
     line-height: 1.6;
     color: var(--ink);
     min-height: 56px;
@@ -184,8 +195,8 @@
     display: flex; align-items: center; justify-content: center; gap: 10px;
     width: 100%;
     margin-top: 16px;
-    font: inherit; font-size: 1.2rem; font-weight: 800;
-    padding: 17px;
+    font: inherit; font-size: 1.35rem; font-weight: 900;
+    padding: 18px;
     border: none; border-radius: 18px;
     color: #4c1d95;
     background: linear-gradient(90deg, #c4b5fd, #f9a8d4 55%, #fdba74);
@@ -200,7 +211,7 @@
   /* ── 2단계: 결과 ── */
   .langs { display: flex; align-items: center; gap: 8px; margin-left: auto; }
   .langs select {
-    font: inherit; font-size: .85rem; font-weight: 700;
+    font: inherit; font-size: .9rem; font-weight: 700;
     padding: 7px 10px; border-radius: 10px;
     border: 1px solid var(--line); background: #fff; color: var(--ink-soft);
     cursor: pointer;
@@ -230,14 +241,14 @@
   .box-title {
     display: flex; align-items: center; gap: 6px;
     padding: 14px 18px 0;
-    font-size: .8rem; font-weight: 800; letter-spacing: .04em;
+    font-size: .9rem; font-weight: 800; letter-spacing: .02em;
     color: var(--muted);
   }
   .box-out .box-title { color: #7c6fd6; }
 
   textarea, .result {
     flex: 1;
-    font: inherit; font-size: 1.15rem; line-height: 1.6;
+    font: inherit; font-size: 1.25rem; font-weight: 600; line-height: 1.6;
     padding: 8px 18px 14px;
     border: none; outline: none; resize: none;
     background: transparent; color: inherit;
@@ -245,28 +256,28 @@
     white-space: pre-wrap; word-break: break-word;
   }
   textarea::placeholder { color: #9a96bd; }
-  .result { font-size: 1.3rem; font-weight: 600; }
-  .result.placeholder { color: #a39fcf; font-weight: 500; font-size: 1.1rem; }
+  .result { font-size: 1.45rem; font-weight: 700; }
+  .result.placeholder { color: #8f8bb3; font-weight: 600; font-size: 1.15rem; }
   .result.error { color: var(--error); font-size: 1.05rem; }
 
   .tools { display: flex; align-items: center; gap: 4px; padding: 6px 10px 10px; }
   .tools .sp { flex: 1; }
   .ib {
-    font: inherit; font-size: .88rem; font-weight: 600;
+    font: inherit; font-size: .95rem; font-weight: 700;
     border: none; background: transparent; color: var(--ink-soft);
     padding: 7px 10px; border-radius: 10px; cursor: pointer;
   }
   .ib:hover { background: rgba(124,58,237,.08); }
   .ib.on { background: #ffe4e6; color: var(--error); }
   .box-out .ib:hover { background: rgba(255,255,255,.6); }
-  .meta { font-size: .78rem; color: var(--muted); padding: 0 6px; }
+  .meta { font-size: .85rem; font-weight: 600; color: var(--muted); padding: 0 6px; }
   .box-out .meta { color: #8b88ad; }
 
   .copy {
     margin: 0 14px 14px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    font: inherit; font-size: 1.2rem; font-weight: 800;
-    padding: 16px;
+    font: inherit; font-size: 1.35rem; font-weight: 900;
+    padding: 17px;
     border: none; border-radius: 16px;
     background: #fde68a; color: #713f12;
     box-shadow: 0 8px 18px rgba(253,230,138,.6);
@@ -280,8 +291,8 @@
   .sub-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
   .ghost {
     flex: 1; min-width: 220px;
-    font: inherit; font-size: 1rem; font-weight: 700;
-    padding: 13px; border-radius: 14px;
+    font: inherit; font-size: 1.05rem; font-weight: 800;
+    padding: 14px; border-radius: 14px;
     border: 2px solid var(--line); background: #fff; color: var(--ink-soft);
     cursor: pointer;
     transition: border-color .15s, color .15s;
@@ -299,15 +310,15 @@
     border: 1px solid #a7f3d0;
   }
   .back.show { display: block; }
-  .back h3 { margin: 0 0 4px; font-size: .9rem; color: var(--mint-strong); }
-  .back p { margin: 0; font-size: 1.05rem; line-height: 1.6; white-space: pre-wrap; }
+  .back h3 { margin: 0 0 4px; font-size: 1rem; color: var(--mint-strong); }
+  .back p { margin: 0; font-size: 1.2rem; font-weight: 600; line-height: 1.6; white-space: pre-wrap; }
 
   /* ── 3단계: 팁 ── */
   .tips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   .tip {
     border-radius: 18px;
     padding: 16px;
-    font-size: .92rem; line-height: 1.55;
+    font-size: 1rem; font-weight: 500; line-height: 1.6;
     color: var(--ink-soft);
   }
   .tip .t-emo { font-size: 1.6rem; display: block; margin-bottom: 6px; }
@@ -335,14 +346,13 @@
     .tips { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 640px) {
+    html { font-size: 16px; }
     body { padding-top: 22px; }
     .step { padding: 20px 16px; border-radius: 22px; }
     .pair { grid-template-columns: 1fr; }
     .step-head { flex-wrap: wrap; }
     .langs { margin-left: 50px; }
     .tips { grid-template-columns: 1fr; }
-    .check { flex-wrap: wrap; row-gap: 2px; }
-    .check .hint-s { flex-basis: 100%; padding-left: 30px; }
   }
 </style>
 </head>
@@ -355,6 +365,7 @@
     <p>미래의 내 모습을 한국어로 만들면, 그림 AI가 알아듣는 영어로 바꿔 줘요</p>
   </header>
 
+  <div class="main-grid">
   <!-- 1단계 -->
   <section class="step s1">
     <div class="step-head">
@@ -424,7 +435,7 @@
       <div class="num n2">2</div>
       <div>
         <h2>복사해서 그림 AI에 붙여넣기</h2>
-        <p>노란 [복사하기] 버튼을 누르고, 그림 AI 입력창에서 Ctrl + V</p>
+        <p>노란 [복사하기]를 누르고 그림 AI에 <span style="white-space:nowrap">Ctrl + V</span></p>
       </div>
       <div class="langs">
         <select id="src" aria-label="원래 언어"></select>
@@ -468,6 +479,8 @@
       <p id="backText"></p>
     </div>
   </section>
+
+  </div>
 
   <!-- 3단계 -->
   <section class="step s3">
@@ -547,7 +560,7 @@
   function updatePreview() {
     const p = parts();
     $('preview').innerHTML = p.length
-      ? p.map(x => `<b>${x.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))}</b>`).join(', ')
+      ? '<span>' + p.map(x => `<b>${x.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))}</b>`).join(', ') + '</span>'
       : '<span class="ph">여기에 내가 만든 문장이 보여요 👀</span>';
   }
   ['fAge', 'fJob', 'fAction', 'fPlace', 'fStyle'].forEach(id => {

@@ -106,6 +106,23 @@
     letter-spacing: -0.03em;
     color: var(--ink);
   }
+  /* 비상 번역(크롬 내장 AI) 준비 상태 */
+  .hero { position: relative; }
+  .rescue {
+    font: inherit; font-size: .9rem; font-weight: 800;
+    padding: 8px 14px; border-radius: 999px;
+    border: 2px solid transparent;
+    background: rgba(255,255,255,.85); color: var(--ink-soft);
+    cursor: default; white-space: nowrap;
+  }
+  .rescue.ready { background: #dcfce7; border-color: #86efac; color: #166534; }
+  .rescue.loading { background: #fef9c3; border-color: #fde047; color: #854d0e; }
+  .rescue.need { background: #fff; border-color: #c4b5fd; color: #6d28d9; cursor: pointer; }
+  .rescue.need:hover { background: #f3edff; }
+  .rescue.no { background: rgba(255,255,255,.7); color: #8b88ad; }
+  @media (min-width: 1100px) {
+    .rescue { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+  }
   .hero h1 .grad {
     color: #6d28d9;
     background: linear-gradient(transparent 62%, #fde68a 62%, #fde68a 92%, transparent 92%);
@@ -436,6 +453,7 @@
   <header class="hero">
     <span class="tag">🎨 생성형 AI로 그리는 나의 미래</span>
     <h1><span class="grad">나의 미래 직업</span> 번역기 ✨</h1>
+    <button class="rescue" id="rescue" type="button" hidden></button>
   </header>
 
   <div class="main-grid">
@@ -715,13 +733,26 @@
       if (!this.supported() || from === 'auto') return;
       const key = from + '>' + to;
       if (this.ready[key] || this.loading[key]) return;
+      const main = key === 'ko>en';   // 머리말의 '비상 번역' 표시는 한국어→영어 기준
       this.loading[key] = (async () => {
         const opts = { sourceLanguage: this.base(from), targetLanguage: this.base(to) };
-        if (await Translator.availability(opts) === 'unavailable') return null;
-        const t = await Translator.create(opts);
+        const avail = await Translator.availability(opts);
+        if (avail === 'unavailable') { if (main) setRescue('no'); return null; }
+        if (main && avail !== 'available') setRescue('loading', 0);
+        const t = await Translator.create({
+          ...opts,
+          monitor(m) {
+            if (main) m.addEventListener('downloadprogress', e => setRescue('loading', Math.round(e.loaded * 100)));
+          },
+        });
         this.ready[key] = t;
+        if (main) setRescue('ready');
         return t;
-      })().catch(() => null);
+      })().catch(() => {
+        delete this.loading[key];      // 실패하면 다음에 다시 시도할 수 있게
+        if (main) setRescue('need');
+        return null;
+      });
     },
     async translate(text, from, to) {
       if (!this.supported()) throw new Error('not supported');
@@ -733,6 +764,45 @@
       return { text: await t.translate(text), detected: from };
     },
   };
+
+  /* 머리말 끝의 '비상 번역' 상태 표시
+     구글 번역이 막혀도 크롬 안의 번역 AI로 계속 번역할 수 있는지 보여 줘요. */
+  const rescueBtn = $('rescue');
+  function setRescue(state, pct) {
+    rescueBtn.hidden = false;
+    rescueBtn.className = 'rescue ' + state;
+    rescueBtn.textContent = {
+      ready: '✅ 비상 번역 준비됨',
+      loading: `⏳ 비상 번역 준비 중${pct ? ' ' + pct + '%' : '…'}`,
+      need: '⬇️ 비상 번역 준비하기',
+      no: '❌ 비상 번역 사용 불가',
+    }[state];
+    rescueBtn.title = {
+      ready: '구글 번역이 막혀도 이 컴퓨터 안의 AI로 계속 번역할 수 있어요.',
+      loading: '이 컴퓨터에 번역 AI를 내려받고 있어요.',
+      need: '눌러서 이 컴퓨터에 번역 AI를 내려받아 두세요. 구글 번역이 막혀도 계속 번역할 수 있어요.',
+      no: '크롬 최신 버전에서만 쓸 수 있어요. 구글 번역으로만 번역해요.',
+    }[state];
+  }
+  rescueBtn.addEventListener('click', () => {
+    if (rescueBtn.classList.contains('need')) onDevice.prepare('ko', 'en');
+  });
+
+  (async () => {
+    if (!onDevice.supported()) return setRescue('no');
+    // 6초 안에 대답이 없으면 일단 '사용 불가'로 보여 주고, 나중에 대답이 오면 바꿔요
+    const slow = setTimeout(() => setRescue('no'), 6000);
+    try {
+      const avail = await Translator.availability({ sourceLanguage: 'ko', targetLanguage: 'en' });
+      clearTimeout(slow);
+      if (avail === 'unavailable') setRescue('no');
+      else if (avail === 'available') { setRescue('loading'); onDevice.prepare('ko', 'en'); }
+      else setRescue('need');   // 내려받기는 사람이 눌러야 시작돼요
+    } catch (e) {
+      clearTimeout(slow);
+      setRescue('no');
+    }
+  })();
 
   const lingva = host => ({
     label: '예비 번역 서버',

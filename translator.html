@@ -288,6 +288,53 @@
   .copy:disabled { background: rgba(255,255,255,.65); color: #b4b1d0; box-shadow: none; cursor: default; transform: none; }
   .copy.done { background: #a7f3d0; color: #065f46; }
 
+  .trans {
+    margin: 0 14px 14px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font: inherit; font-size: 1.35rem; font-weight: 900;
+    padding: 17px;
+    border: none; border-radius: 16px;
+    background: #bfdbfe; color: #1e3a8a;
+    box-shadow: 0 8px 18px rgba(147,197,253,.45);
+    cursor: pointer;
+    transition: transform .12s, background .2s;
+  }
+  .trans:hover { transform: translateY(-2px); background: #a8cdfd; }
+  .trans:disabled { opacity: .6; cursor: wait; transform: none; }
+
+  .modal {
+    position: fixed; inset: 0; z-index: 20;
+    display: grid; place-items: center;
+    padding: 16px;
+    background: rgba(30,27,75,.45);
+    backdrop-filter: blur(3px);
+  }
+  .modal[hidden] { display: none; }
+  .modal-card {
+    width: min(440px, 100%);
+    background: #fff;
+    border-radius: 28px;
+    padding: 34px 28px 26px;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(30,27,75,.35);
+    border-top: 8px solid #a7f3d0;
+    animation: pop .25s ease-out;
+  }
+  @keyframes pop { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-emo { font-size: 3.2rem; line-height: 1; }
+  .modal-card h2 { margin: 12px 0 6px; font-size: 2rem; font-weight: 900; color: #065f46; }
+  .modal-card p { margin: 0 0 24px; font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+  .modal-card p b { color: #6d28d9; white-space: nowrap; }
+  .modal-ok {
+    width: 100%;
+    font: inherit; font-size: 1.35rem; font-weight: 900;
+    padding: 16px;
+    border: none; border-radius: 16px;
+    background: #a7f3d0; color: #065f46;
+    cursor: pointer;
+  }
+  .modal-ok:hover { background: #8eeec3; }
+
   .sub-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
   .ghost {
     flex: 1; min-width: 220px;
@@ -449,11 +496,11 @@
         <div class="box-title">✏️ 내 문장 (직접 고쳐도 돼요)</div>
         <textarea id="input" maxlength="2000" placeholder="1단계에서 만든 문장이 여기에 들어와요. 직접 써도 돼요!"></textarea>
         <div class="tools">
-          <button class="ib" id="mic" title="말로 입력하기">🎤 말하기</button>
           <button class="ib" id="clear" title="지우기">🧽 지우기</button>
           <span class="sp"></span>
           <span class="meta" id="count">0 / 2000</span>
         </div>
+        <button class="trans" id="go">🌏 번역하기</button>
       </div>
 
       <div class="box-out">
@@ -470,7 +517,6 @@
     </div>
 
     <div class="sub-row">
-      <button class="ghost primary" id="go">🔄 내 문장 다시 번역하기</button>
       <button class="ghost" id="checkBack">🔁 거꾸로 번역해서 뜻 확인하기</button>
     </div>
 
@@ -500,6 +546,15 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="modal" id="copied" role="dialog" aria-modal="true" aria-labelledby="copiedTitle" hidden>
+  <div class="modal-card">
+    <div class="modal-emo">✅</div>
+    <h2 id="copiedTitle">복사완료!</h2>
+    <p>그림생성 AI에 <b>Ctrl + V</b></p>
+    <button class="modal-ok" id="copiedOk">확인</button>
+  </div>
+</div>
 
 <script>
   const LANGS = [
@@ -709,6 +764,7 @@
 
   function setBusy(busy) {
     goBtn.disabled = backBtn.disabled = buildBtn.disabled = busy;
+    goBtn.textContent = busy ? '⏳ 번역하는 중…' : '🌏 번역하기';
     buildBtn.textContent = busy ? '⏳ 번역하는 중…' : '🪄 영어로 바꾸기';
   }
 
@@ -781,10 +837,11 @@
   copyBtn.addEventListener('click', async () => {
     if (!lastResult) return;
     if (await copyText(lastResult)) {
+      // [확인]을 눌러야 사라져요 → 학생들이 안내를 꼭 읽게
       copyBtn.classList.add('done');
-      copyBtn.textContent = '✅ 복사됐어요! 그림 AI에 Ctrl+V';
-      clearTimeout(copyBtn.timer);
-      copyBtn.timer = setTimeout(resetCopy, 3000);
+      copyBtn.textContent = '✅ 복사완료! 그림생성 AI에 Ctrl+V';
+      $('copied').hidden = false;
+      $('copiedOk').focus();
     } else {
       toast('복사에 실패했어요. 결과 글자를 직접 드래그해서 복사해 주세요');
     }
@@ -800,29 +857,12 @@
     speechSynthesis.speak(u);
   }
 
-  // 말로 입력하기 (크롬·엣지에서 동작)
-  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  let rec = null;
-  $('mic').addEventListener('click', () => {
-    if (!Recognition) { toast('크롬이나 엣지 브라우저에서 사용할 수 있어요'); return; }
-    if (rec) { rec.stop(); return; }
-    rec = new Recognition();
-    rec.lang = VOICE[src.value === 'auto' ? 'ko' : src.value];
-    rec.interimResults = false;
-    rec.onresult = e => {
-      const said = Array.from(e.results).map(r => r[0].transcript).join(' ');
-      input.value = (input.value ? input.value + ' ' : '') + said;
-      updateCount();
-      run();
-    };
-    rec.onerror = () => toast('잘 듣지 못했어요. 다시 말해 주세요');
-    rec.onend = () => { rec = null; $('mic').classList.remove('on'); $('mic').textContent = '🎤 말하기'; };
-    rec.start();
-    $('mic').classList.add('on');
-    $('mic').textContent = '⏹ 듣는 중…';
-  });
-
   function updateCount() { $('count').textContent = `${input.value.length} / 2000`; }
+
+  $('copiedOk').addEventListener('click', () => {
+    $('copied').hidden = true;
+    resetCopy();
+  });
 
   input.addEventListener('input', updateCount);
   input.addEventListener('keydown', e => {

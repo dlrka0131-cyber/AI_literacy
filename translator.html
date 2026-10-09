@@ -38,7 +38,7 @@
       radial-gradient(900px 600px at 0% 75%, #f9dc9a 0%, transparent 60%),
       radial-gradient(900px 600px at 100% 100%, #9fe3c4 0%, transparent 60%),
       #c9c1f0;
-    padding: 28px clamp(16px, 2.5vw, 40px) 48px;
+    padding: 16px clamp(16px, 2.5vw, 40px) 40px;
   }
 
   html { font-size: 18px; }
@@ -48,25 +48,54 @@
     .main-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
     .main-grid .step { display: flex; flex-direction: column; }
     .main-grid .pair { grid-template-columns: 1fr; flex: 1; }
-    .main-grid .box-in, .main-grid .box-out { min-height: 200px; }
+    .main-grid .box-in, .main-grid .box-out { min-height: 0; }
+    .main-grid textarea, .main-grid .result { min-height: 84px; }
+    .main-grid .step { padding: 20px 24px 20px; margin-bottom: 16px; }
+    .main-grid .step-head { margin-bottom: 14px; }
+    .main-grid .preview { min-height: 64px; }
+    .main-grid .langs select { max-width: 120px; }
+    .main-grid .step-head h2 { white-space: nowrap; }
     .main-grid .s1 .preview { flex: 1; display: flex; align-items: center; font-size: 1.35rem; }
+  }
+  /* 학교 노트북처럼 세로가 짧은 화면: 조금 더 촘촘하게 */
+  @media (min-width: 1280px) and (max-height: 860px) {
+    html { font-size: 15px; }
+    body { padding-top: 10px; }
+    .hero { margin-bottom: 10px; }
+    .main-grid .fields { gap: 8px 12px; }
+    .main-grid .fields input[type=text], .main-grid .fields select { padding: 9px 13px; }
+    .main-grid .big-btn { padding: 12px; margin-top: 10px; }
+    .main-grid .trans, .main-grid .copy { padding: 12px; }
+    .main-grid .preview { margin-top: 10px; min-height: 48px; }
+    .main-grid textarea, .main-grid .result { min-height: 56px; }
+    .main-grid .step { padding: 16px 20px; }
+    .main-grid .step-head { margin-bottom: 10px; }
+    .main-grid .sub-row { margin-top: 10px; }
+  }
+  @media (min-width: 1280px) and (max-height: 700px) {
+    html { font-size: 14px; }
+    .main-grid .step-head p, .main-grid .check .hint-s { display: none; }
+    .main-grid textarea, .main-grid .result { min-height: 48px; }
+    .hero { margin-bottom: 6px; }
+    .main-grid .big-btn { padding: 10px; }
+    .main-grid .preview { min-height: 40px; padding: 10px 16px; }
+    .main-grid textarea, .main-grid .result { min-height: 36px; padding-bottom: 6px; }
+    .main-grid .tools { padding: 2px 10px 6px; }
+    .main-grid .trans, .main-grid .copy { padding: 10px; margin-bottom: 10px; }
+    .main-grid .pair { gap: 10px; }
+    .main-grid .langs select { max-width: 96px; }
   }
 
   /* ── 머리말 (한 줄) ── */
   .hero {
     display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
     gap: 10px 16px;
-    margin-bottom: 20px;
-    padding: 16px 24px;
-    border-radius: 24px;
-    background: rgba(255,255,255,.9);
-    box-shadow: var(--shadow);
+    margin-bottom: 14px;
   }
   .hero .tag {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 6px 14px; border-radius: 999px;
-    background: #f3edff;
-    border: 1.5px solid #ddd0fb;
+    background: rgba(255,255,255,.85);
     font-size: .9rem; font-weight: 800; color: #6d28d9;
   }
   .hero h1 {
@@ -389,7 +418,6 @@
     .tips { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 640px) {
-    .hero { padding: 14px; }
     html { font-size: 16px; }
     body { padding-top: 22px; }
     .step { padding: 20px 16px; border-radius: 22px; }
